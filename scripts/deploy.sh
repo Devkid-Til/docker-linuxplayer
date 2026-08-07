@@ -12,7 +12,7 @@ echo "[deploy] rebuilding..."
 node "$DIR/build.js"
 
 echo "[deploy] syncing to $SERVER..."
-scp -r "$ROOT/site/index.html" "$ROOT/site/assets" "$ROOT/site/feed.xml" "$ROOT/site/tags" "$ROOT/site/posts" "$SERVER:$DEST/"
+rsync -az --delete "$ROOT/site/" "$SERVER:$DEST/"
 
 echo "[deploy] verifying..."
 curl -s -o /dev/null -w "  %{http_code} http://118.31.67.240\n" http://118.31.67.240
