@@ -171,9 +171,9 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .article-meta{display:flex;align-items:center;gap:var(--space-md);flex-wrap:wrap;margin-bottom:var(--space-lg)}
 .article-date{font-family:var(--font-mono);font-size:.8125rem;font-weight:600;color:#fff;background:var(--brand);padding:3px 12px;border-radius:12px}
 .article-cat,.article-reading{font-size:.8125rem;color:var(--text-tertiary)}
-.article-header h1{margin-bottom:var(--space-md)}
+.article-header h1{font-size:1.75rem;line-height:1.35;font-weight:700;margin-bottom:var(--space-md)}
 .article-divider{width:56px;height:3px;border-radius:2px;background:var(--brand);margin-bottom:var(--space-xl)}
-.article-body{font-size:1rem;line-height:1.85}
+.article-body{font-size:1rem;line-height:1.85;max-width:46rem;margin:0 auto}
 
 /* ── 文章正文板块（blocks 组件渲染，全 token，暗色自动适配） ── */
 .article-blocks{display:flex;flex-direction:column}
@@ -234,19 +234,19 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .block-closing .c-source{margin:4px 0 0;color:var(--text-tertiary);font-size:.8125rem}
 
 .block-unknown{color:#DC2626;font-size:.875rem;border:1px dashed #DC2626;padding:12px;border-radius:var(--radius-sm);margin-bottom:var(--space-lg)}
-.article-footer{margin-top:var(--space-2xl);padding-top:var(--space-lg);border-top:1px solid var(--border)}
-.article-tags{display:flex;align-items:center;gap:var(--space-sm);flex-wrap:wrap;margin-bottom:var(--space-lg)}
-.article-tags .label{font-size:.8125rem;color:var(--text-tertiary)}
-.article-share{display:flex;align-items:center;gap:var(--space-sm);flex-wrap:wrap;margin-bottom:var(--space-lg)}
-.article-share .label{font-size:.8125rem;color:var(--text-tertiary);margin-right:var(--space-sm)}
+.article-footer{margin-top:var(--space-lg);padding-top:var(--space-lg);border-top:1px solid var(--border)}
+.article-tools{display:flex;align-items:center;justify-content:space-between;gap:var(--space-md);flex-wrap:wrap;margin-bottom:var(--space-lg)}
+.article-tags{display:flex;align-items:center;gap:var(--space-sm);flex-wrap:wrap}
+.article-share{display:flex;align-items:center;gap:var(--space-sm)}
 .share-btn{font-size:.75rem;padding:6px 14px;border-radius:16px;border:1px solid var(--border);background:var(--card);color:var(--text-secondary);cursor:pointer;transition:all .15s}
 .share-btn:hover{border-color:var(--brand);color:var(--brand);background:var(--brand-bg)}
-.article-pager{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);margin-top:var(--space-xl)}
+.article-pager{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md)}
 .article-pager a{display:block;padding:var(--space-md);border:1px solid var(--border);border-radius:var(--radius-md);text-decoration:none;color:var(--text);transition:border-color .15s,box-shadow .15s}
 .article-pager a:hover{border-color:var(--brand-border);box-shadow:var(--shadow-sm);text-decoration:none}
 .article-pager .dir{font-size:.75rem;color:var(--text-tertiary);display:block;margin-bottom:4px}
-.article-pager .t{font-size:.875rem;font-weight:600}
-.article-pager .next{text-align:right}
+.article-pager .t{font-size:.875rem;font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.article-pager .pager-next{text-align:right}
+.article-pager .pager-empty{display:block}
 @media(max-width:640px){.post-timeline{padding-left:0}.post-timeline::before{display:none}.timeline-item::before{display:none}}
 
 /* ── 13. About Card ───────────────────────────────────────────── */
