@@ -28,6 +28,17 @@
     .item .desc{margin-top:6px;font-size:14px;color:var(--text2)}
     .back{display:inline-flex;align-items:center;gap:4px;color:var(--text3);font-size:14px;text-decoration:none;margin-bottom:20px}
     .back:hover{color:var(--brand)}
+    @media(max-width:640px){
+      body{padding:20px 14px}
+      .brand{padding:24px 20px;margin-bottom:20px}
+      .brand h1{font-size:20px}
+      .brand p{font-size:13px}
+      .guide{padding:16px 16px}
+      .guide h2{font-size:15px}
+      .guide input{font-size:16px;padding:12px 14px}
+      .item{padding:14px 16px}
+      .item h3{font-size:15px}
+    }
   ]]></style>
 </head>
 <body>
