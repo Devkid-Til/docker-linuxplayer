@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import Comment from '../../components/Comment.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -40,5 +41,9 @@ const displayDate = post.data.date.slice(5);
         <a href="/"><span class="dir">← 更多文章</span><span class="t">首页归档</span></a>
       </div>
     </footer>
+
+    <Comment />
+  </main>
+</Base>
   </main>
 </Base>
