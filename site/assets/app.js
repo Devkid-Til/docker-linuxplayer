@@ -176,7 +176,7 @@
   var termDeco = document.querySelector('.term-deco');
   if (termDeco) {
     var cmds = [
-      '$ watch -n 5 kernel-patches',
+      '$ watch -n 10 kernel-patches',
       '$ git log --oneline linux-media',
       '$ git log --oneline dri-devel',
       '$ git log --oneline linux-mm',
