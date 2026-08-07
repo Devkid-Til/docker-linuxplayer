@@ -52,6 +52,7 @@
     var emit = 0;
     function frame() {
       requestAnimationFrame(frame);
+      if (document.hidden) return;
       ctx.clearRect(0, 0, c.width, c.height);
 
       /* ── 环境粒子 ── */
@@ -103,8 +104,8 @@
   if (glow) {
     var glowTick = false;
     document.addEventListener('mousemove', function (e) {
-      mx = e.clientX; my = e.clientY;
-      if (!glowTick) { requestAnimationFrame(function () { glow.style.left = mx + 'px'; glow.style.top = my + 'px'; glowTick = false; }); glowTick = true; }
+      var ex = e.clientX, ey = e.clientY;
+      if (!glowTick) { requestAnimationFrame(function () { glow.style.left = ex + 'px'; glow.style.top = ey + 'px'; glowTick = false; }); glowTick = true; }
     }, { passive: true });
     document.addEventListener('mouseenter', function () { glow.classList.add('visible'); });
     document.addEventListener('mouseleave', function () { glow.classList.remove('visible'); });

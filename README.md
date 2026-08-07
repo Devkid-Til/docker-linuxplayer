@@ -63,12 +63,14 @@ scripts/templates/       ← 页面模板
 site/                    ← 构建产物（Nginx 伺服）
 ```
 
-### 日常流程
+### 日常流程（统一走脚本）
 
 ```bash
-# 1. 生成文章 HTML（wechat-article）
-# 2. 追加 data/posts.json 一行
-# 3. 重新构建全站
-node scripts/build.js
-# 产出：首页 / 标签页 / RSS 全部自动更新
+# 加新文章（自动：复制HTML + 更新posts.json + 构建 + 部署 + git push）
+bash scripts/add-post.sh --date "2026-08-08" --title "标题" --slug "slug"   --desc "摘要" --tags "标签A,标签B" --html /path/to/article.html
+
+# 只改样式/模板后重新发布
+bash scripts/deploy.sh "commit message"
+# （deploy 自动：build → rsync 到服务器 → git commit+push；commit 会触发 post-commit hook 自动再部署一次，幂等）
 ```
+> 构建产物：首页 / 标签页 / RSS 全部自动更新；git commit 后自动部署到服务器。
