@@ -171,3 +171,25 @@
       });
     });
   }
+
+  /* ── 终端轮播动画 ── */
+  var termDeco = document.querySelector('.term-deco');
+  if (termDeco) {
+    var cmds = [
+      '$ watch -n 5 kernel-patches',
+      '$ git log --oneline linux-media',
+      '$ git log --oneline dri-devel',
+      '$ git log --oneline linux-mm',
+      '$ diff -u yesterday today',
+    ];
+    var idx = 0;
+    setInterval(function () {
+      idx = (idx + 1) % cmds.length;
+      termDeco.style.opacity = '0';
+      setTimeout(function () {
+        termDeco.textContent = cmds[idx];
+        termDeco.style.opacity = '1';
+      }, 300);
+    }, 5000);
+    termDeco.style.transition = 'opacity .3s';
+  }
