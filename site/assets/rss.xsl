@@ -7,73 +7,115 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title><xsl:value-of select="title"/> · RSS 订阅</title>
+  <title><xsl:value-of select="title"/> · 订阅</title>
   <style><![CDATA[
-    :root{--brand:#7C3AED;--brand-dark:#5B21B6;--bg:#F8F9FC;--card:#fff;--border:#E5E7EB;--text:#0F172A;--text2:#64748B;--text3:#94A3B8}
-    html.dark{--bg:#0F0F14;--card:#1A1A23;--border:#2D2D3A;--text:#E5E7EB;--text2:#9CA3AF;--text3:#6B7280}
-    body{max-width:720px;margin:0 auto;padding:40px 20px;font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif;background:var(--bg);color:var(--text);line-height:1.7;transition:background .3s,color .3s}
-    .brand{background:linear-gradient(135deg,var(--brand),var(--brand-dark));color:#fff;border-radius:12px;padding:32px 28px;margin-bottom:28px;position:relative}
-    .brand h1{margin:0 0 8px;font-size:26px}
-    .brand p{margin:0;opacity:.82;font-size:14px}
-    .theme-btn{position:absolute;top:16px;right:20px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
-    .guide{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:20px}
+    :root{--brand:#7C3AED;--brand-dark:#5B21B6;--brand-bg:#F5F3FF;--brand-border:#DDD6FE;--bg:#FFFFFF;--card:#FFFFFF;--border:#E5E7EB;--border-light:#F3F4F6;--text:#0F172A;--text2:#64748B;--text3:#94A3B8;--font:-apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;--mono:"JetBrains Mono","SF Mono","Fira Code",Consolas,monospace;--radius:10px;--nav-h:56px}
+    html.dark{--bg:#09090D;--card:#16161F;--border:#2A2A38;--border-light:#1E1E2C;--text:#E5E7EB;--text2:#9CA3AF;--text3:#6B7280;--brand-bg:#1F1833;--brand-border:#3B2E58}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.75;transition:background .3s,color .3s;-webkit-font-smoothing:antialiased}
+    .container{max-width:920px;margin:0 auto;padding:0 24px}
+    a{color:var(--brand);text-decoration:none}
+    ::selection{background:var(--brand);color:#fff}
+
+    /* 导航（与主站一致） */
+    .nav{position:sticky;top:0;z-index:900;height:var(--nav-h);background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border-light)}
+    .nav-inner{height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;max-width:920px;margin:0 auto;padding:0 24px}
+    .brand{font-weight:800;color:var(--text)}
+    .brand em{font-style:normal;color:var(--brand)}
+    .nav-links{display:flex;align-items:center;gap:12px}
+    .nav-links a{font-size:14px;color:var(--text2);padding:6px 12px;border-radius:6px;transition:.15s}
+    .nav-links a:hover{color:var(--brand);background:var(--brand-bg)}
+    .nav-links a.active{color:var(--brand);background:var(--brand-bg)}
+    .theme-btn{background:none;border:1px solid var(--border);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:.15s;color:var(--text2)}
+    .theme-btn:hover{border-color:var(--brand);background:var(--brand-bg)}
+
+    /* 品牌 Hero（紫色渐变，与主站 hero 一致） */
+    .hero{padding:48px 0 40px;text-align:center;background:linear-gradient(170deg,#F5F3FF 0%,#FFFFFF 30%,#F8FAFC 70%,#F0F4FF 100%);border-bottom:1px solid var(--border-light);margin-bottom:28px}
+    html.dark .hero{background:linear-gradient(170deg,#1A1430 0%,#09090D 40%,#0D0D18 70%,#121023 100%)}
+    .hero-eyebrow{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--brand);background:var(--brand-bg);padding:5px 16px;border-radius:20px;margin-bottom:16px}
+    .hero h1{font-size:26px;margin-bottom:8px;letter-spacing:-.01em}
+    .hero p{color:var(--text2);font-size:15px;max-width:480px;margin:0 auto}
+
+    /* 订阅引导 */
+    .guide{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-bottom:22px}
     .guide h2{font-size:16px;margin:0 0 10px;color:var(--brand)}
-    .guide p{margin:0 0 10px;font-size:14px;color:var(--text2)}
-    .guide input{width:100%;padding:14px 18px;border:1px solid var(--border);border-radius:8px;font-size:18px;font-family:monospace;color:var(--text);background:var(--bg)}
-    .item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:12px}
-    .item h3{margin:0 0 6px;font-size:16px}
-    .item h3 a{color:var(--text);text-decoration:none}
+    .guide p{margin:0 0 12px;font-size:14px;color:var(--text2)}
+    .guide input{width:100%;padding:13px 16px;border:1px solid var(--border);border-radius:8px;font-size:17px;font-family:var(--mono);color:var(--text);background:var(--bg)}
+
+    /* 文章卡片（与主站时间线一致） */
+    .item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin-bottom:12px;transition:border-color .2s,box-shadow .2s,transform .2s}
+    .item:hover{border-color:var(--brand-border);box-shadow:0 4px 16px rgba(0,0,0,.06);transform:translateY(-2px)}
+    .item-meta{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+    .item-date{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--brand);background:var(--brand-bg);padding:3px 10px;border-radius:10px}
+    .item h3{font-size:16px;margin-bottom:6px}
+    .item h3 a{color:var(--text)}
     .item h3 a:hover{color:var(--brand)}
-    .item .date{font-size:12px;color:var(--text3);font-family:monospace}
-    .item .desc{margin-top:6px;font-size:14px;color:var(--text2)}
-    .back{display:inline-flex;align-items:center;gap:4px;color:var(--text3);font-size:14px;text-decoration:none;margin-bottom:20px}
-    .back:hover{color:var(--brand)}
-    @media(max-width:640px){
-      body{padding:20px 14px}
-      .brand{padding:24px 20px;margin-bottom:20px}
-      .brand h1{font-size:20px}
-      .brand p{font-size:13px}
-      .guide{padding:16px 16px}
-      .guide h2{font-size:15px}
-      .guide input{font-size:16px;padding:12px 14px}
-      .item{padding:14px 16px}
-      .item h3{font-size:15px}
-    }
+    .item .desc{font-size:14px;color:var(--text2)}
+
+    /* 页脚 */
+    .footer{border-top:1px solid var(--border);margin-top:36px;padding:28px 0;text-align:center}
+    .footer .line{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--brand);margin-bottom:6px}
+    .footer .src{font-size:13px;color:var(--text3)}
+
+    /* 响应式 */
+    @media(max-width:640px){:root{--nav-h:48px}.container{padding:0 16px}.nav-inner{padding:0 16px}.hero{padding:32px 0 28px}.hero h1{font-size:21px}.hero p{font-size:13px}.guide{padding:16px}.guide input{font-size:16px}.item{padding:16px}.item h3{font-size:15px}}
   ]]></style>
 </head>
 <body>
-  <div class="brand">
-    <h1>📡 <xsl:value-of select="title"/></h1>
-    <p><xsl:value-of select="description"/></p>
-    <button class="theme-btn" onclick="toggleTheme()" aria-label="切换暗色模式">🌙</button>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <span class="brand">Linux<em>内核玩家</em> · 订阅</span>
+      <div class="nav-links">
+        <a href="{link}" class="active">首页</a>
+        <button class="theme-btn" id="theme-btn" aria-label="切换暗色模式">🌙</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="container">
+      <span class="hero-eyebrow">KERNEL DAILY · 每日内核雷达</span>
+      <h1>📡 <xsl:value-of select="title"/></h1>
+      <p><xsl:value-of select="description"/></p>
+    </div>
   </div>
 
-  <a class="back" href="{link}">← 返回主页</a>
+  <main class="container">
+    <div class="guide">
+      <h2>如何订阅</h2>
+      <p>复制以下地址，粘贴到 RSS 阅读器（Feedly、Inoreader、Reeder、NetNewsWire 等），即可自动接收新文章。</p>
+      <input readonly="readonly" onclick="this.select()" id="feed-url"/>
+    </div>
 
-  <div class="guide">
-    <h2>如何订阅</h2>
-    <p>复制以下地址，粘贴到 RSS 阅读器（Feedly、Inoreader、Reeder、NetNewsWire 等），即可自动接收新文章。</p>
-    <input readonly="readonly" onclick="this.select()" id="feed-url"/>
-  </div>
+    <xsl:for-each select="item">
+    <div class="item">
+      <div class="item-meta"><span class="item-date"><xsl:value-of select="pubDate"/></span></div>
+      <h3><a href="{link}"><xsl:value-of select="title"/></a></h3>
+      <div class="desc"><xsl:value-of select="description"/></div>
+    </div>
+    </xsl:for-each>
+  </main>
 
-  <xsl:for-each select="item">
-  <div class="item">
-    <h3><a href="{link}"><xsl:value-of select="title"/></a></h3>
-    <span class="date"><xsl:value-of select="pubDate"/></span>
-    <div class="desc"><xsl:value-of select="description"/></div>
-  </div>
-  </xsl:for-each>
+  <footer class="footer">
+    <div class="container">
+      <div class="line">内核是主业，玩家是态度</div>
+      <div class="src">数据来源 lore.kernel.org · 北京时间</div>
+    </div>
+  </footer>
 
   <script><![CDATA[
     var h=document.documentElement;
     var s=localStorage.getItem('kernel-blog-theme');
-    if(s==='dark')h.classList.add('dark');
-    function toggleTheme(){
+    if(s==='dark'||(s===null&&matchMedia('(prefers-color-scheme:dark)').matches))h.classList.add('dark');
+    var b=document.getElementById('theme-btn');
+    function icon(){b.textContent=h.classList.contains('dark')?'☀️':'🌙';}
+    icon();
+    b.onclick=function(){
       var d=!h.classList.contains('dark');
       if(d)h.classList.add('dark');else h.classList.remove('dark');
-      localStorage.setItem('kernel-blog-theme',d?'dark':'light');
-      document.querySelector('.theme-btn').textContent=d?'☀️':'🌙';
-    }
+      localStorage.setItem('kernel-blog-theme',d?'dark':'light');icon();
+    };
     document.getElementById('feed-url').value=window.location.href;
   ]]></script>
 </body>
