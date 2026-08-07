@@ -1,0 +1,3 @@
+#!/bin/bash
+# 每次 commit 自动部署（SKIP_DEPLOY 防止 deploy.sh 内部 commit 触发递归）
+SKIP_DEPLOY=1 bash "$(git rev-parse --show-toplevel)/scripts/deploy.sh" "auto: post-commit deploy"

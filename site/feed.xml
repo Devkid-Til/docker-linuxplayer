@@ -10,13 +10,13 @@
   <item>
     <title>HDMI 2.1「游戏开关」落地 EDID 层 · 高通相机接入 IMX577</title>
     <link>http://118.31.67.240/posts/2026-08-07-hdmi-21-gaming.html</link>
-    <pubDate>08-07</pubDate>
+    <pubDate>Fri, 07 Aug 2026 00:00:00 GMT</pubDate>
     <description>VRR 抗撕裂 + ALLM 自动低延迟首次由内核 EDID 层统一解析；索尼传感器 IMX577 / 576 / 908 同日推进。</description>
   </item>
   <item>
     <title>虚拟机里的摄像头，终于要成标准设备了</title>
     <link>http://118.31.67.240/posts/2026-08-06-virtio-media-dma-fence.html</link>
-    <pubDate>08-06</pubDate>
+    <pubDate>Thu, 06 Aug 2026 00:00:00 GMT</pubDate>
     <description>virtio-media v6 + Rust dma_fence v9 双头条；设备页迁移修复、Starvis2 泛化。</description>
   </item>
 </channel>

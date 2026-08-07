@@ -163,7 +163,7 @@
       btn.classList.add('active');
       /* 过滤 */
       items.forEach(function (item) {
-        if (tag === 'all' || (item.getAttribute('data-tags') || '').indexOf(tag) >= 0) {
+        if (tag === 'all' || (item.getAttribute('data-tags') || '').split(',').map(function(s){return s.trim();}).indexOf(tag) >= 0) {
           item.classList.remove('hidden');
         } else {
           item.classList.add('hidden');
