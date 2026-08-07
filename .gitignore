@@ -1,3 +1,5 @@
 node_modules/
 /tmp/
 .env
+site/          # Astro 构建产物（部署时 npm run build 生成）
+.astro/        # Astro 类型缓存

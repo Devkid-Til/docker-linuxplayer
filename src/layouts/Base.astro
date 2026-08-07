@@ -1,0 +1,41 @@
+---
+// 公共布局：全局样式 + 导航 + 页脚 + 粒子/光晕/暗色
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  desc?: string;
+}
+const { title, desc = '每天 10 分钟，追踪 Linux 内核前沿动态' } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content={desc} />
+  <title>{title}</title>
+  <script is:inline>
+    (function(){var t=localStorage.getItem('kernel-blog-theme');if(t==='dark'||(t===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark');})()
+  </script>
+</head>
+<body>
+  <div class="progress-bar"></div>
+  <canvas id="particles-canvas"></canvas>
+  <div class="cursor-glow"></div>
+
+  <Nav />
+
+  <slot />
+
+  <Footer />
+
+  <button class="to-top" id="to-top" aria-label="回到顶部">↑</button>
+
+  <script>
+    import '../scripts/main.js';
+  </script>
+</body>
+</html>

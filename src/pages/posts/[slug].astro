@@ -1,0 +1,44 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const slugOf = p => String(p.id).split('/').pop().replace(/\.md$/, '');
+  const posts = await getCollection('posts');
+  return posts.map(p => ({ params: { slug: slugOf(p) }, props: { post: p } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const displayDate = post.data.date.slice(5);
+---
+<Base title={`${post.data.title} · Linux 内核玩家`} desc={post.data.desc}>
+  <main class="container">
+    <div class="article-head">
+      <a class="back-link" href="/">← 首页</a>
+      <div class="article-meta">
+        <span class="article-date">{displayDate}</span>
+        <span class="article-cat">每日内核日报</span>
+      </div>
+      <h1>{post.data.title}</h1>
+      <div class="article-divider"></div>
+    </div>
+
+    <div class="article-body">
+      <Content />
+    </div>
+
+    <footer class="article-footer">
+      <div class="article-tags">
+        <span class="label">标签</span>
+        {post.data.tags.map(t => <span class="tag">{t}</span>)}
+      </div>
+      <div class="article-share">
+        <span class="label">分享</span>
+        <button class="share-btn share-copy">复制链接</button>
+      </div>
+      <div class="article-pager">
+        <a href="/"><span class="dir">← 更多文章</span><span class="t">首页归档</span></a>
+      </div>
+    </footer>
+  </main>
+</Base>
