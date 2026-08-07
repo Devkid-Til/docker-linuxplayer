@@ -47,7 +47,7 @@ let html = TPL('page.html')
   .replace('{{NAV_ACTIVE}}', ' class="active"')
   .replace('{{BODY}}', `
 <header class="hero">
-  <span class="term-deco">$ watch -n 5 kernel-patches</span>
+  <span class="term-deco">$ watch -n 10 kernel-patches</span>
   <div class="container hero-inner">
     <span class="hero-eyebrow reveal">KERNEL DAILY · 每日内核雷达</span>
     <h1 class="reveal">每天 <span>10 分钟</span>，追踪 Linux 内核前沿</h1>
