@@ -48,7 +48,7 @@
     <button class="theme-btn" onclick="toggleTheme()" aria-label="切换暗色模式">🌙</button>
   </div>
 
-  <a class="back" href="javascript:history.back()">← 返回</a>
+  <a class="back" href="{link}">← 返回主页</a>
 
   <div class="guide">
     <h2>如何订阅</h2>
