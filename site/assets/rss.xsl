@@ -33,7 +33,7 @@
 
 <nav class="nav">
   <div class="nav-inner">
-    <a class="nav-brand" href="{link}"><em>Linux内核玩家</em> · 博客</a>
+    <a class="nav-brand" href="{link}">Linux <em>内核玩家</em> · RSS订阅</a>
     <div class="nav-links">
       <a href="{link}">首页</a>
       <button class="theme-btn" id="theme-toggle" aria-label="切换暗色模式">🌙</button>
