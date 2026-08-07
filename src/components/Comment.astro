@@ -1,5 +1,5 @@
 ---
-import PetalRain from './PetalRain.astro';
+import Confetti from './Confetti.astro';
 // Giscus 评论组件（评论存 GitHub Discussions，零后端）
 // 需要：一个公开仓库 + 启用 Discussions + giscus app 授权
 // 配置通过环境变量注入（.env）：
@@ -33,7 +33,7 @@ const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID || '';
   ) : (
     <div class="comments-pending">评论功能待配置（需公开仓库 + repo-id，见 Comment.astro 注释）</div>
   )}
-  <PetalRain />
+  <Confetti />
 </section>
 
 <style>
