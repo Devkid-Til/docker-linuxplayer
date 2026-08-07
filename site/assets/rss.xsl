@@ -34,7 +34,10 @@
     html.dark .hero{background:linear-gradient(170deg,#1A1430 0%,#09090D 40%,#0D0D18 70%,#121023 100%)}
     .hero-eyebrow{display:inline-block;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--brand);background:var(--brand-bg);padding:5px 16px;border-radius:20px;margin-bottom:16px}
     .hero h1{font-size:26px;margin-bottom:8px;letter-spacing:-.01em}
-    .hero p{color:var(--text2);font-size:15px;max-width:480px;margin:0 auto}
+    .hero p{color:var(--text2);font-size:13px;max-width:480px;margin:0 auto 18px}
+    .subscribe-btn{margin-top:6px;padding:11px 26px;border:none;border-radius:24px;background:var(--brand);color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:transform .15s,box-shadow .15s,background .15s}
+    .subscribe-btn:hover{background:var(--brand-dark);transform:translateY(-1px);box-shadow:0 4px 14px rgba(124,58,237,.35)}
+    .subscribe-btn.copied{background:#10B981}
 
     /* 订阅引导 */
     .guide{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-bottom:22px}
@@ -80,8 +83,9 @@
   <div class="hero">
     <div class="container">
       <span class="hero-eyebrow">KERNEL DAILY · 每日内核雷达</span>
-      <h1>📡 <xsl:value-of select="title"/></h1>
+      <h1><xsl:value-of select="title"/></h1>
       <p><xsl:value-of select="description"/></p>
+      <button class="subscribe-btn" id="hero-sub">📡 点此订阅</button>
     </div>
   </div>
 
@@ -126,16 +130,19 @@
     var url=window.location.href;
     var input=document.getElementById('feed-url');
     input.value=url;
-    var btn=document.getElementById('copy-btn');
-    btn.onclick=function(){
+    function copyFeed(btn){
       if(navigator.clipboard&&navigator.clipboard.writeText){
-        navigator.clipboard.writeText(url).then(function(){btn.textContent='✓ 已复制';btn.classList.add('copied');setTimeout(function(){btn.textContent='复制';btn.classList.remove('copied');},1600);});
+        navigator.clipboard.writeText(url).then(function(){btn.textContent='✓ 已复制';btn.classList.add('copied');setTimeout(function(){btn.textContent=btn===document.getElementById('hero-sub')?'📡 点此订阅':'复制';btn.classList.remove('copied');},1600);});
       }else{
         input.removeAttribute('readonly');input.select();
-        try{document.execCommand('copy');btn.textContent='✓ 已复制';btn.classList.add('copied');setTimeout(function(){btn.textContent='复制';btn.classList.remove('copied');},1600);}catch(e){}
+        try{document.execCommand('copy');btn.textContent='✓ 已复制';btn.classList.add('copied');setTimeout(function(){btn.textContent=btn===document.getElementById('hero-sub')?'📡 点此订阅':'复制';btn.classList.remove('copied');},1600);}catch(e){}
         input.setAttribute('readonly','readonly');
       }
-    };
+    }
+    var heroSub=document.getElementById('hero-sub');
+    if(heroSub)heroSub.onclick=function(){copyFeed(heroSub);};
+    var btn=document.getElementById('copy-btn');
+    btn.onclick=function(){copyFeed(btn);};
   ]]></script>
 </body>
 </html>
