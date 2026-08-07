@@ -1,0 +1,8 @@
+---
+// 板块标题：primary=一级（主色双线） / section=栏目（深灰双线）
+import type { DividerBlock } from './types';
+interface Props { block: DividerBlock; }
+const { block } = Astro.props;
+const kind = block.kind ?? 'primary';
+---
+<p class={`block-divider block-divider--${kind}`}>{block.label}</p>

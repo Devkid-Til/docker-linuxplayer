@@ -1,0 +1,11 @@
+---
+// 今日导读：带标签的要点列表（头条/机制/亮点）
+import type { TocBlock } from './types';
+interface Props { block: TocBlock; }
+const { block } = Astro.props;
+---
+<section class="block-toc">
+  {block.items.map(item => (
+    <p class="b-point"><span class="b-bullet">•</span> <span class="b-label">{item.label}</span>：<span set:html={item.text} /></p>
+  ))}
+</section>

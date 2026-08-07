@@ -9,10 +9,20 @@
 </style>
 
 <script>
-  // 监听 Giscus 加载成功消息，触发花瓣
+  // 双触发：① Giscus 加载成功消息 ② 评论区进入视口（用户来看评论）
   window.addEventListener('message', function (e) {
     if (e.data && e.data.type === 'giscus:ready') startPetalRain();
   });
+  var comments = document.getElementById('comments');
+  if (comments && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) startPetalRain();
+      });
+    }, { threshold: 0.3 }).observe(comments);
+  } else if (comments) {
+    comments.addEventListener('click', function () { startPetalRain(); });
+  }
 
   function startPetalRain() {
     var canvas = document.getElementById('petal-rain');

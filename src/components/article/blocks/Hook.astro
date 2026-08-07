@@ -1,0 +1,7 @@
+---
+// 导语金句：开篇钩子，居中，主色左边框
+import type { HookBlock } from './types';
+interface Props { block: HookBlock; }
+const { block } = Astro.props;
+---
+<p class="block-hook" set:html={block.text} />

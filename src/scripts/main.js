@@ -149,7 +149,6 @@
   });
 
   onScroll();
-})();
 
   /* ── 标签过滤 ── */
   var filterBar = document.getElementById('tag-filter');
@@ -226,3 +225,4 @@
       }
     });
   })();
+})();

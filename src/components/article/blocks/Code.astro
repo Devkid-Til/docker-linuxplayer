@@ -1,0 +1,7 @@
+---
+// 代码块：深底，text 为原文（Astro 自动转义）
+import type { CodeBlock } from './types';
+interface Props { block: CodeBlock; }
+const { block } = Astro.props;
+---
+<pre class="block-code"><code>{block.text}</code></pre>

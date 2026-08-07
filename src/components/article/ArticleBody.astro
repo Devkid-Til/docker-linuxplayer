@@ -1,0 +1,36 @@
+---
+// 正文渲染器：遍历 blocks 数组，按 type 分发到对应板块组件
+import type { Block } from './blocks/types';
+import Hook from './blocks/Hook.astro';
+import Divider from './blocks/Divider.astro';
+import Toc from './blocks/Toc.astro';
+import Headline from './blocks/Headline.astro';
+import Highlight from './blocks/Highlight.astro';
+import More from './blocks/More.astro';
+import Paragraph from './blocks/Paragraph.astro';
+import Quote from './blocks/Quote.astro';
+import Code from './blocks/Code.astro';
+import Image from './blocks/Image.astro';
+import Closing from './blocks/Closing.astro';
+
+interface Props { blocks: Block[]; }
+const { blocks } = Astro.props;
+---
+<div class="article-blocks">
+  {blocks.map(b => {
+    switch (b.type) {
+      case 'hook':       return <Hook block={b} />;
+      case 'divider':    return <Divider block={b} />;
+      case 'toc':        return <Toc block={b} />;
+      case 'headline':   return <Headline block={b} />;
+      case 'highlight':  return <Highlight block={b} />;
+      case 'more':       return <More block={b} />;
+      case 'paragraph':  return <Paragraph block={b} />;
+      case 'quote':      return <Quote block={b} />;
+      case 'code':       return <Code block={b} />;
+      case 'image':      return <Image block={b} />;
+      case 'closing':    return <Closing block={b} />;
+      default:           return <p class="block-unknown">⚠ 未知板块类型：{(b as { type: string }).type}</p>;
+    }
+  })}
+</div>

@@ -1,0 +1,19 @@
+---
+// 亮点卡：★ 标题 + 出处 + 标签要点 + 和你相关 + 原文
+import type { HighlightBlock } from './types';
+interface Props { block: HighlightBlock; }
+const { block } = Astro.props;
+---
+<section class="block-highlight">
+  <p class="hi-title"><span class="hi-star">★</span> {block.title}</p>
+  {block.meta && <p class="h-meta">{block.meta}</p>}
+  {block.points.map(p => (
+    <p class="b-point"><span class="b-bullet">•</span> <span class="b-label">{p.label}</span>：<span set:html={p.text} /></p>
+  ))}
+  {block.relevance && (
+    <p class="hi-relevance"><span class="b-label">和你相关</span>：<span set:html={block.relevance} /></p>
+  )}
+  {block.link && (
+    <p class="h-link">🔗 <a href={block.link}>原文</a></p>
+  )}
+</section>
