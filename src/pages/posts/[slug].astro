@@ -5,17 +5,35 @@ import ArticleBody from '../../components/article/ArticleBody.astro';
 import type { Block } from '../../components/article/blocks/types';
 import { getCollection } from 'astro:content';
 
+interface Adjacent {
+  slug: string;
+  date: string;
+  title: string;
+}
+
 export async function getStaticPaths() {
   const slugOf = p => String(p.id).split('/').pop().replace(/\.md$/, '');
-  const posts = await getCollection('posts');
-  return posts.map(p => ({ params: { slug: slugOf(p) }, props: { post: p } }));
+  const posts = (await getCollection('posts')).sort((a, b) => a.data.date.localeCompare(b.data.date));
+  return posts.map((p, i) => ({
+    params: { slug: slugOf(p) },
+    props: {
+      post: p,
+      prev: i > 0
+        ? { slug: slugOf(posts[i - 1]), date: posts[i - 1].data.date, title: posts[i - 1].data.title }
+        : null,
+      next: i < posts.length - 1
+        ? { slug: slugOf(posts[i + 1]), date: posts[i + 1].data.date, title: posts[i + 1].data.title }
+        : null,
+    },
+  }));
 }
-const { post } = Astro.props;
+
+const { post, prev, next } = Astro.props;
 const displayDate = post.data.date.slice(5);
 ---
 <Base title={`${post.data.title} · Linux 内核玩家`} desc={post.data.desc}>
   <main class="container">
-    <div class="article-head">
+    <div class="article-header">
       <a class="back-link" href="/">← 首页</a>
       <div class="article-meta">
         <span class="article-date">{displayDate}</span>
@@ -30,17 +48,32 @@ const displayDate = post.data.date.slice(5);
     </div>
 
     <footer class="article-footer">
-      <div class="article-tags">
-        <span class="label">标签</span>
-        {post.data.tags.map(t => <span class="tag">{t}</span>)}
+      <div class="article-tools">
+        <div class="article-tags">
+          {post.data.tags.map(t => <span class="tag">{t}</span>)}
+        </div>
+        <div class="article-share">
+          <button class="share-btn share-copy">🔗 复制链接</button>
+        </div>
       </div>
-      <div class="article-share">
-        <span class="label">分享</span>
-        <button class="share-btn share-copy">复制链接</button>
-      </div>
-      <div class="article-pager">
-        <a href="/"><span class="dir">← 更多文章</span><span class="t">首页归档</span></a>
-      </div>
+      <nav class="article-pager">
+        {prev
+          ? (
+            <a class="pager-prev" href={`/posts/${prev.slug}/`}>
+              <span class="dir">← 上一篇 · {prev.date.slice(5)}</span>
+              <span class="t">{prev.title}</span>
+            </a>
+          )
+          : <span class="pager-empty" />}
+        {next
+          ? (
+            <a class="pager-next" href={`/posts/${next.slug}/`}>
+              <span class="dir">{next.date.slice(5)} · 下一篇 →</span>
+              <span class="t">{next.title}</span>
+            </a>
+          )
+          : <span class="pager-empty" />}
+      </nav>
     </footer>
 
     <Comment />
