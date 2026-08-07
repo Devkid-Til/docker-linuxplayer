@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="显示 / DRM 相关文章">
+<title>显示 / DRM · Linux内核玩家</title>
+<link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<div class="progress-bar"></div>
+<canvas id="particles-canvas"></canvas>
+<div class="cursor-glow"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="../index.html"><em>Linux内核玩家</em> · 博客</a>
+    <div class="nav-links">
+      <a href="../index.html">首页</a>
+      <a href="../feed.xml">RSS</a>
+      <button class="theme-btn" id="theme-toggle" aria-label="切换暗色模式">🌙</button>
+    </div>
+    <button class="hamburger" aria-label="菜单"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+
+<main class="container" style="padding-top:40px">
+  <a class="back-link" href="../index.html" style="font-size:.875rem;color:var(--text-tertiary);display:inline-flex;align-items:center;gap:4px;margin-bottom:24px">← 首页</a>
+  <div class="section-header"><h2>标签：显示 / DRM</h2><span class="mono">/ tags</span></div>
+  <div class="tag-filter" id="tag-filter"><button class="filter-tag" data-tag="all">全部 <span class="count">2</span></button>
+      <button class="filter-tag" data-tag="HDMI 2.1">HDMI 2.1<span class="count"> 1</span></button>
+      <button class="filter-tag" data-tag="Rust">Rust<span class="count"> 2</span></button>
+      <button class="filter-tag active" data-tag="显示 / DRM">显示 / DRM<span class="count"> 2</span></button>
+      <button class="filter-tag" data-tag="虚拟化">虚拟化<span class="count"> 1</span></button>
+      <button class="filter-tag" data-tag="视频 / 相机">视频 / 相机<span class="count"> 2</span></button></div>
+  <div class="post-timeline">
+    <div class="timeline-item reveal" data-tags="显示 / DRM,视频 / 相机,Rust,HDMI 2.1">
+      <a class="timeline-card" href="posts/2026-08-07-hdmi-21-gaming.html">
+        <div class="timeline-meta"><span class="timeline-date">08-07</span><span class="timeline-cat">每日内核日报</span></div>
+        <h3>HDMI 2.1「游戏开关」落地 EDID 层 · 高通相机接入 IMX577</h3>
+        <p class="timeline-excerpt">VRR 抗撕裂 + ALLM 自动低延迟首次由内核 EDID 层统一解析；索尼传感器 IMX577 / 576 / 908 同日推进。</p>
+        <div class="timeline-tags"><span class="tag">显示 / DRM</span><span class="tag">视频 / 相机</span><span class="tag">Rust</span><span class="tag">HDMI 2.1</span></div>
+      </a>
+    </div>
+    <div class="timeline-item reveal" data-tags="虚拟化,Rust,视频 / 相机,显示 / DRM">
+      <a class="timeline-card" href="posts/2026-08-06-virtio-media-dma-fence.html">
+        <div class="timeline-meta"><span class="timeline-date">08-06</span><span class="timeline-cat">每日内核日报</span></div>
+        <h3>虚拟机里的摄像头，终于要成标准设备了</h3>
+        <p class="timeline-excerpt">virtio-media v6 + Rust dma_fence v9 双头条；设备页迁移修复、Starvis2 泛化。</p>
+        <div class="timeline-tags"><span class="tag">虚拟化</span><span class="tag">Rust</span><span class="tag">视频 / 相机</span><span class="tag">显示 / DRM</span></div>
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="brand-line">内核是主业，玩家是态度</div>
+    <p class="source">数据来源 linux-media / dri-devel（lore.kernel.org）· 时间均为北京时间</p>
+    <div class="links"><a href="../index.html">首页</a><a href="../feed.xml">RSS</a><a href="#">GitHub</a></div>
+  </div>
+</footer>
+
+<button class="to-top" id="to-top" aria-label="回到顶部">↑</button>
+<script src="../assets/app.js"></script>
+</body>
+</html>

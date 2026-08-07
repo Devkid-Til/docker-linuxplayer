@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="{{DESC}}">
+<title>{{TITLE}}</title>
+<link rel="stylesheet" href="{{PATH}}/assets/style.css">
+</head>
+<body>
+
+<div class="progress-bar"></div>
+<canvas id="particles-canvas"></canvas>
+<div class="cursor-glow"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="{{PATH}}/index.html"><em>Linux内核玩家</em> · 博客</a>
+    <div class="nav-links">
+      <a href="{{PATH}}/index.html"{{NAV_ACTIVE}}>首页</a>
+      <a href="{{PATH}}/feed.xml">RSS</a>
+      <button class="theme-btn" id="theme-toggle" aria-label="切换暗色模式">🌙</button>
+    </div>
+    <button class="hamburger" aria-label="菜单"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+{{BODY}}
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="brand-line">内核是主业，玩家是态度</div>
+    <p class="source">数据来源 linux-media / dri-devel（lore.kernel.org）· 时间均为北京时间</p>
+    <div class="links"><a href="{{PATH}}/index.html">首页</a><a href="{{PATH}}/feed.xml">RSS</a><a href="#">GitHub</a></div>
+  </div>
+</footer>
+
+<button class="to-top" id="to-top" aria-label="回到顶部">↑</button>
+<script src="{{PATH}}/assets/app.js"></script>
+</body>
+</html>
