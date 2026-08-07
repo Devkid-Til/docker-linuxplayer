@@ -40,7 +40,11 @@
     .guide{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;margin-bottom:22px}
     .guide h2{font-size:16px;margin:0 0 10px;color:var(--brand)}
     .guide p{margin:0 0 12px;font-size:14px;color:var(--text2)}
-    .guide input{width:100%;padding:13px 16px;border:1px solid var(--border);border-radius:8px;font-size:17px;font-family:var(--mono);color:var(--text);background:var(--bg)}
+    .guide .copy-row{display:flex;gap:10px}
+    .guide input{flex:1;width:100%;padding:13px 16px;border:1px solid var(--border);border-radius:8px;font-size:16px;font-family:var(--mono);color:var(--text);background:var(--bg);min-width:0}
+    .copy-btn{flex-shrink:0;padding:13px 20px;border:none;border-radius:8px;background:var(--brand);color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s}
+    .copy-btn:hover{background:var(--brand-dark)}
+    .copy-btn.copied{background:#10B981}
 
     /* 文章卡片（与主站时间线一致） */
     .item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin-bottom:12px;transition:border-color .2s,box-shadow .2s,transform .2s}
@@ -84,8 +88,11 @@
   <main class="container">
     <div class="guide">
       <h2>如何订阅</h2>
-      <p>复制以下地址，粘贴到 RSS 阅读器（Feedly、Inoreader、Reeder、NetNewsWire 等），即可自动接收新文章。</p>
-      <input readonly="readonly" onclick="this.select()" id="feed-url"/>
+      <p>点「复制」或长按地址，粘贴到 RSS 阅读器（Feedly、Inoreader、Reeder、NetNewsWire 等），即可自动接收新文章。</p>
+      <div class="copy-row">
+        <input readonly="readonly" id="feed-url"/>
+        <button class="copy-btn" id="copy-btn">复制</button>
+      </div>
     </div>
 
     <xsl:for-each select="item">
@@ -116,7 +123,19 @@
       if(d)h.classList.add('dark');else h.classList.remove('dark');
       localStorage.setItem('kernel-blog-theme',d?'dark':'light');icon();
     };
-    document.getElementById('feed-url').value=window.location.href;
+    var url=window.location.href;
+    var input=document.getElementById('feed-url');
+    input.value=url;
+    var btn=document.getElementById('copy-btn');
+    btn.onclick=function(){
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(url).then(function(){btn.textContent='✓ 已复制';btn.classList.add('copied');setTimeout(function(){btn.textContent='复制';btn.classList.remove('copied');},1600);});
+      }else{
+        input.removeAttribute('readonly');input.select();
+        try{document.execCommand('copy');btn.textContent='✓ 已复制';btn.classList.add('copied');setTimeout(function(){btn.textContent='复制';btn.classList.remove('copied');},1600);}catch(e){}
+        input.setAttribute('readonly','readonly');
+      }
+    };
   ]]></script>
 </body>
 </html>
