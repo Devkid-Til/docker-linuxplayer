@@ -77,7 +77,7 @@ let html = TPL('page.html')
 ${DATA.map(renderCard).join('\n')}
   </div>
   <div class="about-card reveal">
-    <div class="about-avatar">&gt;_</div>
+    <div class="about-avatar">&gt;<span class="cursor">▌</span></div>
     <div><h3>关于 Linux内核玩家</h3><p>每天 10 分钟，一起当内核玩家<span class="cursor">▌</span></p></div>
   </div>
 </main>`);
