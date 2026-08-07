@@ -19,7 +19,7 @@
     .guide{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px 22px;margin-bottom:20px}
     .guide h2{font-size:16px;margin:0 0 10px;color:var(--brand)}
     .guide p{margin:0 0 10px;font-size:14px;color:var(--text2)}
-    .guide input{width:100%;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:monospace;color:var(--text);background:var(--bg)}
+    .guide input{width:100%;padding:14px 18px;border:1px solid var(--border);border-radius:8px;font-size:18px;font-family:monospace;color:var(--text);background:var(--bg)}
     .item{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:12px}
     .item h3{margin:0 0 6px;font-size:16px}
     .item h3 a{color:var(--text);text-decoration:none}
