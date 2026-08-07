@@ -250,3 +250,6 @@ html.dark .timeline-item::before{border-color:var(--bg)}
 /* 标题波浪动画 */
 .wave-char{display:inline-block;will-change:transform;animation:wave 3.6s ease-in-out infinite}
 @keyframes wave{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
+/* 标题内 em 不斜体 */
+.hero h1 em{font-style:normal;color:var(--brand)}
