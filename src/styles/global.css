@@ -183,8 +183,8 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .article-hero .back-link:hover{color:var(--brand)}
 .article-hero .term-deco{position:absolute;top:var(--space-md);right:var(--space-md);z-index:1;font-family:var(--font-mono);font-size:.75rem;color:var(--text-tertiary);opacity:.85}
 .article-hero .hero-eyebrow{position:relative;z-index:1}
-.article-hero h1{position:relative;z-index:1;font-size:1.625rem;line-height:1.35;font-weight:800;color:var(--text);max-width:26ch;margin:0 auto var(--space-sm)}
-.article-hero .subtitle{position:relative;z-index:1;color:var(--text-secondary);font-size:.9375rem;line-height:1.7;max-width:520px;margin:0 auto}
+.article-hero h1{position:relative;z-index:1;font-size:2.5rem;line-height:1.25;font-weight:700;color:var(--text);max-width:26ch;margin:0 auto var(--space-sm)}
+.article-hero .subtitle{position:relative;z-index:1;color:var(--text-secondary);font-size:1.0625rem;line-height:1.75;max-width:460px;margin:0 auto}
 html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#09090D 40%,#0D0D18 70%,#121023 100%);border-bottom-color:var(--border)}
 
 /* ── 文章正文板块（卡片式，全 token，暗色自动适配） ── */
@@ -278,8 +278,8 @@ html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#09090D 40%
 /* 移动端：布局微妙变化 */
 @media(max-width:640px){
   .article-hero{padding:var(--space-lg) var(--space-md)}
-  .article-hero h1{font-size:1.25rem}
-  .article-hero .subtitle{font-size:.8125rem}
+  .article-hero h1{font-size:1.35rem}
+  .article-hero .subtitle{font-size:.75rem}
   .article-hero .back-link{top:var(--space-xs);left:var(--space-sm)}
   .article-hero .term-deco{top:var(--space-xs);right:var(--space-sm);font-size:11px}
   .article-section .mono{display:none}
