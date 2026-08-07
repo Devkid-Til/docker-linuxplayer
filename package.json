@@ -1,0 +1,16 @@
+{
+  "name": "kernel-blog",
+  "version": "2.0.0",
+  "description": "Linux 内核玩家博客 — Astro 版（feature/astro 分支）",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "add-post": "bash scripts/add-post.sh"
+  },
+  "dependencies": {
+    "@astrojs/rss": "^4.0.19",
+    "astro": "^7.2.0"
+  }
+}
