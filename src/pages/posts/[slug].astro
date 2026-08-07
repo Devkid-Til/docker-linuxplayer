@@ -33,12 +33,15 @@ const displayDate = post.data.date.slice(5);
 ---
 <Base title={`${post.data.title} · Linux 内核玩家`} desc={post.data.desc}>
   <main class="container">
-    <!-- ① 文章头卡（hero 式，延续主页 hero 语言） -->
-    <header class="article-hero reveal">
+    <!-- ① 文章头卡（与主页 hero 同款：全宽渐变带 + term-deco + eyebrow） -->
+    <header class="article-hero">
       <a class="back-link" href="/">← 首页</a>
-      <span class="hero-eyebrow reveal">KERNEL DAILY · {displayDate}</span>
-      <h1 class="reveal">{post.data.title}</h1>
-      <p class="subtitle reveal">{post.data.desc}</p>
+      <span class="term-deco">$ watch -n 10 kernel-patches</span>
+      <div class="hero-inner">
+        <span class="hero-eyebrow reveal">KERNEL DAILY · {displayDate}</span>
+        <h1 class="reveal">{post.data.title}</h1>
+        <p class="subtitle reveal">{post.data.desc}</p>
+      </div>
     </header>
 
     <!-- ②-⑨ 卡片式正文 -->
