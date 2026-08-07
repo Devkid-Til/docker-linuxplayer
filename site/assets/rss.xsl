@@ -9,7 +9,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title><xsl:value-of select="title"/> · 订阅</title>
   <!-- 与主站一致的暗色阻塞脚本（防闪白） -->
-  <script>(function(){var t=localStorage.getItem('kernel-blog-theme');if(t==='dark'||(t===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark');})()</script>
+  <script><![CDATA[(function(){var t=localStorage.getItem('kernel-blog-theme');if(t==='dark'||(t===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark');})()]]></script>
   <link rel="stylesheet" href="assets/style.css"/>
   <!-- 仅 RSS 特有组件补充样式（其余全部复用主站 style.css） -->
   <style>
@@ -92,7 +92,7 @@
 
 <button class="to-top" id="to-top" aria-label="回到顶部">↑</button>
 
-<script>
+<script><![CDATA[
   var url = window.location.href;
   var input = document.getElementById('feed-url');
   input.value = url;
@@ -103,7 +103,7 @@
   }
   document.getElementById('copy-btn').onclick=function(){ copyFeed(this); };
   var hs=document.getElementById('hero-sub'); if(hs) hs.onclick=function(){ copyFeed(this); };
-</script>
+]]></script>
 <script src="assets/app.js"></script>
 </body>
 </html>
