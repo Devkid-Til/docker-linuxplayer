@@ -6,6 +6,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/posts.json'), 'utf8'));
 const SITE = path.join(ROOT, 'site');
+const BASE_URL = process.env.BLOG_URL || 'http://118.31.67.240';
 const TPL = name => fs.readFileSync(path.join(ROOT, 'scripts', 'templates', name), 'utf8');
 
 fs.mkdirSync(SITE, { recursive: true });
@@ -48,7 +49,16 @@ let html = TPL('page.html')
 <header class="hero">
   <div class="container hero-inner">
     <span class="hero-eyebrow reveal">KERNEL DAILY · 每日内核雷达</span>
+    <span class="term-deco">$ watch -n 600 kernel-patches</span>
+    <div class="hero-inner">
+    <span class="hero-eyebrow reveal">KERNEL DAILY · 每日内核雷达</span>
     <h1 class="reveal">每天 <span>10 分钟</span>，追踪 Linux 内核前沿</h1>
+    <p class="subtitle reveal">补丁、RFC、架构演进。把上百条邮件列表动态浓缩成你能读完的日报——从内存管理到 GPU 驱动，从 Rust 内核化到硬件虚拟化。</p>
+    <div class="hero-actions reveal">
+      <a class="btn btn-primary" href="feed.xml">📡 订阅 RSS</a>
+      <a class="btn btn-ghost" href="#">🐙 GitHub 归档</a>
+    </div>
+    </div>
     <p class="subtitle reveal">补丁、RFC、架构演进。把上百条邮件列表动态浓缩成你能读完的日报——从内存管理到 GPU 驱动，从 Rust 内核化到硬件虚拟化。</p>
     <div class="hero-actions reveal">
       <a class="btn btn-primary" href="feed.xml">📡 订阅 RSS</a>
@@ -106,7 +116,7 @@ console.log('✓ ' + allTags.length + ' tag pages');
 /* ── RSS ── */
 let items = DATA.map(p => `  <item>
     <title>${esc(p.title)}</title>
-    <link>http://localhost:8080/posts/${p.slug}.html</link>
+    <link>${BASE_URL}/posts/${p.slug}.html</link>
     <pubDate>${p.date}</pubDate>
     <description>${esc(p.desc)}</description>
   </item>`).join('\n');
@@ -116,8 +126,8 @@ let rss = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
   <title>Linux内核玩家 · 博客</title>
-  <link>http://localhost:8080/</link>
-  <atom:link href="http://localhost:8080/feed.xml" rel="self" type="application/rss+xml"/>
+  <link>${BASE_URL}/</link>
+  <atom:link href="${BASE_URL}/feed.xml" rel="self" type="application/rss+xml"/>
   <description>每天 10 分钟，追踪 Linux 内核前沿动态</description>
   <language>zh-CN</language>
 ${items}
