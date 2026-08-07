@@ -1,0 +1,51 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="订阅 RSS · Linux 内核玩家" desc="订阅 Linux 内核玩家博客，每天 10 分钟追踪内核前沿">
+  <main class="container">
+    <div class="article-head">
+      <a class="back-link" href="/">← 首页</a>
+      <div class="article-meta"><span class="article-date">RSS</span></div>
+      <h1>订阅 Linux 内核玩家</h1>
+      <div class="article-divider"></div>
+    </div>
+
+    <div class="guide reveal">
+      <h2>📡 复制订阅地址</h2>
+      <p>粘贴到你的 RSS 阅读器，新文章发布后自动推送，不用每天来刷。</p>
+      <div class="copy-row">
+        <input readonly="readonly" id="feed-url" />
+        <button class="copy-btn" id="copy-btn">复制</button>
+      </div>
+    </div>
+
+    <div class="guide reveal">
+      <h2>🛠 推荐阅读器</h2>
+      <p>网页：Feedly · Inoreader ｜ Mac/iOS：Reeder · NetNewsWire ｜ Windows：Folo</p>
+    </div>
+  </main>
+
+  <style>
+    .guide{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px}
+    .guide h2{font-size:1.125rem;margin-bottom:8px;color:var(--brand)}
+    .guide p{font-size:.875rem;color:var(--text-secondary);margin-bottom:14px}
+    .copy-row{display:flex;gap:10px}
+    .guide input{flex:1;min-width:0;padding:13px 16px;border:1px solid var(--border);border-radius:var(--radius-md);font-family:var(--font-mono);font-size:15px;color:var(--text);background:var(--bg)}
+    .copy-btn{padding:13px 24px;border:none;border-radius:var(--radius-md);background:var(--brand);color:#fff;font-weight:600;cursor:pointer;transition:transform .15s,background .15s}
+    .copy-btn:hover{background:var(--brand-dark);transform:translateY(-1px)}
+    .copy-btn.copied{background:#10B981}
+    @media(max-width:640px){.copy-row{flex-direction:column}.guide input{font-size:16px}.copy-btn{width:100%}}
+  </style>
+
+  <script>
+    var url = location.origin + '/feed.xml';
+    var input = document.getElementById('feed-url');
+    input.value = url;
+    var btn = document.getElementById('copy-btn');
+    btn.addEventListener('click', function () {
+      function done() { btn.textContent = '✓ 已复制'; btn.classList.add('copied'); setTimeout(function(){ btn.textContent='复制'; btn.classList.remove('copied'); }, 1500); }
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(url).then(done); }
+      else { input.removeAttribute('readonly'); input.select(); try{document.execCommand('copy'); done();}catch(e){} input.setAttribute('readonly','readonly'); }
+    });
+  </script>
+</Base>
