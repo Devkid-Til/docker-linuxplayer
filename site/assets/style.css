@@ -191,7 +191,7 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .article-pager .dir{font-size:.75rem;color:var(--text-tertiary);display:block;margin-bottom:4px}
 .article-pager .t{font-size:.875rem;font-weight:600}
 .article-pager .next{text-align:right}
-@media(max-width:480px){.article-pager{grid-template-columns:1fr}}
+@media(max-width:640px){.post-timeline{padding-left:0}.post-timeline::before{display:none}.timeline-item::before{display:none}}
 
 /* ── 13. About Card ───────────────────────────────────────────── */
 .about-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-lg);display:flex;gap:var(--space-lg);align-items:center;margin-top:var(--space-2xl)}
