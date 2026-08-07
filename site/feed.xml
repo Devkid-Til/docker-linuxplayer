@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="assets/rss.xsl"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Linux内核玩家 · 博客</title>
+  <link>http://localhost:8080/</link>
+  <atom:link href="http://localhost:8080/feed.xml" rel="self" type="application/rss+xml"/>
+  <description>每天 10 分钟，追踪 Linux 内核前沿动态</description>
+  <language>zh-CN</language>
+  <item>
+    <title>HDMI 2.1「游戏开关」落地 EDID 层 · 高通相机接入 IMX577</title>
+    <link>http://localhost:8080/posts/2026-08-07-hdmi-21-gaming.html</link>
+    <pubDate>08-07</pubDate>
+    <description>VRR 抗撕裂 + ALLM 自动低延迟首次由内核 EDID 层统一解析；索尼传感器 IMX577 / 576 / 908 同日推进。</description>
+  </item>
+  <item>
+    <title>虚拟机里的摄像头，终于要成标准设备了</title>
+    <link>http://localhost:8080/posts/2026-08-06-virtio-media-dma-fence.html</link>
+    <pubDate>08-06</pubDate>
+    <description>virtio-media v6 + Rust dma_fence v9 双头条；设备页迁移修复、Starvis2 泛化。</description>
+  </item>
+</channel>
+</rss>

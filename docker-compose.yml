@@ -1,0 +1,20 @@
+# Linux内核玩家 · 博客（本地原型 / 服务器副本共用同一套）
+# 本地主本：git push → 服务器 git pull → docker compose up -d
+# 远程访问：docker compose --profile tunnel up -d（Cloudflare 临时隧道，bridge 网络隔离）
+services:
+  blog:
+    image: nginx:alpine
+    container_name: kernel-blog
+    ports:
+      - "8080:80"          # 本地访问 http://localhost:8080；服务器可改 80:80
+    volumes:
+      - ./site:/usr/share/nginx/html:ro   # 静态文件，只读挂载；git pull 后无需重启容器即生效
+    restart: unless-stopped
+
+  tunnel:
+    image: cloudflare/cloudflared
+    container_name: cf-tunnel
+    profiles: ["tunnel"]          # 仅需要远程访问时启动；默认 docker compose up 不含它
+    depends_on: [blog]
+    command: tunnel --url http://kernel-blog:80   # bridge 网络内经容器名访问 blog，不经宿主网络栈
+    restart: unless-stopped
