@@ -1,0 +1,42 @@
+---
+import PetalRain from './PetalRain.astro';
+// Giscus 评论组件（评论存 GitHub Discussions，零后端）
+// 需要：一个公开仓库 + 启用 Discussions + giscus app 授权
+// 配置通过环境变量注入（.env）：
+//   PUBLIC_GISCUS_REPO      = "Devkid-Til/kernelplayer-comments"
+//   PUBLIC_GISCUS_REPO_ID   = "R_xxx..."（giscus.app 配置页获取）
+//   PUBLIC_GISCUS_CATEGORY  = "Announcements"
+const repo     = import.meta.env.PUBLIC_GISCUS_REPO || 'DEVKID/kernelplayer-comments';
+const repoId   = import.meta.env.PUBLIC_GISCUS_REPO_ID || '';
+const category = import.meta.env.PUBLIC_GISCUS_CATEGORY || 'Announcements';
+---
+<section class="article-comments reveal" id="comments">
+  <h2>💬 评论</h2>
+  <p class="comments-hint">使用 GitHub 账号登录即可留言</p>
+  {repoId ? (
+    <script is:inline src="https://giscus.app/client.js"
+      data-repo={repo}
+      data-repo-id={repoId}
+      data-category={category}
+      data-mapping="pathname"
+      data-strict="0"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="top"
+      data-theme="preferred_color_scheme"
+      data-lang="zh-CN"
+      crossorigin="anonymous"
+      async
+    />
+  ) : (
+    <div class="comments-pending">评论功能待配置（需公开仓库 + repo-id，见 Comment.astro 注释）</div>
+  )}
+  <PetalRain />
+</section>
+
+<style>
+  .article-comments{margin-top:var(--space-2xl);padding-top:var(--space-lg);border-top:1px solid var(--border)}
+  .article-comments h2{font-size:1.25rem;margin-bottom:4px}
+  .comments-hint{font-size:.8125rem;color:var(--text-tertiary);margin-bottom:var(--space-lg)}
+  .comments-pending{padding:var(--space-lg);background:var(--bg-alt);border:1px dashed var(--border);border-radius:var(--radius-md);color:var(--text-secondary);font-size:.875rem;text-align:center}
+</style>
