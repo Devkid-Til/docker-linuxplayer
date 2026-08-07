@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title><xsl:value-of select="title"/> · 订阅</title>
+  <title>Linux内核玩家 · RSS订阅</title>
   <!-- 与主站一致的暗色阻塞脚本（防闪白） -->
   <script><![CDATA[(function(){var t=localStorage.getItem('kernel-blog-theme');if(t==='dark'||(t===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark');})()]]></script>
   <link rel="stylesheet" href="assets/style.css"/>
@@ -46,7 +46,7 @@
   <span class="term-deco">$ watch -n 10 kernel-patches</span>
   <div class="container hero-inner">
     <span class="hero-eyebrow reveal">KERNEL DAILY · 每日内核雷达</span>
-    <h1 class="reveal"><xsl:value-of select="title"/></h1>
+    <h1 class="reveal">Linux<em>内核玩家</em> · RSS订阅</h1>
     <p class="subtitle reveal"><xsl:value-of select="description"/></p>
     <div class="hero-actions reveal">
       <button class="btn btn-primary" id="hero-sub">📡 点此订阅</button>
