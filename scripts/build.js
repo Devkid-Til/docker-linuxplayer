@@ -13,31 +13,45 @@ fs.mkdirSync(SITE, { recursive: true });
 fs.mkdirSync(path.join(SITE, 'posts'), { recursive: true });
 fs.mkdirSync(path.join(SITE, 'tags'), { recursive: true });
 
+/* ── 工具 ── */
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function rfc822(date) { // "2026-08-07" -> "Fri, 07 Aug 2026 00:00:00 GMT"
+  const [y, m, d] = date.split('-').map(Number);
+  return `${WD[new Date(y, m - 1, d).getDay()]}, ${String(d).padStart(2, '0')} ${MONTHS[m - 1]} ${y} 00:00:00 GMT`;
+}
+const displayDate = d => d.slice(5); // MM-DD
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function tagFile(t) { return t.replace(/[^\w一-鿿-]+/g, '-') + '.html'; }
+
 /* ── 标签统计 ── */
 const tagCounts = {};
 DATA.forEach(p => p.tags.forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; }));
 const allTags = Object.keys(tagCounts).sort();
 
-/* ── 辅助：渲染一个文章卡片 ── */
-function renderCard(p) {
-  return `    <div class="timeline-item reveal" data-tags="${p.tags.join(',')}">
-      <a class="timeline-card" href="posts/${p.slug}.html">
-        <div class="timeline-meta"><span class="timeline-date">${p.date}</span><span class="timeline-cat">每日内核日报</span></div>
+/* ── 渲染 ── */
+function renderCard(p, prefix) {
+  return `    <div class="timeline-item reveal" data-tags="${esc(p.tags.join(','))}">
+      <a class="timeline-card" href="${prefix}posts/${p.slug}.html">
+        <div class="timeline-meta"><span class="timeline-date">${displayDate(p.date)}</span><span class="timeline-cat">每日内核日报</span></div>
         <h3>${esc(p.title)}</h3>
         <p class="timeline-excerpt">${esc(p.desc)}</p>
         <div class="timeline-tags">${p.tags.map(t => `<span class="tag">${esc(t)}</span>`).join('')}</div>
       </a>
     </div>`;
 }
-function renderTagBar(active) {
-  const all = `<button class="filter-tag${active === 'all' ? ' active' : ''}" data-tag="all">全部 <span class="count">${DATA.length}</span></button>`;
+function renderTagBar(active, isHome) {
+  const all = isHome
+    ? `<button class="filter-tag${active === 'all' ? ' active' : ''}" data-tag="all">全部 <span class="count">${DATA.length}</span></button>`
+    : `<a class="filter-tag" href="../index.html">全部 <span class="count">${DATA.length}</span></a>`;
   const tags = allTags.map(t => {
-    const cls = active === t ? ' active' : '';
-    return `<button class="filter-tag${cls}" data-tag="${esc(t)}">${esc(t)}<span class="count"> ${tagCounts[t]}</span></button>`;
+    const label = `${esc(t)}<span class="count"> ${tagCounts[t]}</span>`;
+    return isHome
+      ? `<button class="filter-tag${active === t ? ' active' : ''}" data-tag="${esc(t)}">${label}</button>`
+      : `<a class="filter-tag" href="${tagFile(t)}">${label}</a>`;
   }).join('\n      ');
   return all + '\n      ' + tags;
 }
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 /* ── 首页 ── */
 let html = TPL('page.html')
@@ -54,7 +68,6 @@ let html = TPL('page.html')
     <p class="subtitle reveal">一份为内核开发者准备的每日简报</p>
     <div class="hero-actions reveal">
       <a class="btn btn-primary" href="feed.xml">📡 订阅 RSS</a>
-      <a class="btn btn-ghost" href="/">📚 文章归档</a>
     </div>
   </div>
 </header>
@@ -72,9 +85,9 @@ let html = TPL('page.html')
 
 <main class="container">
   <div class="section-header reveal"><h2>每日日报</h2><span class="mono">/ daily</span></div>
-  <div class="tag-filter reveal" id="tag-filter">${renderTagBar('all')}</div>
+  <div class="tag-filter reveal" id="tag-filter">${renderTagBar('all', true)}</div>
   <div class="post-timeline">
-${DATA.map(renderCard).join('\n')}
+${DATA.map(p => renderCard(p, '')).join('\n')}
   </div>
   <div class="about-card reveal">
     <div class="about-avatar">&gt;_<span class="cursor">▋</span></div>
@@ -85,7 +98,10 @@ fs.writeFileSync(path.join(SITE, 'index.html'), html);
 console.log('✓ index.html');
 
 /* ── 标签页 ── */
+const generatedTags = new Set();
 allTags.forEach(tag => {
+  const fname = tagFile(tag);
+  generatedTags.add(fname);
   const filtered = DATA.filter(p => p.tags.includes(tag));
   let h = TPL('page.html')
     .replace(/{{PATH}}/g, '..')
@@ -96,20 +112,27 @@ allTags.forEach(tag => {
 <main class="container" style="padding-top:40px">
   <a class="back-link" href="../index.html" style="font-size:.875rem;color:var(--text-tertiary);display:inline-flex;align-items:center;gap:4px;margin-bottom:24px">← 首页</a>
   <div class="section-header"><h2>标签：${esc(tag)}</h2><span class="mono">/ tags</span></div>
-  <div class="tag-filter" id="tag-filter">${renderTagBar(tag)}</div>
+  <div class="tag-filter" id="tag-filter">${renderTagBar(tag, false)}</div>
   <div class="post-timeline">
-${filtered.map(renderCard).join('\n')}
+${filtered.map(p => renderCard(p, '../')).join('\n')}
   </div>
 </main>`);
-  fs.writeFileSync(path.join(SITE, 'tags', tag.replace(/\s+/g, '-').replace(/\//g, '-') + '.html'), h);
+  fs.writeFileSync(path.join(SITE, 'tags', fname), h);
+});
+/* 清理过期标签页（I7） */
+fs.readdirSync(path.join(SITE, 'tags')).forEach(f => {
+  if (f.endsWith('.html') && !generatedTags.has(f)) {
+    fs.unlinkSync(path.join(SITE, 'tags', f));
+    console.log('  cleaned stale tag:', f);
+  }
 });
 console.log('✓ ' + allTags.length + ' tag pages');
 
 /* ── RSS ── */
-let items = DATA.map(p => `  <item>
+const items = DATA.map(p => `  <item>
     <title>${esc(p.title)}</title>
     <link>${BASE_URL}/posts/${p.slug}.html</link>
-    <pubDate>${p.date}</pubDate>
+    <pubDate>${rfc822(p.date)}</pubDate>
     <description>${esc(p.desc)}</description>
   </item>`).join('\n');
 
