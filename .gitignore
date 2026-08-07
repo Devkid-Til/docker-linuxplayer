@@ -1,5 +1,10 @@
 node_modules/
 /tmp/
 .env
-site/          # Astro 构建产物（部署时 npm run build 生成）
-.astro/        # Astro 类型缓存
+
+# 构建产物（npm run build 生成，deploy.sh 用 rsync 部署，不入库）
+site/
+.astro/
+
+# 公众号 HTML 导出（render-wechat.mjs --out 生成）
+output/

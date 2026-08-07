@@ -1,0 +1,7 @@
+---
+// 正文段落：长文分析，左对齐
+import type { ParagraphBlock } from './types';
+interface Props { block: ParagraphBlock; }
+const { block } = Astro.props;
+---
+<p class="block-paragraph" set:html={block.text} />

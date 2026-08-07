@@ -9,8 +9,9 @@ SERVER="admin@118.31.67.240"
 DEST="~/kernel-blog/site"
 MSG="${1:-update}"
 
-echo "[deploy] rebuilding..."
-node "$DIR/build.js"
+echo "[deploy] rebuilding (Astro)..."
+cd "$ROOT"
+npm run build
 
 echo "[deploy] syncing to $SERVER..."
 rsync -az --delete "$ROOT/site/" "$SERVER:$DEST/"

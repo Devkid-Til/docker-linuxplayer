@@ -1,7 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Comment from '../../components/Comment.astro';
-import { getCollection, render } from 'astro:content';
+import ArticleBody from '../../components/article/ArticleBody.astro';
+import type { Block } from '../../components/article/blocks/types';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const slugOf = p => String(p.id).split('/').pop().replace(/\.md$/, '');
@@ -9,7 +11,6 @@ export async function getStaticPaths() {
   return posts.map(p => ({ params: { slug: slugOf(p) }, props: { post: p } }));
 }
 const { post } = Astro.props;
-const { Content } = await render(post);
 const displayDate = post.data.date.slice(5);
 ---
 <Base title={`${post.data.title} · Linux 内核玩家`} desc={post.data.desc}>
@@ -25,7 +26,7 @@ const displayDate = post.data.date.slice(5);
     </div>
 
     <div class="article-body">
-      <Content />
+      <ArticleBody blocks={post.data.blocks as Block[]} />
     </div>
 
     <footer class="article-footer">
@@ -43,7 +44,5 @@ const displayDate = post.data.date.slice(5);
     </footer>
 
     <Comment />
-  </main>
-</Base>
   </main>
 </Base>

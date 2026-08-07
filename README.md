@@ -54,23 +54,36 @@ cd kernel-blog && docker compose up -d
 - 流水线自动化：cron 生成文章后自动 commit/push（可选）
 - RSS / 评论 / 搜索（后续按需加）
 
-## 构建系统（Pipeline + Template）
+## 内容模型（Astro 版）
+
+文章 = markdown frontmatter 里的 `blocks` 数组（结构化板块，博客/公众号双端同源）。
 
 ```
-data/posts.json          ← 文章元数据（每日 cron 追加一行）
-scripts/build.js         ← 读 json → 渲染模板 → 产出 site/
-scripts/templates/       ← 页面模板
-site/                    ← 构建产物（Nginx 伺服）
+src/content/posts/YYYY-MM-DD-slug.md   ← 内容源：frontmatter 存 title/date/desc/tags/blocks
+src/components/article/ArticleBody.astro    ← 遍历 blocks → 分发到板块组件
+src/components/article/blocks/        ← 11 种板块组件（博客端，CSS 类 + token）
+src/styles/global.css                 ← .block-* 样式（暗色自动适配）
+scripts/render-wechat.mjs             ← 同一 blocks → 公众号内联 HTML
+site/                                 ← Astro 构建产物（Nginx 伺服）
 ```
 
-### 日常流程（统一走脚本）
+**板块类型**：`hook` 导语 / `divider` 标题（primary/section）/ `toc` 导读列表 / `headline` 头条卡 / `highlight` 亮点卡 / `more` 常规动态 / `paragraph` / `quote` / `code` / `image` / `closing` 结尾。每天板块组合、数量自由。
+
+**内联强调**：文本里用语义标签 `<mark>`（主色）/ `<strong>`（主色加粗）/ `<small>`（灰）/ `<a href>`（外链）/ `<code>`（行内代码）——博客由 CSS 着色，公众号脚本转内联 span。
+
+### 日常流程
 
 ```bash
-# 加新文章（自动：复制HTML + 更新posts.json + 构建 + 部署 + git push）
-bash scripts/add-post.sh --date "2026-08-08" --title "标题" --slug "slug"   --desc "摘要" --tags "标签A,标签B" --html /path/to/article.html
+# 1. 写/生成文章 → 存为 src/content/posts/YYYY-MM-DD-slug.md（frontmatter 含 blocks）
+# 2. 博客构建（静态站点，Nginx 伺服）
+npm run build
 
-# 只改样式/模板后重新发布
-bash scripts/deploy.sh "commit message"
-# （deploy 自动：build → rsync 到服务器 → git commit+push；commit 会触发 post-commit hook 自动再部署一次，幂等）
+# 3. 公众号粘贴用 HTML（复制即粘贴进微信）
+node scripts/render-wechat.mjs 2026-08-08          # 输出到 stdout
+node scripts/render-wechat.mjs 2026-08-08 --out    # 写入 output/公众号-2026-08-08.html
+
+# 4. 发布（git commit 触发 post-commit hook 自动部署到服务器）
+git add -A && git commit -m "..." && git push
 ```
-> 构建产物：首页 / 标签页 / RSS 全部自动更新；git commit 后自动部署到服务器。
+
+> ⚠️ 内容 YAML 规范：所有字符串值必须加双引号（值常含 `:`、`[`、`#` 等 YAML 敏感字符）。生成器遵守此规则，否则 js-yaml 解析报错。

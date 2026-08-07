@@ -1,0 +1,7 @@
+---
+// 引用块：独立内容引用，主色左边框 + 浅底
+import type { QuoteBlock } from './types';
+interface Props { block: QuoteBlock; }
+const { block } = Astro.props;
+---
+<blockquote class="block-quote" set:html={block.text} />
