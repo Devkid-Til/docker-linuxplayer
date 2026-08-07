@@ -18,7 +18,7 @@
     ::selection{background:var(--brand);color:#fff}
 
     /* 导航（与主站一致） */
-    .nav{position:sticky;top:0;z-index:900;height:var(--nav-h);background:rgba(255,255,255,.85);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border-light)}
+    .nav{position:sticky;top:0;z-index:900;height:var(--nav-h);background:var(--bg);border-bottom:1px solid var(--border-light)}
     .nav-inner{height:var(--nav-h);display:flex;align-items:center;justify-content:space-between;max-width:920px;margin:0 auto;padding:0 24px}
     .brand{font-weight:800;color:var(--text)}
     .brand em{font-style:normal;color:var(--brand)}
