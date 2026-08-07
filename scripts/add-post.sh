@@ -35,3 +35,4 @@ echo "✓ posts.json 已更新"
 # 3) 重建站点
 node "$DIR/build.js"
 echo "✓ 博客构建完成"
+bash "$DIR/deploy.sh"
