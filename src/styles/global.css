@@ -211,7 +211,7 @@ html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#09090D 40%
 .block-toc{padding:var(--space-sm) var(--space-lg)}
 .toc-item{padding:var(--space-sm) 0;border-bottom:1px dashed var(--border-light)}
 .toc-item:last-child{border-bottom:none}
-.toc-chip{display:inline-block;font-size:.75rem;font-weight:600;padding:3px 12px;border-radius:16px;background:var(--brand-bg);color:var(--brand);border:1px solid var(--brand-border);white-space:nowrap;margin-bottom:4px}
+.toc-chip{display:inline-block;font-size:.875rem;font-weight:600;padding:3px 12px;border-radius:16px;background:var(--brand-bg);color:var(--brand);border:1px solid var(--brand-border);white-space:nowrap;margin-bottom:4px}
 .toc-text{font-size:.875rem;line-height:1.7;color:var(--text)}
 
 /* 头条/亮点卡 */
@@ -226,7 +226,7 @@ html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#09090D 40%
 /* 徽章要点 */
 .b-point{padding:6px 0;border-bottom:1px dashed var(--border-light)}
 .b-point:last-child{border-bottom:none}
-.b-label{display:inline-block;font-size:.75rem;font-weight:600;line-height:1.5;padding:2px 10px;border-radius:6px;background:var(--brand-bg);color:var(--brand);border:1px solid var(--brand-border);margin-bottom:4px}
+.b-label{display:inline-block;font-size:.875rem;font-weight:600;line-height:1.5;padding:2px 10px;border-radius:6px;background:var(--brand-bg);color:var(--brand);border:1px solid var(--brand-border);margin-bottom:4px}
 .b-text{font-size:.875rem;line-height:1.7;color:var(--text)}
 .b-verdict{background:var(--brand-bg);border:1px solid var(--brand-border);border-radius:var(--radius-md);padding:var(--space-sm) var(--space-md);margin-top:var(--space-sm);border-bottom:none}
 .b-verdict .b-label{background:var(--brand);color:#fff;border-color:var(--brand)}
