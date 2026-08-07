@@ -193,3 +193,35 @@
     }, 5000);
     termDeco.style.transition = 'opacity .3s';
   }
+
+  /* ── 大标题波浪拆字 ── */
+  (function () {
+    var h1 = document.querySelector('.hero h1');
+    if (!h1) return;
+    var idx = 0;
+    var nodes = Array.prototype.slice.call(h1.childNodes);
+    h1.textContent = '';
+    nodes.forEach(function (node) {
+      if (node.nodeType === 3) {
+        (node.textContent.split('')).forEach(function (c) {
+          if (c === ' ') { h1.appendChild(document.createTextNode(' ')); return; }
+          var s = document.createElement('span');
+          s.className = 'wave-char';
+          s.style.animationDelay = (idx * 0.055) + 's';
+          s.textContent = c;
+          h1.appendChild(s); idx++;
+        });
+      } else if (node.nodeType === 1) {
+        var keep = node.cloneNode(false);
+        (node.textContent.split('')).forEach(function (c) {
+          if (c === ' ') { keep.appendChild(document.createTextNode(' ')); return; }
+          var s = document.createElement('span');
+          s.className = 'wave-char';
+          s.style.animationDelay = (idx * 0.055) + 's';
+          s.textContent = c;
+          keep.appendChild(s); idx++;
+        });
+        h1.appendChild(keep);
+      }
+    });
+  })();
