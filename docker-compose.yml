@@ -6,7 +6,7 @@ services:
     image: nginx:alpine
     container_name: kernel-blog
     ports:
-      - "8080:80"          # 本地访问 http://localhost:8080；服务器可改 80:80
+      - "80:80"             # 生产端口；本地开发改 8080:80
     volumes:
       - ./site:/usr/share/nginx/html:ro   # 静态文件，只读挂载；git pull 后无需重启容器即生效
     restart: unless-stopped
