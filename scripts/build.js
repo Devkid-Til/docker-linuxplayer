@@ -54,7 +54,7 @@ let html = TPL('page.html')
     <p class="subtitle reveal">补丁、RFC、架构演进。把上百条邮件列表动态浓缩成你能读完的日报——从内存管理到 GPU 驱动，从 Rust 内核化到硬件虚拟化。</p>
     <div class="hero-actions reveal">
       <a class="btn btn-primary" href="feed.xml">📡 订阅 RSS</a>
-      <a class="btn btn-ghost" href="#">🐙 GitHub 归档</a>
+      <a class="btn btn-ghost" href="https://github.com/Devkid-Til/docker-linuxplayer">🐙 GitHub 归档</a>
     </div>
   </div>
 </header>
