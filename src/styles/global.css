@@ -181,7 +181,7 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .article-hero .back-link{position:absolute;top:var(--space-md);left:var(--space-md);z-index:1;font-size:.8125rem;color:var(--text-tertiary);display:inline-flex;align-items:center;gap:4px}
 .article-hero .back-link:hover{color:var(--brand)}
 .article-hero .hero-eyebrow{position:relative;z-index:1}
-.article-hero h1{position:relative;z-index:1;font-size:1.75rem;line-height:1.35;font-weight:800;color:var(--text);max-width:30ch;margin:0 auto var(--space-sm)}
+.article-hero h1{position:relative;z-index:1;font-size:1.5rem;line-height:1.4;font-weight:800;color:var(--text);max-width:30ch;margin:0 auto var(--space-sm)}
 .article-hero .subtitle{position:relative;z-index:1;color:var(--text-secondary);font-size:1rem;line-height:1.7;max-width:520px;margin:0 auto}
 html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#16161F 55%,#13131B 100%)}
 
@@ -203,20 +203,20 @@ html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#16161F 55%
 .article-section .mono{font-family:var(--font-mono);font-size:.8125rem;color:var(--text-tertiary);white-space:nowrap}
 
 /* 导语金句 */
-.block-hook{background:var(--brand-bg);border:1px solid var(--brand-border);border-left:3px solid var(--brand);color:var(--text);text-align:center;font-size:.9375rem;line-height:1.8}
+.block-hook{background:var(--brand-bg);border:1px solid var(--brand-border);border-left:3px solid var(--brand);color:var(--text);text-align:center;font-size:.875rem;line-height:1.8}
 
 /* 导读/机制/速查：chips 标签卡 */
 .block-toc{padding:var(--space-sm) var(--space-lg)}
 .toc-item{display:flex;align-items:flex-start;gap:var(--space-sm);padding:var(--space-md) 0;border-bottom:1px dashed var(--border-light)}
 .toc-item:last-child{border-bottom:none}
 .toc-chip{flex-shrink:0;font-size:.75rem;font-weight:600;padding:3px 12px;border-radius:16px;background:var(--brand-bg);color:var(--brand);border:1px solid var(--brand-border);white-space:nowrap}
-.toc-text{font-size:.9375rem;line-height:1.7;color:var(--text)}
+.toc-text{font-size:.875rem;line-height:1.7;color:var(--text)}
 
 /* 头条/亮点卡 */
 .block-headline,.block-highlight{padding:var(--space-xl)}
 .block-headline{border-top:3px solid var(--brand)}
 .headline-head{margin-bottom:var(--space-md)}
-.headline-head h3{font-size:1.125rem;font-weight:700;line-height:1.4;color:var(--text);margin-bottom:4px}
+.headline-head h3{font-size:1.0625rem;font-weight:700;line-height:1.4;color:var(--text);margin-bottom:4px}
 .headline-head .meta{font-size:.8125rem;color:var(--text-tertiary);line-height:1.6}
 .hi-star{color:var(--brand)}
 .headline-points{display:flex;flex-direction:column}
@@ -225,7 +225,7 @@ html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#16161F 55%
 .b-point{display:flex;align-items:flex-start;gap:var(--space-sm);padding:var(--space-sm) 0;border-bottom:1px dashed var(--border-light)}
 .b-point:last-child{border-bottom:none}
 .b-label{flex-shrink:0;font-size:.75rem;font-weight:600;line-height:1.5;padding:2px 10px;border-radius:6px;background:var(--brand-bg);color:var(--brand);border:1px solid var(--brand-border)}
-.b-text{font-size:.9375rem;line-height:1.7;color:var(--text)}
+.b-text{font-size:.875rem;line-height:1.7;color:var(--text)}
 .b-verdict{background:var(--brand-bg);border:1px solid var(--brand-border);border-radius:var(--radius-md);padding:var(--space-sm) var(--space-md);margin-top:var(--space-sm);border-bottom:none}
 .b-verdict .b-label{background:var(--brand);color:#fff;border-color:var(--brand)}
 .b-relevance .b-label{background:transparent;color:var(--text-tertiary);border-color:var(--border)}
@@ -244,7 +244,7 @@ html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#16161F 55%
 .m-time{color:var(--text-tertiary)}
 
 /* 正文段 / 引用 / 代码 / 图片 */
-.block-paragraph{font-size:1rem;line-height:1.85;color:var(--text)}
+.block-paragraph{font-size:.9375rem;line-height:1.85;color:var(--text)}
 .block-quote{background:var(--brand-bg);border:1px solid var(--brand-border);border-left:3px solid var(--brand);color:var(--text);font-size:.875rem;line-height:1.7}
 .block-code{background:var(--code-bg);border-color:var(--border);font-size:.8125rem;line-height:1.7;color:var(--code-text);overflow-x:auto;padding:var(--space-md) var(--space-lg)}
 .block-code:hover{border-color:var(--border)}
@@ -276,7 +276,7 @@ html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#16161F 55%
 /* 移动端：布局微妙变化 */
 @media(max-width:640px){
   .article-hero{padding:var(--space-xl) var(--space-md) var(--space-lg)}
-  .article-hero h1{font-size:1.375rem}
+  .article-hero h1{font-size:1.25rem}
   .article-hero .subtitle{font-size:.875rem}
   .article-hero .back-link{top:var(--space-sm);left:var(--space-sm)}
   .article-section .mono{display:none}
