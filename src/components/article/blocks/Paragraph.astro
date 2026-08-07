@@ -1,7 +1,7 @@
 ---
-// 正文段落：长文分析，左对齐
+// 正文段落：卡片化长文分析
 import type { ParagraphBlock } from './types';
 interface Props { block: ParagraphBlock; }
 const { block } = Astro.props;
 ---
-<p class="block-paragraph" set:html={block.text} />
+<p class="block-card block-paragraph" set:html={block.text} />

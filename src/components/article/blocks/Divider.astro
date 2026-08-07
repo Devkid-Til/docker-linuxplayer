@@ -1,8 +1,14 @@
 ---
-// 板块标题：primary=一级（主色双线） / section=栏目（深灰双线）
+// 区块标题：主页 section-header 语言（h2 + mono 后缀）
 import type { DividerBlock } from './types';
 interface Props { block: DividerBlock; }
 const { block } = Astro.props;
-const kind = block.kind ?? 'primary';
+// mono 后缀：优先内容指定，其次按 emoji 推断（今日导读→toc / 头条→headline / 栏目→column / 机制→radar / 速查→glossary）
+const MONO: Record<string, string> = { '🎬': 'toc', '💡': 'headline', '📰': 'column', '📌': 'radar', '📖': 'glossary' };
+const emoji = block.label.match(/^\S/)?.[0] ?? '';
+const mono = block.mono ?? MONO[emoji] ?? (block.kind === 'section' ? 'column' : 'section');
 ---
-<p class={`block-divider block-divider--${kind}`}>{block.label}</p>
+<div class="article-section reveal">
+  <h2>{block.label}</h2>
+  <span class="mono">/ {mono}</span>
+</div>

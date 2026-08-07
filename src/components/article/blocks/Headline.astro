@@ -1,19 +1,29 @@
 ---
-// 头条卡：顶部 2px 主色横线 + 居中标题/出处 + 标签要点 + 一句话点评 + 原文
+// 头条卡：标题区 + 六步徽章要点 + 点评 + 原文
 import type { HeadlineBlock } from './types';
 interface Props { block: HeadlineBlock; }
 const { block } = Astro.props;
 ---
-<section class="block-headline">
-  <p class="h-title">{block.title}</p>
-  <p class="h-meta">{block.meta}</p>
-  {block.points.map(p => (
-    <p class="b-point"><span class="b-bullet">•</span> <span class="b-label">{p.label}</span>：<span set:html={p.text} /></p>
-  ))}
+<section class="block-card block-headline">
+  <div class="headline-head">
+    <h3>{block.title}</h3>
+    <p class="meta">{block.meta}</p>
+  </div>
+  <div class="headline-points">
+    {block.points.map(p => (
+      <div class="b-point">
+        <span class="b-label">{p.label}</span>
+        <span class="b-text" set:html={p.text} />
+      </div>
+    ))}
+  </div>
   {block.verdict && (
-    <p class="h-verdict"><span class="b-label">一句话点评</span>：<span set:html={block.verdict} /></p>
+    <div class="b-point b-verdict">
+      <span class="b-label">一句话点评</span>
+      <span class="b-text" set:html={block.verdict} />
+    </div>
   )}
   {block.link && (
-    <p class="h-link">🔗 <a href={block.link}>原文</a></p>
+    <p class="b-link">🔗 <a href={block.link}>原文</a></p>
   )}
 </section>

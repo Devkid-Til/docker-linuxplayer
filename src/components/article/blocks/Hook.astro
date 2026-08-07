@@ -1,7 +1,7 @@
 ---
-// 导语金句：开篇钩子，居中，主色左边框
+// 导语金句：卡片化，主色浅底 + 左边框
 import type { HookBlock } from './types';
 interface Props { block: HookBlock; }
 const { block } = Astro.props;
 ---
-<p class="block-hook" set:html={block.text} />
+<p class="block-card block-hook" set:html={block.text} />
