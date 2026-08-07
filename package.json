@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "add-post": "bash scripts/add-post.sh"
+    "wechat": "node scripts/render-wechat.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
