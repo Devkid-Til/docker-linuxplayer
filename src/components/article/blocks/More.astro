@@ -1,14 +1,14 @@
 ---
-// 常规动态：○ 灰色条目（可带时间/链接）
+// 常规动态：卡片内 ○ 条目列表
 import type { MoreBlock } from './types';
 interface Props { block: MoreBlock; }
 const { block } = Astro.props;
 ---
-<section class="block-more">
+<section class="block-card block-more">
   <p class="m-title">{block.title ?? '更多动态'}</p>
   {block.items.map(item => (
     <p class="m-item">
-      <span class="b-bullet">○</span>
+      <span class="m-bullet">○</span>
       {item.link
         ? <a href={item.link} set:html={item.text} />
         : <span set:html={item.text} />}

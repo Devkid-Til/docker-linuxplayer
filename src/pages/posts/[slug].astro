@@ -33,49 +33,48 @@ const displayDate = post.data.date.slice(5);
 ---
 <Base title={`${post.data.title} · Linux 内核玩家`} desc={post.data.desc}>
   <main class="container">
-    <div class="article-header">
+    <!-- ① 文章头卡（hero 式，延续主页 hero 语言） -->
+    <header class="article-hero reveal">
       <a class="back-link" href="/">← 首页</a>
-      <div class="article-meta">
-        <span class="article-date">{displayDate}</span>
-        <span class="article-cat">每日内核日报</span>
-      </div>
-      <h1>{post.data.title}</h1>
-      <div class="article-divider"></div>
-    </div>
+      <span class="hero-eyebrow reveal">KERNEL DAILY · {displayDate}</span>
+      <h1 class="reveal">{post.data.title}</h1>
+      <p class="subtitle reveal">{post.data.desc}</p>
+    </header>
 
+    <!-- ②-⑨ 卡片式正文 -->
     <div class="article-body">
       <ArticleBody blocks={post.data.blocks as Block[]} />
-    </div>
 
-    <footer class="article-footer">
-      <div class="article-tools">
+      <!-- 标签 + 分享（小卡） -->
+      <div class="article-tools reveal">
         <div class="article-tags">
           {post.data.tags.map(t => <span class="tag">{t}</span>)}
         </div>
-        <div class="article-share">
-          <button class="share-btn share-copy">🔗 复制链接</button>
-        </div>
+        <button class="share-btn share-copy">🔗 复制链接</button>
       </div>
-      <nav class="article-pager">
-        {prev
-          ? (
-            <a class="pager-prev" href={`/posts/${prev.slug}/`}>
-              <span class="dir">← 上一篇 · {prev.date.slice(5)}</span>
-              <span class="t">{prev.title}</span>
-            </a>
-          )
-          : <span class="pager-empty" />}
-        {next
-          ? (
-            <a class="pager-next" href={`/posts/${next.slug}/`}>
-              <span class="dir">{next.date.slice(5)} · 下一篇 →</span>
-              <span class="t">{next.title}</span>
-            </a>
-          )
-          : <span class="pager-empty" />}
-      </nav>
-    </footer>
+    </div>
 
+    <!-- ⑩ 翻页卡区 -->
+    <nav class="article-pager reveal">
+      {prev
+        ? (
+          <a class="pager-prev" href={`/posts/${prev.slug}/`}>
+            <span class="dir">← 上一篇 · {prev.date.slice(5)}</span>
+            <span class="t">{prev.title}</span>
+          </a>
+        )
+        : <span class="pager-empty" aria-hidden="true" />}
+      {next
+        ? (
+          <a class="pager-next" href={`/posts/${next.slug}/`}>
+            <span class="dir">{next.date.slice(5)} · 下一篇 →</span>
+            <span class="t">{next.title}</span>
+          </a>
+        )
+        : <span class="pager-empty" aria-hidden="true" />}
+    </nav>
+
+    <!-- ⑪ 评论区 -->
     <Comment />
   </main>
 </Base>

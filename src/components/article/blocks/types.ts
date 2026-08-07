@@ -13,7 +13,7 @@ export interface TocItem { label: string; text: string; }
 export interface MoreItem { text: string; time?: string; link?: string; }
 
 export interface HookBlock { type: 'hook'; text: string; }
-export interface DividerBlock { type: 'divider'; label: string; kind?: 'primary' | 'section'; }
+export interface DividerBlock { type: 'divider'; label: string; kind?: 'primary' | 'section'; mono?: string; }
 export interface TocBlock { type: 'toc'; items: TocItem[]; }
 export interface HeadlineBlock {
   type: 'headline';

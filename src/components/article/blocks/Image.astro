@@ -1,10 +1,10 @@
 ---
-// 图片：有 src 渲染 <img>，否则显示占位文案
+// 图片：独立卡片，无 src 显示占位
 import type { ImageBlock } from './types';
 interface Props { block: ImageBlock; }
 const { block } = Astro.props;
 ---
-<figure class="block-image">
+<figure class="block-card block-image">
   {block.src
     ? <img src={block.src} alt={block.alt} loading="lazy" />
     : <p class="img-ph">[图：{block.alt}]</p>}

@@ -1,10 +1,10 @@
 ---
-// 结尾块：收尾金句 + 数据来源，居中
+// 结尾 CTA 卡：金句 + 数据来源
 import type { ClosingBlock } from './types';
 interface Props { block: ClosingBlock; }
 const { block } = Astro.props;
 ---
-<div class="block-closing">
+<div class="block-card block-closing">
   <p class="c-tagline" set:html={block.tagline} />
   <p class="c-source" set:html={block.source} />
 </div>
