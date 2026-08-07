@@ -51,7 +51,7 @@ let html = TPL('page.html')
   <div class="container hero-inner">
     <span class="hero-eyebrow reveal">KERNEL DAILY · 每日内核雷达</span>
     <h1 class="reveal">每天 <span>10 分钟</span>，追踪 Linux 内核前沿</h1>
-    <p class="subtitle reveal">补丁、RFC、架构演进。把上百条邮件列表动态浓缩成你能读完的日报——从内存管理到 GPU 驱动，从 Rust 内核化到硬件虚拟化。</p>
+    <p class="subtitle reveal">补丁、RFC、架构演进——每日内核前沿，10 分钟读完。</p>
     <div class="hero-actions reveal">
       <a class="btn btn-primary" href="feed.xml">📡 订阅 RSS</a>
       <a class="btn btn-ghost" href="/">📚 文章归档</a>
