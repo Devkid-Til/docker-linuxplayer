@@ -77,7 +77,14 @@ function renderBlock(b) {
       const link = b.link
         ? `<p style="font-size:13px;color:#8C8C8C;margin:0">🔗 <a href="${esc(b.link)}" style="color:#3458E0;text-decoration:underline">原文</a></p>`
         : '';
-      return `<section style="background:#FFFFFF;border:1px solid #E5E6EB;border-radius:8px;padding:14px 16px;margin:0 0 18px">\n  <p style="font-size:15px;font-weight:bold;color:#333333;margin:0 0 2px"><span style="color:#3458E0">★</span> ${esc(b.title)}</p>\n  ${meta}  ${points}\n  ${relevance}\n  ${link}\n</section>`;
+      const lines = [
+        `<p style="font-size:15px;font-weight:bold;color:#333333;margin:0 0 2px"><span style="color:#3458E0">★</span> ${esc(b.title)}</p>`,
+        ...(b.meta ? [meta] : []),
+        points,
+        ...(b.relevance ? [relevance] : []),
+        ...(b.link ? [link] : []),
+      ];
+      return `<section style="background:#FFFFFF;border:1px solid #E5E6EB;border-radius:8px;padding:14px 16px;margin:0 0 18px">\n  ${lines.join('\n  ')}\n</section>`;
     }
 
     case 'more': {
