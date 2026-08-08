@@ -114,7 +114,7 @@ function renderBlock(b) {
         : `<p style="text-align:center;color:#8C8C8C;font-size:13px;margin:12px 0">[图：${esc(b.alt)}]</p>`;
 
     case 'closing':
-      return `<p style="text-align:center;border-top:1px solid #E5E6EB;padding-top:16px;margin-top:28px;font-size:14px;line-height:1.8;color:#333333">\n  <span style="color:#7C3AED;font-weight:bold">${inline(b.tagline)}</span><br>\n  <span style="color:#8C8C8C;font-size:13px">${inline(b.source)}</span>\n</p>`;
+      return `<section style="background:#FFFFFF;border:1px solid #E5E6EB;border-top:2px solid #7C3AED;border-radius:8px;padding:16px 18px;margin:20px 0 0">\n  <p style="text-align:center;font-size:15px;line-height:1.8;color:#7C3AED;font-weight:600;margin:0 0 6px">${inline(b.tagline)}</p>\n  <p style="text-align:center;font-size:13px;color:#8C8C8C;line-height:1.7;margin:0">${inline(b.source)}</p>\n</section>`;
 
     default:
       return `<p style="color:#DC2626;font-size:13px">⚠ 未知板块类型：${esc(b.type)}</p>`;
