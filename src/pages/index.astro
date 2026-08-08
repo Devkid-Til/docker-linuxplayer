@@ -20,6 +20,19 @@ posts.forEach(p => p.data.tags.forEach(t => { tagCounts[t] = (tagCounts[t] || 0)
     </div>
   </header>
 
+  <!-- 今日日报：自动指向最新一篇，每天生成后自动更新 -->
+  {posts.length > 0 && (
+    <section class="latest-report">
+      <div class="container latest-inner">
+        <span class="hero-eyebrow reveal">KERNEL DAILY · {posts[0].data.date.slice(5)}</span>
+        <h2 class="reveal">{posts[0].data.title}</h2>
+        <p class="latest-desc reveal">{posts[0].data.desc}</p>
+        <div class="latest-tags reveal">{posts[0].data.tags.map(t => <span class="tag">{t}</span>)}</div>
+        <div class="latest-actions reveal"><a class="btn btn-primary" href={`/posts/${slugOf(posts[0])}/`}>阅读今日日报 →</a></div>
+      </div>
+    </section>
+  )}
+
   <section class="features">
     <div class="container">
       <div class="section-header reveal"><h2>这份日报覆盖什么</h2><span class="mono">/ coverage</span></div>
