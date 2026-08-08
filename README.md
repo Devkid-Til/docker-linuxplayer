@@ -9,14 +9,14 @@ Linux 内核日报 + 公众号内容沉淀站。**本地为主本，服务器为
 kernel-blog/ 仓库                      git clone → kernel-blog/
  ├─ src/content/posts/*.md             ├─ npm run build（或 deploy.sh rsync）
  │    内容 = frontmatter blocks 结构化   ├─ site/ 构建产物
- ├─ src/components/article/（板块组件）  └─ nginx 伺服 site/
- ├─ scripts/render-wechat.mjs（公众号）
+ ├─ src/components/article/（板块组件）  └─ docker nginx 容器伺服 site/
+ ├─ scripts/render-wechat.mjs（公众号）     （docker compose up -d）
  ├─ scripts/upload-oss.mjs（封面 OSS）
  ├─ skills/（Claude skills：排版/封面/日报）
  └─ site/（Astro 构建产物）
 ```
 
-**本地为主本**：内容生产、构建、OSS 上传、公众号渲染全在本地；**服务器副本**：Nginx 伺服构建产物，git/rsync 更新即生效。
+**本地为主本**：内容生产、构建、OSS 上传、公众号渲染全在本地（**本地不跑 docker**）；**服务器副本**：docker 跑 nginx 容器伺服构建产物，rsync/git 更新 `site/` 即生效（静态文件只读挂载，无需重启容器）。
 
 ## 本地开发
 
@@ -57,13 +57,14 @@ bash scripts/deploy.sh "commit message"
 ## 服务器被攻击的恢复
 
 ```bash
-# 服务器上，从零重建副本
+# 服务器上，从零重建副本（服务器需要 docker + node）
 cd ~ && rm -rf kernel-blog
 git clone <repo-url> kernel-blog && cd kernel-blog
 bash setup.sh          # 配 .env + 装依赖 + 装 skills
-npm run build          # 产出 site/（nginx 已指向 ~/kernel-blog/site/）
+npm run build          # 产出 site/
+docker compose up -d   # 启动 nginx 容器伺服 site/（若被攻击已停则重建容器）
 ```
-本地主本在，服务器随时可重建；攻击只影响副本，不影响数据。
+本地主本在，服务器随时可重建；攻击只影响副本，不影响数据。服务器角色：docker 跑 nginx 容器（`docker-compose.yml`：挂载 `./site` 只读伺服）。
 
 ## 待接入
 
