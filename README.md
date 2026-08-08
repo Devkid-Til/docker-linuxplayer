@@ -90,29 +90,21 @@ git add -A && git commit -m "..." && git push
 
 ## 新机器接入（换环境无缝衔接）
 
-从零在新机器恢复整套环境：
+从零在新机器恢复整套环境，**一条命令**：
 
 ```bash
-# 1. 代码
 git clone git@github.com:Devkid-Til/docker-linuxplayer.git kernel-blog
 cd kernel-blog && git checkout feature/astro
-npm install
-
-# 2. 环境变量（.env 不入库，从模板复制后填真实值）
-cp .env.example .env
-#   填入：Giscus 评论配置 + OSS AccessKey/Secret/Bucket/Region
-
-# 3. Skills（排版/封面/日报生产，就在本仓库 skills/ 下）
-mkdir -p ~/.claude/skills && cp -r skills/* ~/.claude/skills/
-#   wechat-article（排版/封面）+ kernel-patch-radar（日报生产）
-
-# 4. 部署 hook（自动发布用，可选）
-bash scripts/install-hook.sh    # 安装 post-commit hook
-
-# 5. 截图/视觉验证工具（可选）
-#   npm i playwright && npx playwright install chromium && sudo apt install fonts-noto-cjk fonts-noto-color-emoji
+bash setup.sh      # 交互式配置 .env → 装依赖 → 装 skills → 配 hook → 验证
 ```
 
-**换环境必带三样**：① git 仓库（代码全量）② skills 仓库（AI 排版能力）③ `.env`（凭据，用 `.env.example` 模板重建）。
+`setup.sh` 自动完成：
+1. 交互式询问 Giscus + OSS 凭据（有默认值，回车即用），写入 `.env`
+2. `npm install` 装依赖
+3. 拷贝 `skills/*` 到 `~/.claude/skills/`（AI 排版/封面/日报能力）
+4. 可选安装部署 hook（commit 自动发布）
+5. `npm run build` 验证
+
+**换环境必带两样**：① GitHub 仓库（代码 + skills 全量）② `.env` 真实凭据值（setup.sh 交互式录入）。
 
 **验证**：`npm run build` 通过 + `npm run oss` 能上传 + `npm run wechat` 能出公众号 HTML，即环境就绪。
