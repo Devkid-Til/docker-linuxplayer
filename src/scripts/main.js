@@ -90,17 +90,20 @@
         ctx.fill();
       }
 
-      /* ── 尾迹发射 ── */
+      /* ── 尾迹发射（更密更连续，鼠标/触摸都跟随）── */
       emit++;
-      if (emit % 3 === 0 && trail.length < MAX_TRAIL && mx > 0 && (pointerKind === 'mouse' || pointerDown)) {
-        trail.push({
-          x: mx, y: my,
-          vx: (Math.random() - .5) * 1.4,
-          vy: (Math.random() - .5) * 1.4 - .4,
-          r: Math.random() * 2 + .6,
-          life: 1,
-          decay: Math.random() * .02 + .012
-        });
+      if (emit % 2 === 0 && trail.length < MAX_TRAIL && mx > 0 && (pointerKind === 'mouse' || pointerDown)) {
+        for (var k = 0; k < 2 && trail.length < MAX_TRAIL; k++) {
+          trail.push({
+            x: mx + (Math.random() - .5) * 3,
+            y: my + (Math.random() - .5) * 3,
+            vx: (Math.random() - .5) * 1.2,
+            vy: (Math.random() - .5) * 1.2 - .25,
+            r: Math.random() * 1.8 + .9,
+            life: 1,
+            decay: Math.random() * .018 + .01
+          });
+        }
       }
 
       /* ── 尾迹更新 ── */
@@ -112,7 +115,7 @@
         if (t.life <= 0) { trail.splice(j, 1); continue; }
         ctx.beginPath();
         ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(124,58,237,' + (t.life * .7) + ')';
+        ctx.fillStyle = 'rgba(124,58,237,' + (t.life * .8) + ')';
         ctx.fill();
       }
     }
