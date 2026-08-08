@@ -142,7 +142,12 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .heat-item{display:grid;grid-template-columns:3.5rem 1fr 2.75rem;align-items:center;gap:var(--space-md);padding:5px 0}
 .heat-name{font-family:var(--font-mono);font-size:.8125rem;font-weight:600;color:var(--text)}
 .heat-bar{height:8px;border-radius:4px;background:var(--bg-alt);overflow:hidden}
-.heat-fill{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--brand-bg),var(--brand));width:var(--w,0%)}
+.heat-fill{position:relative;display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--brand-bg),var(--brand));width:var(--w,0%);overflow:hidden}
+/* 扫光：一条半透明高光带从 fill 左→右循环扫过（进度条"往前走"的动感）。只用 transform（GPU 加速）；
+   fill 较宽时效果明显，窄条光带相应更短——宽窄条都保持从左到右方向 */
+.heat-fill::after{content:'';position:absolute;top:0;bottom:0;left:0;width:38%;background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.42) 50%,transparent 100%);transform:translateX(-100%);animation:heat-shine 2.6s linear infinite}
+@keyframes heat-shine{0%{transform:translateX(-100%)}100%{transform:translateX(320%)}}
+@media(prefers-reduced-motion:reduce){.heat-fill::after{animation:none;display:none}}
 .heat-count{font-family:var(--font-mono);font-size:.75rem;color:var(--text-secondary);text-align:right}
 /* 板块活跃度 · 数据槽位（源未就绪：13 板块榜单轮廓——板块名可见 + 空条 + "—"，
    不编造消息数；数据就绪后替换为真实热度条） */
