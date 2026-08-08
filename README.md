@@ -96,11 +96,15 @@ site/                                 ← Astro 构建产物（Nginx 伺服）
 # 2. 博客构建（静态站点，Nginx 伺服）
 npm run build
 
-# 3. 公众号粘贴用 HTML（复制即粘贴进微信）
-node scripts/render-wechat.mjs 2026-08-08          # 输出到 stdout
-node scripts/render-wechat.mjs 2026-08-08 --out    # 写入 output/公众号-2026-08-08.html
+# 3. 公众号封面（紫色默认，供公众号首图/审阅）
+bash <skill>/generate-cover.sh --date "08-08" --topic "头条钩子" --out cover.png
+npm run oss cover.png kernel-blog/YYYY-MM-DD/cover.png   # 传 OSS（可选）
 
-# 4. 发布（git commit 触发 post-commit hook 自动部署到服务器）
+# 4. 公众号粘贴用 HTML + 发飞书审阅（标题+封面自动发送）
+node scripts/render-wechat.mjs 2026-08-08 --out
+npm run notify 2026-08-08 cover.png                      # 公众号标题+封面 → 飞书
+
+# 5. 发布（git commit 触发 post-commit hook 自动部署到服务器）
 git add -A && git commit -m "..." && git push
 ```
 
