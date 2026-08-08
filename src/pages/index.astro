@@ -37,7 +37,7 @@ const latestDailySlug = dailyPosts.length > 0 ? slugOf(dailyPosts[0]) : '';
 // 最近 3 期日报（features 区预览卡，B 方案：静态定位说明 → 活内容）
 const recentDaily = dailyPosts.slice(0, 3);
 ---
-<Base title="Linux 内核玩家 · 博客">
+<Base title="Linux 内核玩家 · 每日内核雷达">
   <header class="hero">
     <span class="term-deco">$ watch -n 10 kernel-patches</span>
     <div class="container hero-inner">
@@ -51,13 +51,24 @@ const recentDaily = dailyPosts.slice(0, 3);
   <section class="features">
     <div class="container">
       <div class="section-header reveal"><h2>最近日报</h2><span class="mono">/ latest radar</span></div>
+      {recentDaily.length > 0 && (
+        <a class="report-hero reveal" href={`/posts/${slugOf(recentDaily[0])}/`}>
+          <div class="report-meta">
+            <span class="report-date">{recentDaily[0].data.date.slice(5)}</span>
+            <span class="report-cat">{COLUMN_MAP[recentDaily[0].data.column || 'daily']?.emoji} 日报</span>
+            <span class="report-flag">今日</span>
+          </div>
+          <h3>{recentDaily[0].data.title}</h3>
+          <p class="report-desc">{recentDaily[0].data.desc}</p>
+          <div class="report-tags">{recentDaily[0].data.tags.map(t => <span class="tag">{t}</span>)}</div>
+        </a>
+      )}
       <div class="features-grid">
-        {recentDaily.map((p, i) => (
+        {recentDaily.slice(1).map((p) => (
           <a class="feature-card report-card reveal" href={`/posts/${slugOf(p)}/`}>
             <div class="report-meta">
               <span class="report-date">{p.data.date.slice(5)}</span>
               <span class="report-cat">{COLUMN_MAP[p.data.column || 'daily']?.emoji} 日报</span>
-              {slugOf(p) === latestDailySlug && <span class="report-flag">今日</span>}
             </div>
             <h3>{p.data.title}</h3>
             <p class="report-desc">{p.data.desc}</p>
