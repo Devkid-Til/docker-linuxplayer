@@ -44,8 +44,8 @@
     }
 
     /* 尾迹粒子：从指针散射 */
-    var trail = [];
-    var MAX_TRAIL = 26;
+    var path = [];           // 鼠标路径点（尾迹曲线）
+    var MAX_PATH = 40;       // 路径点上限
     var mx = 0, my = 0;
     var pointerDown = false;   // 触摸：手指按下才发射
     var pointerKind = 'mouse'; // 当前指针类型（mouse|touch|pen）
@@ -69,7 +69,6 @@
       document.addEventListener('touchcancel', function () { pointerDown = false; });
     }
 
-    var emit = 0;
     function frame() {
       requestAnimationFrame(frame);
       if (document.hidden) return;
@@ -90,32 +89,23 @@
         ctx.fill();
       }
 
-      /* ── 尾迹发射（更密更连续，鼠标/触摸都跟随）── */
-      emit++;
-      if (emit % 2 === 0 && trail.length < MAX_TRAIL && mx > 0 && (pointerKind === 'mouse' || pointerDown)) {
-        for (var k = 0; k < 2 && trail.length < MAX_TRAIL; k++) {
-          trail.push({
-            x: mx + (Math.random() - .5) * 3,
-            y: my + (Math.random() - .5) * 3,
-            vx: (Math.random() - .5) * 1.2,
-            vy: (Math.random() - .5) * 1.2 - .25,
-            r: Math.random() * 1.8 + .9,
-            life: 1,
-            decay: Math.random() * .018 + .01
-          });
+      /* ── 尾迹：缓慢跟随曲线（鼠标路径 + 每粒生命周期淡出）── */
+      if (mx > 0 && (pointerKind === 'mouse' || pointerDown)) {
+        var last = path[path.length - 1];
+        /* 移动了才加新点（静止时不堆叠），形成连续跟随曲线 */
+        if (!last || Math.abs(last.x - mx) > .5 || Math.abs(last.y - my) > .5) {
+          path.push({ x: mx, y: my, life: 1 });
+          if (path.length > MAX_PATH) path.shift();
         }
       }
-
-      /* ── 尾迹更新 ── */
-      for (var j = trail.length - 1; j >= 0; j--) {
-        var t = trail[j];
-        t.x += t.vx; t.y += t.vy;
-        t.vy += .018;
-        t.life -= t.decay;
-        if (t.life <= 0) { trail.splice(j, 1); continue; }
+      /* 更新：寿命衰减 + 绘制（越新越亮越大，随生命周期淡出） */
+      for (var j = path.length - 1; j >= 0; j--) {
+        var p = path[j];
+        p.life -= .022;
+        if (p.life <= 0) { path.splice(j, 1); continue; }
         ctx.beginPath();
-        ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(124,58,237,' + (t.life * .8) + ')';
+        ctx.arc(p.x, p.y, .5 + p.life * 2, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(124,58,237,' + (p.life * .7) + ')';
         ctx.fill();
       }
     }
