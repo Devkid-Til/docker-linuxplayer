@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
-import { COLUMNS, COLUMN_MAP, ALL_COLUMN } from '../column';
+import { COLUMNS, ALL_COLUMN } from '../column';
 
 const posts = (await getCollection('posts')).sort((a, b) => b.data.date.localeCompare(a.data.date));
 const slugOf = p => String(p.id).split('/').pop().replace(/\.md$/, '');
@@ -50,12 +50,12 @@ const recentDaily = dailyPosts.slice(0, 3);
 
   <section class="features">
     <div class="container">
-      <div class="section-header reveal"><h2>最近日报</h2><span class="mono">/ latest radar</span></div>
+      <div class="section-header reveal"><h2>最近雷达</h2><span class="mono">/ latest radar</span></div>
       {recentDaily.length > 0 && (
         <a class="report-hero reveal" href={`/posts/${slugOf(recentDaily[0])}/`}>
           <div class="report-meta">
             <span class="report-date">{recentDaily[0].data.date.slice(5)}</span>
-            <span class="report-cat">{COLUMN_MAP[recentDaily[0].data.column || 'daily']?.emoji} 日报</span>
+            <span class="report-cat">📡 雷达</span>
             <span class="report-flag">今日</span>
           </div>
           <h3>{recentDaily[0].data.title}</h3>
@@ -68,7 +68,7 @@ const recentDaily = dailyPosts.slice(0, 3);
           <a class="feature-card report-card reveal" href={`/posts/${slugOf(p)}/`}>
             <div class="report-meta">
               <span class="report-date">{p.data.date.slice(5)}</span>
-              <span class="report-cat">{COLUMN_MAP[p.data.column || 'daily']?.emoji} 日报</span>
+              <span class="report-cat">📡 雷达</span>
             </div>
             <h3>{p.data.title}</h3>
             <p class="report-desc">{p.data.desc}</p>
