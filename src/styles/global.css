@@ -150,6 +150,14 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .tag-filter .filter-tag.active{background:var(--brand);color:#fff;border-color:var(--brand)}
 .timeline-item.hidden{display:none}
 .tag-filter .filter-tag .count{font-size:.7em;opacity:.7;margin-left:3px}
+
+/* ── 11b. Column Filter Bar ──────────────────────────────────── */
+.column-filter{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:var(--space-sm)}
+.column-filter .filter-column{font-size:.8125rem;font-weight:600;padding:6px 16px;border-radius:20px;background:var(--card);color:var(--text-secondary);border:1.5px solid var(--border);cursor:pointer;transition:all .15s;font-family:var(--font-sans);white-space:nowrap}
+.column-filter .filter-column:hover{background:var(--brand-bg);color:var(--brand);border-color:var(--brand-border);transform:translateY(-1px)}
+.column-filter .filter-column.active{background:var(--brand);color:#fff;border-color:var(--brand);box-shadow:0 2px 12px var(--brand-glow)}
+.column-filter .filter-column .count{font-size:.7em;opacity:.7;margin-left:4px;font-weight:500}
+
 .post-timeline{position:relative;padding-left:var(--space-xl)}
 .post-timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--border);border-radius:1px}
 .timeline-item{position:relative;margin-bottom:var(--space-lg)}
