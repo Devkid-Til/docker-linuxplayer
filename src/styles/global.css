@@ -144,16 +144,12 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .heat-bar{height:8px;border-radius:4px;background:var(--bg-alt);overflow:hidden}
 .heat-fill{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--brand-bg),var(--brand));width:var(--w,0%)}
 .heat-count{font-family:var(--font-mono);font-size:.75rem;color:var(--text-secondary);text-align:right}
-/* 板块活跃度 · 数据槽位（源未就绪：骨架条占位，不上假 0；就绪后替换为真实热度条） */
+/* 板块活跃度 · 数据槽位（源未就绪：13 板块榜单轮廓——板块名可见 + 空条 + "—"，
+   不编造消息数；数据就绪后替换为真实热度条） */
 .heat-placeholder{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm) var(--space-2xl)}
 .heat-placeholder-row{display:grid;grid-template-columns:3.5rem 1fr 2.75rem;align-items:center;gap:var(--space-md);padding:5px 0}
-.ph{border-radius:4px;background:linear-gradient(90deg,var(--bg-alt) 25%,var(--border) 50%,var(--bg-alt) 75%);background-size:200% 100%;animation:shimmer 1.6s linear infinite}
-.ph-name{height:.8125rem;width:2.75rem}
-.ph-bar{display:block;height:8px;border-radius:4px}
-.ph-count{height:.75rem;width:2rem;justify-self:end}
+.heat-empty{display:block;height:8px;border-radius:4px;background:var(--border)}
 .board-heat-note{grid-column:1/-1;margin:var(--space-sm) 0 0;font-size:.8125rem;color:var(--text-tertiary)}
-@keyframes shimmer{to{background-position:-200% 0}}
-@media (prefers-reduced-motion: reduce){.ph{animation:none}}
 /* 移动端：2×2 小卡 */
 @media(max-width:768px){
   .radar-dashboard{grid-template-columns:1fr 1fr;gap:var(--space-md);padding:var(--space-xl)}

@@ -53,6 +53,9 @@ const boardHeat: { name: string; count: number }[] = radarStats?.lists
   ? Object.entries(radarStats.lists).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count)
   : [];
 const heatMax = boardHeat.length > 0 ? Math.max(...boardHeat.map(h => h.count)) : 1;
+// 数据槽位：13 板块固定榜单（与 radar.sh stats 的 SHORT 短名一致）。
+// 无数据时渲染为"榜单轮廓"占位（板块名 + 空条 + "—"，不编造消息数），数据就绪后替换为真实热度条。
+const BOARD_SLOTS = ['media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio', 'Rust', 'LSM', 'block', 'arch', 'rt', 'lkml'];
 ---
 <Base title="Linux 内核玩家 · 每日内核雷达">
   <header class="hero">
@@ -100,16 +103,17 @@ const heatMax = boardHeat.length > 0 ? Math.max(...boardHeat.map(h => h.count)) 
             </div>
           ))
         ) : (
-          /* 数据槽位：源未就绪时先以骨架占位（不显示假 0，避免误导"某板块 0 消息"） */
+          /* 数据槽位：13 板块榜单轮廓（板块名可见 + 空条 + "—"，不编造消息数）；
+             视觉清晰、可辨识"这里是活跃度排行榜"，数据就绪后替换为真实热度条 */
           <div class="heat-placeholder">
-            {[...Array(8)].map(i => (
+            {BOARD_SLOTS.map(name => (
               <div class="heat-placeholder-row">
-                <span class="ph ph-name"></span>
-                <span class="ph ph-bar"></span>
-                <span class="ph ph-count"></span>
+                <span class="heat-name">{name}</span>
+                <span class="heat-bar"><span class="heat-empty"></span></span>
+                <span class="heat-count">—</span>
               </div>
             ))}
-            <p class="board-heat-note">📡 板块活跃度数据同步中——先以设计稿占位，内核邮件源就绪后自动填充各板块近 24h 活跃度。</p>
+            <p class="board-heat-note">📡 数据同步中——内核邮件源就绪后，自动填充各板块近 24h 消息量。</p>
           </div>
         )}
       </div>
