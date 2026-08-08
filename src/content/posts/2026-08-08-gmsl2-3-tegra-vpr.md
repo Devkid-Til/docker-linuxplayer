@@ -3,7 +3,7 @@ title: GMSL2/3 加解串器统一框架 v15 · Tegra 显存保护接入 dma-buf
 date: "2026-08-08"
 desc: "GMSL2/3 统一框架 v15 收编 Maxim 老驱动；Tegra VPR 显存保护首次走 dma-buf heaps。"
 column: "daily"
-tags: ["视频/相机", "显示/DRM", "mm/内存"]
+tags: ["media", "DRM", "mm"]
 blocks:
   - type: hook
     text: >-
@@ -66,7 +66,7 @@ blocks:
     verdict: 平台私有内存区域「通用化」的标准路径——用 dma-buf heaps 兜住，谁都能访问。
     link: https://lore.kernel.org/dri-devel/20260807-tegra-vpr-v4-0-5510d16af89e@nvidia.com/
   - type: divider
-    label: 📰 linux-media（视频/相机）
+    label: 📰 media
     kind: section
   - type: highlight
     title: dw9719 对焦线圈支持 DW9800W（Fairphone）
@@ -87,7 +87,7 @@ blocks:
         text: staging av7110 修 sp8870 初始化与硬件通信（DVB）
         time: 08-08 01:07
   - type: divider
-    label: 📰 dri-devel（显示/DRM）
+    label: 📰 DRM
     kind: section
   - type: highlight
     title: drm/amd/display 修 vblank NULL 解引用
