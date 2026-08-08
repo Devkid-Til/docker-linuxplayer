@@ -205,7 +205,7 @@ html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#09090D 40%
 .article-section .mono{font-family:var(--font-mono);font-size:.8125rem;color:var(--text-tertiary);white-space:nowrap}
 
 /* 导语金句 */
-.block-hook{background:var(--brand-bg);border:1px solid var(--brand-border);border-left:3px solid var(--brand);color:var(--text);text-align:center;font-size:15px;line-height:1.8}
+.block-hook{background:var(--brand-bg);border:1px solid var(--brand-border);border-left:3px solid var(--brand);color:var(--text);text-align:left;font-size:15px;line-height:1.8}
 
 /* 导读/机制/速查：chips 标签卡 */
 .block-toc{padding:var(--space-sm) var(--space-lg)}

@@ -41,7 +41,7 @@ function pointP(label, text, last) {
 function renderBlock(b) {
   switch (b.type) {
     case 'hook':
-      return `<p style="background:#EDF1FD;border-left:3px solid #3458E0;border-radius:4px;padding:14px 18px;font-size:14px;line-height:1.8;color:#333333;text-align:center;margin:0 0 24px">${inline(b.text)}</p>`;
+      return `<p style="background:#EDF1FD;border-left:3px solid #3458E0;border-radius:4px;padding:14px 18px;font-size:14px;line-height:1.8;color:#333333;text-align:left;margin:0 0 24px">${inline(b.text)}</p>`;
 
     case 'divider':
       return b.kind !== 'section'
