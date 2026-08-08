@@ -164,7 +164,7 @@ blocks:
       - label: FRL
         text: HDMI 2.1 的固定速率链路，Type-C 转 HDMI 时由 PCON 转换并报告带宽
   - type: closing
-    tagline: 如果这份Linux内核玩家日报对你有用，点个「在看」，或留言聊聊你最关心哪条。
-    source: >-
-      回复 GMSL 看相机/加解串器专题 · 工作日 7:30 不见不散<br>数据来源：linux-media / dri-devel（lore.kernel.org）· 时间均为北京时间 · 数据截至 08-08 01:12 北京
+    tagline: "如果对你有用，点个赞，或留言聊聊你最关心的。"
+    source: "数据来源：linux-media / dri-devel（lore.kernel.org）· 北京时间"
+
 ---
