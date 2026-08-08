@@ -34,8 +34,11 @@ for (const c of COLUMNS) {
 // 最新一篇日报的 slug（"今日" 徽标锚定此篇）
 const dailyPosts = posts.filter(p => (p.data.column || 'daily') === 'daily');
 const latestDailySlug = dailyPosts.length > 0 ? slugOf(dailyPosts[0]) : '';
-// 最近 3 期日报（features 区预览卡，B 方案：静态定位说明 → 活内容）
-const recentDaily = dailyPosts.slice(0, 3);
+// 雷达仪表盘：全部从已发布文章静态计算（不硬编码、不编造），随内容增长自动变化
+const totalHeadlines = posts.reduce((n, p) => n + (p.data.blocks || []).filter(b => b.type === 'headline').length, 0);
+const totalHighlights = posts.reduce((n, p) => n + (p.data.blocks || []).filter(b => b.type === 'highlight').length, 0);
+const coveredTags = new Set<string>();
+posts.forEach(p => (p.data.tags || []).forEach(t => coveredTags.add(t)));
 ---
 <Base title="Linux 内核玩家 · 每日内核雷达">
   <header class="hero">
@@ -50,31 +53,24 @@ const recentDaily = dailyPosts.slice(0, 3);
 
   <section class="features">
     <div class="container">
-      <div class="section-header reveal"><h2>最近雷达</h2><span class="mono">/ latest radar</span></div>
-      {recentDaily.length > 0 && (
-        <a class="report-hero reveal" href={`/posts/${slugOf(recentDaily[0])}/`}>
-          <div class="report-meta">
-            <span class="report-date">{recentDaily[0].data.date.slice(5)}</span>
-            <span class="report-cat">📡 雷达</span>
-            <span class="report-flag">今日</span>
-          </div>
-          <h3>{recentDaily[0].data.title}</h3>
-          <p class="report-desc">{recentDaily[0].data.desc}</p>
-          <div class="report-tags">{recentDaily[0].data.tags.map(t => <span class="tag">{t}</span>)}</div>
-        </a>
-      )}
-      <div class="features-grid">
-        {recentDaily.slice(1).map((p) => (
-          <a class="feature-card report-card reveal" href={`/posts/${slugOf(p)}/`}>
-            <div class="report-meta">
-              <span class="report-date">{p.data.date.slice(5)}</span>
-              <span class="report-cat">📡 雷达</span>
-            </div>
-            <h3>{p.data.title}</h3>
-            <p class="report-desc">{p.data.desc}</p>
-            <div class="report-tags">{p.data.tags.map(t => <span class="tag">{t}</span>)}</div>
-          </a>
-        ))}
+      <div class="section-header reveal"><h2>雷达仪表盘</h2><span class="mono">/ radar status</span></div>
+      <div class="radar-dashboard reveal">
+        <div class="dash-item">
+          <span class="dash-value">{dailyPosts.length}</span>
+          <span class="dash-label">已发布日报</span>
+        </div>
+        <div class="dash-item">
+          <span class="dash-value">{totalHeadlines}</span>
+          <span class="dash-label">累计头条</span>
+        </div>
+        <div class="dash-item">
+          <span class="dash-value">{totalHighlights}</span>
+          <span class="dash-label">累计亮点</span>
+        </div>
+        <div class="dash-item">
+          <span class="dash-value">{coveredTags.size}</span>
+          <span class="dash-label">覆盖板块</span>
+        </div>
       </div>
     </div>
   </section>
