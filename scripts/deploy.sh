@@ -30,7 +30,12 @@ if [ -z "${SKIP_DEPLOY:-}" ]; then
     echo "[deploy] nothing to commit"
   else
     git commit -m "$MSG"
-    git push
+    # 分支未配 upstream 时自动设置，避免 feature 分支上 push 报 fatal
+    if git rev-parse --abbrev-ref --symbolic-full-name "@{upstream}" >/dev/null 2>&1; then
+      git push
+    else
+      git push --set-upstream origin "$(git branch --show-current)"
+    fi
   fi
 fi
 echo "[deploy] done."
