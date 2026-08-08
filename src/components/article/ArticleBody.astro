@@ -10,7 +10,6 @@ import More from './blocks/More.astro';
 import Paragraph from './blocks/Paragraph.astro';
 import Quote from './blocks/Quote.astro';
 import Code from './blocks/Code.astro';
-import Image from './blocks/Image.astro';
 import Closing from './blocks/Closing.astro';
 
 interface Props { blocks: Block[]; }
@@ -28,7 +27,7 @@ const { blocks } = Astro.props;
       case 'paragraph':  return <Paragraph block={b} />;
       case 'quote':      return <Quote block={b} />;
       case 'code':       return <Code block={b} />;
-      case 'image':      return <Image block={b} />;
+      case 'image':      return null;   // 博客不插入封面/图片（公众号端由 render-wechat.mjs 保留）
       case 'closing':    return <Closing block={b} />;
       default:           return <p class="block-unknown">⚠ 未知板块类型：{(b as { type: string }).type}</p>;
     }
