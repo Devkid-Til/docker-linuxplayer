@@ -209,7 +209,7 @@ blocks:
       - label: "nouveau / nova"
         text: "NVIDIA 的开源驱动（nouveau 老牌 C 驱动；nova 新一代，内核部分用 Rust）"
   - type: closing
-    tagline: "如果这份 Linux内核玩家日报对你有用，点个「在看」，或留言聊聊你最关心哪条。"
-    source: >-
-      回复 GMSL 看相机/加解串器专题 · 工作日 7:30 不见不散<br>数据来源：linux-media / dri-devel（lore.kernel.org）· 时间均为北京时间 · 数据截至 08-06 07:22 北京
+    tagline: "如果对你有用，点个赞，或留言聊聊你最关心的。"
+    source: "数据来源：linux-media / dri-devel（lore.kernel.org）· 北京时间"
+
 ---
