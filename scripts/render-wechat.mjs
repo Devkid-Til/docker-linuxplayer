@@ -43,7 +43,7 @@ function deriveSource(blocks) {
   const mods = new Set();
   for (const b of blocks) {
     if (b.type === 'divider' && b.kind === 'section') {
-      const m = String(b.label || '').replace(/^[^\w]+/, '').split(/[（(]/)[0].trim();
+      const m = String(b.label || '').replace(/^[^\w]+/, '').split(/[（(]/)[0].trim().split(/\s+/)[0];
       if (m) mods.add(m);
     }
     if (b.type === 'toc' && Array.isArray(b.items)) {

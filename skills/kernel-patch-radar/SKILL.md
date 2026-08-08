@@ -29,7 +29,8 @@ description: "Use when the user wants a daily or weekly digest of Linux kernel m
 ### 每周雷达（mm/sched/pci + LWN）
 1. 用 Workflow 工具**以 `scriptPath`** 运行 `<本 skill 目录>/scripts/weekly-radar.workflow.js`（并行 3 个 agent 搜 mm/sched/pci 近期重点）——**不要用 `name:`**，该文件未注册到 `~/.claude/workflows/`
 2. `bash scripts/radar.sh lwn 10` → 本周 LWN 标题（⚠️ LWN 部分文章有订阅墙，标题可抓、正文可能需订阅，成文时如实处理）
-3. 汇总按「输出模板」成文，输出给用户
+3. **成文为 blocks 文章**（与每日同格式，可上博客/公众号）：`<kernel-blog>/src/content/posts/YYYY-MM-DD-weekly-radar.md`（frontmatter 含 title/date/desc/tags/blocks，结构见 `output-template.md` 每周模板；YAML 硬规则同每日）
+4. **发布与审阅同每日**：`npm run build && node scripts/render-wechat.mjs` → 用 cc-connect 发标题+封面给董事长审阅 → 确认后 `git commit/push` 上线
 
 ## 分析规则
 - **分档**（像报纸：重要程度决定篇幅）：

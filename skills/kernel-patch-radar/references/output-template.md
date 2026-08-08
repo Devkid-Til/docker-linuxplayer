@@ -141,7 +141,72 @@ blocks:
 - 🏆 头条 ≤1-2 条；★ 亮点每栏目 ≤3 条；○ 常规每栏目 ≤8 行
 - 整份每天 ≤60 行可读文本。**宁可少而精**：看不明白的条目宁可给「背景」，不要堆标题。
 
-## 每周模板
-周报结构与每日不同（含「一、内存 / 二、进程 / 三、PCIe / 四、LWN / 五、架构动向 / 六、交叉点」）。
-同样用 blocks：`divider`(primary) + `toc` 组织各章，长文分析用 `paragraph` / `quote`。
-按每日的映射原则自由组合 11 种板块类型即可。
+## 每周模板（与每日同格式，可上博客/公众号）
+
+成文为 `<kernel-blog>/src/content/posts/YYYY-MM-DD-weekly-radar.md`，**frontmatter + blocks 与每日完全一致**。
+章节用 `divider`(section) 分章（label 带模块前缀，落款数据来源自动推导）+ `toc`/`paragraph` 组织内容。
+
+```yaml
+---
+title: Linux内核玩家 · 每周全局雷达｜<本周最大动向>
+date: "YYYY-MM-DD"
+desc: 一句话摘要
+tags: ["mm / 内存", "进程调度", "PCIe"]
+blocks:
+  - type: hook
+    text: >-
+      本周内核全局看点：<strong>…</strong>，和 <strong>…</strong>。
+  - type: divider
+    label: 📰 mm / 内存管理
+    kind: section
+  - type: toc
+    items:
+      - label: mm 机制
+        text: 一句话 why · <a href="...">原文</a>
+  - type: divider
+    label: 📰 sched / 进程调度
+    kind: section
+  - type: toc
+    items:
+      - label: sched 机制
+        text: 一句话 why · <a href="...">原文</a>
+  - type: divider
+    label: 📰 pci / PCIe
+    kind: section
+  - type: toc
+    items:
+      - label: pci 机制
+        text: 一句话 why · <a href="...">原文</a>
+  - type: divider
+    label: 📰 LWN / 本周综述
+    kind: section
+  - type: paragraph
+    text: LWN 本周综述（订阅墙文章标题可抓、正文如实处理）
+  - type: divider
+    label: 📰 架构动向
+    kind: section
+  - type: toc
+    items:
+      - label: mm / sched / pci 的机制演进
+        text: 新 API / 新抽象 / 重构
+  - type: divider
+    label: 📰 与你方向的交叉点
+    kind: section
+  - type: toc
+    items:
+      - label: 交叉点
+        text: 无则明确说没有
+  - type: divider
+    label: 📖 本期概念速查
+    kind: primary
+  - type: toc
+    items:
+      - label: 术语
+        text: 一句话解释（只收本期出现过的）
+  - type: closing
+    tagline: 如果对你有用，点个赞，或留言聊聊你最关心的。
+    source: ""
+---
+```
+
+> 落款 `source` 留空自动推导（divider 的 📰 前缀如 mm/sched/pci/lwn 会被提取）。发布/审阅流程同每日（见 SKILL.md 工作流步骤 5-7）。
