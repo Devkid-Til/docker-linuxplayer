@@ -210,6 +210,6 @@ blocks:
         text: "NVIDIA 的开源驱动（nouveau 老牌 C 驱动；nova 新一代，内核部分用 Rust）"
   - type: closing
     tagline: "如果对你有用，点个赞，或留言聊聊你最关心的。"
-    source: "数据来源：linux-media / dri-devel（lore.kernel.org）· 北京时间"
+    source: ""
 
 ---

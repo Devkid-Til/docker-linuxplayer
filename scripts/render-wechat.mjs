@@ -38,7 +38,25 @@ function pointP(label, text, last) {
   return `<p style="font-size:15px;line-height:1.8;color:#333333;margin-bottom:${last ? '0' : '8px'}"><span style="color:#7C3AED">•</span> <span style="color:#7C3AED;font-weight:bold">${esc(label)}</span>：${inline(text)}</p>`;
 }
 
-function renderBlock(b) {
+/* 动态数据来源：扫描 blocks 的栏目分隔 + 机制雷达条目，提取当天覆盖的模块 */
+function deriveSource(blocks) {
+  const mods = new Set();
+  for (const b of blocks) {
+    if (b.type === 'divider' && b.kind === 'section') {
+      const m = String(b.label || '').replace(/^[^\w]+/, '').split(/[（(]/)[0].trim();
+      if (m) mods.add(m);
+    }
+    if (b.type === 'toc' && Array.isArray(b.items)) {
+      for (const it of b.items) {
+        const m = String(it.label || '').match(/^(mm|sched|pci|rust|drm)\b/i);
+        if (m) mods.add(m[1].toLowerCase());
+      }
+    }
+  }
+  return `数据来源：${[...mods].join(' / ')}（lore.kernel.org）· 北京时间`;
+}
+
+function renderBlock(b, fallbackSource = '') {
   switch (b.type) {
     case 'hook':
       return `<p style="background:#EDE9FE;border-left:3px solid #7C3AED;border-radius:4px;padding:14px 18px;font-size:14px;line-height:1.8;color:#333333;text-align:left;margin:0 0 24px">${inline(b.text)}</p>`;
@@ -113,8 +131,10 @@ function renderBlock(b) {
         ? `<p style="text-align:center;margin:12px 0"><img src="${esc(b.src)}" alt="${esc(b.alt)}" style="max-width:100%;border-radius:8px" /></p>`
         : `<p style="text-align:center;color:#8C8C8C;font-size:13px;margin:12px 0">[图：${esc(b.alt)}]</p>`;
 
-    case 'closing':
-      return `<section style="background:#FFFFFF;border:1px solid #E5E6EB;border-top:2px solid #7C3AED;border-radius:8px;padding:16px 18px;margin:20px 0 0">\n  <p style="text-align:center;font-size:15px;line-height:1.8;color:#7C3AED;font-weight:600;margin:0 0 6px">${inline(b.tagline)}</p>\n  <p style="text-align:center;font-size:13px;color:#8C8C8C;line-height:1.7;margin:0">${inline(b.source)}</p>\n</section>`;
+    case 'closing': {
+      const src = b.source || fallbackSource;
+      return `<section style="background:#FFFFFF;border:1px solid #E5E6EB;border-top:2px solid #7C3AED;border-radius:8px;padding:16px 18px;margin:20px 0 0">\n  <p style="text-align:center;font-size:15px;line-height:1.8;color:#7C3AED;font-weight:600;margin:0 0 6px">${inline(b.tagline)}</p>\n  <p style="text-align:center;font-size:13px;color:#8C8C8C;line-height:1.7;margin:0">${inline(src)}</p>\n</section>`;
+    }
 
     default:
       return `<p style="color:#DC2626;font-size:13px">⚠ 未知板块类型：${esc(b.type)}</p>`;
@@ -130,7 +150,8 @@ const target = slugArg
 if (!target) { console.error(`找不到 ${slugArg}`); process.exit(1); }
 
 const data = parseFrontmatter(readFileSync(path.join(POSTS_DIR, target), 'utf8'));
-const body = (data.blocks ?? []).map(renderBlock).join('\n\n');
+const fallbackSource = deriveSource(data.blocks ?? []);
+const body = (data.blocks ?? []).map(b => renderBlock(b, fallbackSource)).join('\n\n');
 
 const html = `<!-- 公众号粘贴用 · ${data.title} -->
 ${body}
