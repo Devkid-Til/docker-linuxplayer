@@ -41,12 +41,18 @@ const totalHighlights = posts.reduce((n, p) => n + (p.data.blocks || []).filter(
 const coveredTags = new Set<string>();
 posts.forEach(p => (p.data.tags || []).forEach(t => coveredTags.add(t)));
 // 板块活跃度（雷达社区情报）：radar.sh stats 产出的 JSON，构建时读入；缺文件/坏 JSON 静默降级（不编造数据）
+// 模拟数据（预览）：真数据（radar.sh stats）就绪前，先用模拟数字展示条形+数字效果。
+// 取值按真实热度形态（lkml 广播源最大、net 次之、virtio-dev 极低频最冷），UI 显式标注"模拟预览"。
+// 真数据接入后 isMock 自动为 false、标注消失，模拟值不残留。
+const MOCK_STATS = { date: '2026-08-08', window: '24h', lists: { lkml: 986, net: 168, media: 121, mm: 94, fs: 82, DRM: 67, arch: 54, block: 46, LSM: 38, PCI: 30, Rust: 21, rt: 12, virtio: 6 } };
 let radarStats: { date?: string; window?: string; lists?: Record<string, number> } | null = null;
+let isMock = false;
 {
   const statsPath = new URL('../data/radar-stats.json', import.meta.url);
   if (fs.existsSync(statsPath)) {
     try { radarStats = JSON.parse(fs.readFileSync(statsPath, 'utf8')); } catch { /* 坏 JSON 当无数据 */ }
   }
+  if (!radarStats) { radarStats = MOCK_STATS; isMock = true; }
 }
 // 热度条：按消息量降序 + 最大归一化宽度
 const boardHeat: { name: string; count: number }[] = radarStats?.lists
@@ -94,7 +100,7 @@ const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio',
       <div class="board-heat reveal">
         <div class="board-heat-head">
           <h4>板块活跃度</h4>
-          <span class="board-heat-meta">近 {radarStats?.window || '24h'}{radarStats?.date ? ` · ${radarStats.date}` : ''}</span>
+          <span class="board-heat-meta">近 {radarStats?.window || '24h'}{radarStats?.date ? ` · ${radarStats.date}` : ''}{isMock ? ' · 模拟预览' : ''}</span>
         </div>
         {boardHeat.length > 0 ? (
           boardHeat.map(h => (
