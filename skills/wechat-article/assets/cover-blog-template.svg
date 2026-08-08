@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="383" viewBox="0 0 900 383">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F5F3FF"/>
+      <stop offset="0.45" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F0F4FF"/>
+    </linearGradient>
+    <radialGradient id="glowA" cx="0.15" cy="0.2" r="0.6">
+      <stop offset="0" stop-color="#7C3AED" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#7C3AED" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowB" cx="0.85" cy="0.82" r="0.55">
+      <stop offset="0" stop-color="#7C3AED" stop-opacity="0.07"/>
+      <stop offset="1" stop-color="#7C3AED" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="383" fill="url(#bg)"/>
+  <rect width="900" height="383" fill="url(#glowA)"/>
+  <rect width="900" height="383" fill="url(#glowB)"/>
+
+  <!-- 顶栏：终端装饰 + 日期 -->
+  <text x="36" y="40" font-size="13" fill="#A78BFA" font-family="Noto Sans SC">$ watch -n 10 kernel-patches</text>
+  <text x="864" y="40" text-anchor="end" font-size="13" fill="#7C3AED" font-family="Noto Sans SC" font-weight="bold">{{DATE}}</text>
+  <line x1="36" y1="54" x2="864" y2="54" stroke="#DDD6FE" stroke-width="1"/>
+
+  <!-- eyebrow pill -->
+  <rect x="292" y="104" width="316" height="36" rx="18" fill="#EDE9FE"/>
+  <text x="450" y="127" text-anchor="middle" font-size="14" fill="#7C3AED" font-family="Noto Sans SC" letter-spacing="2">KERNEL DAILY · 每日内核雷达</text>
+
+  <!-- 主标题（今日主题，≤16字） -->
+  <text x="450" y="216" text-anchor="middle" font-size="50" font-weight="bold" fill="#1E1B4B" font-family="Noto Sans SC">{{TOPIC}}</text>
+
+  <!-- 品牌 -->
+  <text x="450" y="296" text-anchor="middle" font-size="16" fill="#7C3AED" font-family="Noto Sans SC" font-weight="bold" letter-spacing="6">Linux 内核玩家</text>
+
+  <!-- slogan -->
+  <text x="450" y="356" text-anchor="middle" font-size="13" fill="#8B7EC8" font-family="Noto Sans SC">{{SLOGAN}}</text>
+</svg>

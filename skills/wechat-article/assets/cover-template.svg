@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="383" viewBox="0 0 900 383">
+  <rect width="900" height="383" fill="#3458E0"/>
+  <text x="40" y="46" font-size="13" fill="#C5D0F7" font-family="Noto Sans SC" letter-spacing="2">KERNEL DAILY · 每日内核雷达</text>
+  <text x="860" y="46" text-anchor="end" font-size="13" fill="#C5D0F7" font-family="Noto Sans SC">{{DATE}}</text>
+  <line x1="40" y1="60" x2="860" y2="60" stroke="#4C6BE8" stroke-width="1.5"/>
+  <text x="450" y="168" text-anchor="middle" font-size="66" font-weight="bold" fill="#FFFFFF" font-family="Noto Sans SC">Linux内核玩家</text>
+  <text x="450" y="200" text-anchor="middle" font-size="15" fill="#B9C6F2" font-family="Noto Sans SC" letter-spacing="6">LINUX KERNEL PLAYER</text>
+  <line x1="300" y1="228" x2="600" y2="228" stroke="#B9C6F2" stroke-width="1"/>
+  <text x="450" y="268" text-anchor="middle" font-size="18" fill="#FFFFFF" font-family="Noto Sans SC">{{TOPIC}}</text>
+  <text x="450" y="312" text-anchor="middle" font-size="14" fill="#8FA3E8" font-family="Noto Sans SC">$ git pull linux-media · dri-devel</text>
+  <line x1="40" y1="338" x2="860" y2="338" stroke="#4C6BE8" stroke-width="1.5"/>
+  <text x="450" y="362" text-anchor="middle" font-size="13" fill="#C5D0F7" font-family="Noto Sans SC">{{SLOGAN}}</text>
+</svg>
