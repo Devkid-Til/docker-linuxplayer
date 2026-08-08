@@ -160,7 +160,7 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .timeline-card:hover h3{color:var(--brand)}
 .timeline-excerpt{color:var(--text-secondary);font-size:.875rem;margin-bottom:0}
 .timeline-tags{margin-top:var(--space-sm);display:flex;gap:6px;flex-wrap:wrap}
-.tag{display:inline-block;font-size:.875rem;font-weight:500;padding:3px 10px;border-radius:6px;background:var(--bg-alt);color:var(--text-secondary);transition:background .15s,color .15s}
+.tag{display:inline-block;font-size:14px;font-weight:500;padding:3px 10px;border-radius:6px;background:var(--bg-alt);color:var(--text-secondary);transition:background .15s,color .15s}
 .tag:hover{background:var(--brand-bg);color:var(--brand);text-decoration:none}
 @media(max-width:480px){.post-timeline{padding-left:var(--space-lg)}.timeline-item::before{left:calc(-1 * var(--space-lg) + 4px)}}
 
@@ -205,29 +205,29 @@ html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#09090D 40%
 .article-section .mono{font-family:var(--font-mono);font-size:.8125rem;color:var(--text-tertiary);white-space:nowrap}
 
 /* 导语金句 */
-.block-hook{background:var(--brand-bg);border:1px solid var(--brand-border);border-left:3px solid var(--brand);color:var(--text);text-align:center;font-size:.875rem;line-height:1.8}
+.block-hook{background:var(--brand-bg);border:1px solid var(--brand-border);border-left:3px solid var(--brand);color:var(--text);text-align:center;font-size:15px;line-height:1.8}
 
 /* 导读/机制/速查：chips 标签卡 */
 .block-toc{padding:var(--space-sm) var(--space-lg)}
 .toc-item{padding:var(--space-sm) 0;border-bottom:1px dashed var(--border-light)}
 .toc-item:last-child{border-bottom:none}
-.toc-chip{display:inline-block;font-size:.875rem;font-weight:600;padding:3px 12px;border-radius:16px;background:var(--brand-bg);color:var(--brand);border:1px solid var(--brand-border);white-space:nowrap;margin-bottom:4px}
-.toc-text{font-size:.875rem;line-height:1.7;color:var(--text)}
+.toc-chip{display:inline-block;font-size:14px;font-weight:600;padding:3px 12px;border-radius:16px;background:var(--brand-bg);color:var(--brand);border:1px solid var(--brand-border);white-space:nowrap;margin-bottom:4px}
+.toc-text{font-size:15px;line-height:1.7;color:var(--text)}
 
 /* 头条/亮点卡 */
 .block-headline,.block-highlight{padding:var(--space-md) var(--space-md) var(--space-sm)}
 .block-headline{border-top:3px solid var(--brand)}
 .headline-head{margin-bottom:var(--space-md)}
 .headline-head h3{font-size:1rem;font-weight:700;line-height:1.5;color:var(--text);margin-bottom:4px}
-.headline-head .meta{font-size:.875rem;color:var(--text-tertiary);line-height:1.6}
+.headline-head .meta{font-size:14px;color:var(--text-tertiary);line-height:1.6}
 .hi-star{color:var(--brand)}
 .headline-points{display:flex;flex-direction:column}
 
 /* 徽章要点 */
 .b-point{padding:6px 0;border-bottom:1px dashed var(--border-light)}
 .b-point:last-child{border-bottom:none}
-.b-label{display:inline-block;font-size:.875rem;font-weight:600;line-height:1.5;padding:2px 10px;border-radius:6px;background:var(--brand-bg);color:var(--brand);border:1px solid var(--brand-border);margin-bottom:4px}
-.b-text{font-size:.875rem;line-height:1.7;color:var(--text)}
+.b-label{display:inline-block;font-size:14px;font-weight:600;line-height:1.5;padding:2px 10px;border-radius:6px;background:var(--brand-bg);color:var(--brand);border:1px solid var(--brand-border);margin-bottom:4px}
+.b-text{font-size:15px;line-height:1.7;color:var(--text)}
 .b-verdict{background:var(--brand-bg);border:1px solid var(--brand-border);border-radius:var(--radius-md);padding:var(--space-sm) var(--space-md);margin-top:var(--space-sm);border-bottom:none}
 .b-verdict .b-label{background:var(--brand);color:#fff;border-color:var(--brand)}
 .b-relevance .b-label{background:transparent;color:var(--text-tertiary);border-color:var(--border)}
@@ -238,7 +238,7 @@ html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#09090D 40%
 /* 常规动态 */
 .block-more{padding:var(--space-md) var(--space-lg)}
 .m-title{font-size:.875rem;font-weight:700;color:var(--text);margin:0 0 var(--space-sm)}
-.m-item{display:flex;align-items:baseline;gap:var(--space-xs);font-size:.875rem;color:var(--text-tertiary);line-height:1.7;margin:0 0 4px}
+.m-item{display:flex;align-items:baseline;gap:var(--space-xs);font-size:15px;color:var(--text-tertiary);line-height:1.7;margin:0 0 4px}
 .m-item:last-child{margin-bottom:0}
 .m-bullet{flex-shrink:0;color:var(--text-tertiary)}
 .m-item a{color:var(--brand);text-decoration:none}
