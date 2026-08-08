@@ -1,0 +1,19 @@
+{
+  "date": "2026-08-09",
+  "window": "24h",
+  "lists": {
+    "media": 24,
+    "DRM": 92,
+    "mm": 143,
+    "PCI": 44,
+    "net": 243,
+    "fs": 17,
+    "virtio": 0,
+    "Rust": 31,
+    "LSM": 2,
+    "block": 6,
+    "arch": 2,
+    "rt": 19,
+    "lkml": 400
+  }
+}
