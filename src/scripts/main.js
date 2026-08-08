@@ -169,10 +169,28 @@
     reveals.forEach(function (el) { io.observe(el); });
   } else { reveals.forEach(function (el) { el.classList.add('in'); }); }
 
-  /* ── 汉堡菜单 ── */
+  /* ── 汉堡菜单（移动端）：点按钮开合 + 点菜单项/外部/滚动关闭 ── */
   var hb = document.querySelector('.hamburger');
   var nl = document.querySelector('.nav-links');
-  if (hb && nl) hb.addEventListener('click', function () { hb.classList.toggle('open'); nl.classList.toggle('open'); });
+  if (hb && nl) {
+    function closeMenu() {
+      hb.classList.remove('open');
+      nl.classList.remove('open');
+    }
+    hb.addEventListener('click', function (e) {
+      e.stopPropagation();
+      hb.classList.toggle('open');
+      nl.classList.toggle('open');
+    });
+    /* 点击菜单项（链接/主题按钮）关闭 */
+    nl.addEventListener('click', function () { closeMenu(); });
+    /* 点击导航以外区域关闭 */
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest('.nav-inner')) closeMenu();
+    });
+    /* 滚动关闭（移动端常用交互） */
+    window.addEventListener('scroll', function () { closeMenu(); }, { passive: true });
+  }
 
   /* ── 复制链接 ── */
   document.querySelectorAll('.share-copy').forEach(function (b) {
