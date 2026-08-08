@@ -89,10 +89,10 @@
         ctx.fill();
       }
 
-      /* ── 尾迹：缓慢跟随曲线（鼠标路径 + 每粒生命周期淡出）── */
-      if (mx > 0 && (pointerKind === 'mouse' || pointerDown)) {
+      /* ── 尾迹：缓慢跟随曲线（任何指针移动都记录，鼠标/触摸/滚动拖动都跟随）── */
+      if (mx > 0) {
         var last = path[path.length - 1];
-        /* 移动了才加新点（静止时不堆叠），形成连续跟随曲线 */
+        /* 移动了才加新点（静止不堆叠）——不依赖 pointerDown，触摸滚动拖动也持续跟随 */
         if (!last || Math.abs(last.x - mx) > .5 || Math.abs(last.y - my) > .5) {
           path.push({ x: mx, y: my, life: 1 });
           if (path.length > MAX_PATH) path.shift();
