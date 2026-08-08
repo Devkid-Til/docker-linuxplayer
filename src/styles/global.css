@@ -127,16 +127,26 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .btn-ghost{background:var(--card);color:var(--text);border:1px solid var(--border)}
 .btn-ghost:hover{border-color:var(--brand);color:var(--brand)}
 
-/* ── 9. Feature Grid（价值卡片）─────────────────────────────── */
+/* ── 9. Feature Grid（最近日报卡）────────────────────────────── */
 .features{padding:var(--space-2xl) 0;background:var(--bg)}
 .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-lg);margin-top:var(--space-lg);max-width:1080px;margin-left:auto;margin-right:auto}
-.feature-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-lg);transition:border-color .25s var(--ease-out),box-shadow .25s var(--ease-out),transform .25s var(--ease-out)}
-.feature-card:hover{border-color:var(--brand-border);box-shadow:var(--shadow-md);transform:translateY(-2px)}
-.feature-icon{font-size:1.5rem;display:inline;vertical-align:middle;margin-right:var(--space-sm)}
-.feature-card h3{font-size:1rem;margin-bottom:var(--space-sm);display:inline}
-.feature-card h3{font-size:1rem;margin-bottom:var(--space-xs)}
-.feature-card p{color:var(--text-secondary);font-size:.875rem;line-height:1.6}
-@media(max-width:768px){.features-grid{grid-template-columns:1fr}}
+.feature-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-lg);transition:border-color .25s var(--ease-out),box-shadow .25s var(--ease-out),transform .25s var(--ease-out);text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:var(--space-sm)}
+.feature-card:hover{border-color:var(--brand-border);box-shadow:var(--shadow-md);transform:translateY(-2px);text-decoration:none;color:inherit}
+.feature-card h3{font-size:1.0625rem;line-height:1.5;color:var(--text)}
+.feature-card:hover h3{color:var(--brand)}
+.feature-card p{color:var(--text-secondary);font-size:.875rem;line-height:1.6;margin:0}
+.report-meta{display:flex;align-items:center;gap:var(--space-sm);flex-wrap:wrap}
+.report-date{font-family:var(--font-mono);font-size:.75rem;font-weight:600;color:var(--brand);background:var(--brand-bg);padding:3px 10px;border-radius:10px}
+.report-cat{font-size:.8125rem;color:var(--text-tertiary)}
+.report-flag{font-size:.6875rem;font-weight:600;color:#fff;background:var(--brand);padding:2px 8px;border-radius:10px}
+.report-desc{flex:1}
+.report-tags{margin-top:var(--space-sm);display:flex;gap:6px;flex-wrap:wrap}
+/* 移动端：横向滑动（scroll-snap 手动滑，非自动轮播） */
+@media(max-width:768px){
+  .features-grid{display:flex;flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:var(--space-md);margin-left:calc(-1 * var(--space-md));padding-left:var(--space-md);padding-bottom:var(--space-sm);scrollbar-width:none}
+  .features-grid::-webkit-scrollbar{display:none}
+  .feature-card{flex:0 0 82%;scroll-snap-align:start}
+}
 
 /* ── 10. Section Header ──────────────────────────────────────── */
 .section-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--space-lg)}
@@ -310,6 +320,9 @@ html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#09090D 40%
 .about-avatar{width:56px;height:56px;flex-shrink:0;border-radius:14px;background:linear-gradient(135deg,var(--brand),var(--brand-dark));color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:1.125rem;font-weight:700}
 .about-card h3{font-size:1rem;margin-bottom:2px}
 .about-card p{color:var(--text-secondary);font-size:.875rem}
+.about-main{flex:1;min-width:0}
+.about-coverage{display:flex;flex-wrap:wrap;gap:8px;margin-top:var(--space-sm)}
+.coverage-item{font-size:.75rem;color:var(--text-secondary);background:var(--bg-alt);border:1px solid var(--border);border-radius:16px;padding:4px 12px}
 @media(max-width:480px){.about-card{flex-direction:column;text-align:center}}
 
 /* ── 14. Footer ───────────────────────────────────────────────── */
@@ -342,7 +355,7 @@ html.dark .to-top{background:var(--card)}
 html.dark .timeline-item::before{border-color:var(--bg)}
 
 /* ── 19. Responsive ───────────────────────────────────────────── */
-@media(max-width:640px){:root{--font-size-base:14px;--nav-height:48px}.container{padding:0 var(--space-md)}.nav-inner{padding:0 var(--space-md)}.hamburger{display:block}.nav-links{position:absolute;top:var(--nav-height);left:0;right:0;background:var(--card);flex-direction:column;align-items:stretch;padding:var(--space-sm) var(--space-md) var(--space-md);border-bottom:1px solid var(--border);display:none;box-shadow:var(--shadow-md)}.nav-links.open{display:flex}.nav-links a{padding:var(--space-sm)}.hero{padding:36px 0 32px}.hero h1{font-size:1.35rem}.hero .subtitle{font-size:.75rem;max-width:100%}.hero .term-deco{top:14px;right:16px;font-size:11px}.hero-eyebrow{font-size:.7rem;padding:4px 12px}.features-grid{grid-template-columns:1fr;gap:var(--space-md)}.timeline-card{padding:var(--space-md)}.timeline-card h3{font-size:.9375rem}.article-header h1{font-size:1.375rem}.about-card{flex-direction:column;text-align:center}}
+@media(max-width:640px){:root{--font-size-base:14px;--nav-height:48px}.container{padding:0 var(--space-md)}.nav-inner{padding:0 var(--space-md)}.hamburger{display:block}.nav-links{position:absolute;top:var(--nav-height);left:0;right:0;background:var(--card);flex-direction:column;align-items:stretch;padding:var(--space-sm) var(--space-md) var(--space-md);border-bottom:1px solid var(--border);display:none;box-shadow:var(--shadow-md)}.nav-links.open{display:flex}.nav-links a{padding:var(--space-sm)}.hero{padding:36px 0 32px}.hero h1{font-size:1.35rem}.hero .subtitle{font-size:.75rem;max-width:100%}.hero .term-deco{top:14px;right:16px;font-size:11px}.hero-eyebrow{font-size:.7rem;padding:4px 12px}.timeline-card{padding:var(--space-md)}.timeline-card h3{font-size:.9375rem}.article-header h1{font-size:1.375rem}.about-card{flex-direction:column;text-align:center}}
 @media(min-width:641px) and (max-width:1024px){.container{max-width:100%;padding:0 28px}}
 @media(min-width:1025px){.container{max-width:960px}}
 

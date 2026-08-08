@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
-import { COLUMNS, ALL_COLUMN } from '../column';
+import { COLUMNS, COLUMN_MAP, ALL_COLUMN } from '../column';
 
 const posts = (await getCollection('posts')).sort((a, b) => b.data.date.localeCompare(a.data.date));
 const slugOf = p => String(p.id).split('/').pop().replace(/\.md$/, '');
@@ -34,6 +34,8 @@ for (const c of COLUMNS) {
 // 最新一篇日报的 slug（"今日" 徽标锚定此篇）
 const dailyPosts = posts.filter(p => (p.data.column || 'daily') === 'daily');
 const latestDailySlug = dailyPosts.length > 0 ? slugOf(dailyPosts[0]) : '';
+// 最近 3 期日报（features 区预览卡，B 方案：静态定位说明 → 活内容）
+const recentDaily = dailyPosts.slice(0, 3);
 ---
 <Base title="Linux 内核玩家 · 博客">
   <header class="hero">
@@ -48,11 +50,20 @@ const latestDailySlug = dailyPosts.length > 0 ? slugOf(dailyPosts[0]) : '';
 
   <section class="features">
     <div class="container">
-      <div class="section-header reveal"><h2>这份日报覆盖什么</h2><span class="mono">/ coverage</span></div>
+      <div class="section-header reveal"><h2>最近日报</h2><span class="mono">/ latest radar</span></div>
       <div class="features-grid">
-        <div class="feature-card reveal"><span class="feature-icon">🧠</span><h3>内核架构</h3><p>内存管理、进程调度、文件系统、网络栈。不看驱动小修，只看影响架构层的机制级改动。</p></div>
-        <div class="feature-card reveal"><span class="feature-icon">🔄</span><h3>跨域机制</h3><p>dma-buf、VMA、P2PDMA、Rust 内核化。子系统之间的桥接层——改动一处，影响全栈。</p></div>
-        <div class="feature-card reveal"><span class="feature-icon">💡</span><h3>前沿动态</h3><p>新驱动框架、新硬件支持、virtio 虚拟化、安全机制。每天追踪 linux-media / dri-devel / linux-mm，一条链讲透。</p></div>
+        {recentDaily.map((p, i) => (
+          <a class="feature-card report-card reveal" href={`/posts/${slugOf(p)}/`}>
+            <div class="report-meta">
+              <span class="report-date">{p.data.date.slice(5)}</span>
+              <span class="report-cat">{COLUMN_MAP[p.data.column || 'daily']?.emoji} 日报</span>
+              {slugOf(p) === latestDailySlug && <span class="report-flag">今日</span>}
+            </div>
+            <h3>{p.data.title}</h3>
+            <p class="report-desc">{p.data.desc}</p>
+            <div class="report-tags">{p.data.tags.map(t => <span class="tag">{t}</span>)}</div>
+          </a>
+        ))}
       </div>
     </div>
   </section>
@@ -74,7 +85,15 @@ const latestDailySlug = dailyPosts.length > 0 ? slugOf(dailyPosts[0]) : '';
     </div>
     <div class="about-card reveal">
       <div class="about-avatar">&gt;_<span class="cursor">▋</span></div>
-      <div><h3>关于 Linux 内核玩家</h3><p>内核玩家的每日手记——把每个补丁讲成"动了哪一层、为什么值得看"。</p></div>
+      <div class="about-main">
+        <h3>关于 Linux 内核玩家</h3>
+        <p>内核玩家的每日手记——把每个补丁讲成"动了哪一层、为什么值得看"。</p>
+        <div class="about-coverage">
+          <span class="coverage-item">🧠 只看影响架构层的机制级改动</span>
+          <span class="coverage-item">🔄 跨域桥接：dma-buf / VMA / Rust 内核化</span>
+          <span class="coverage-item">💡 前沿：新驱动框架 / 新硬件 / 安全机制</span>
+        </div>
+      </div>
     </div>
   </main>
 </Base>
