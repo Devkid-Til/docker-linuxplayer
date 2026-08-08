@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" viewBox="0 0 900 1200">
+  <rect width="900" height="1200" fill="#3458E0"/>
+  <rect x="30" y="30" width="840" height="1140" fill="none" stroke="#4C6BE8" stroke-width="2"/>
+  <text x="450" y="110" text-anchor="middle" font-size="20" fill="#C5D0F7" font-family="Noto Sans SC" letter-spacing="8">KERNEL PRESS</text>
+  <text x="450" y="150" text-anchor="middle" font-size="13" fill="#8FA3E8" font-family="Noto Sans SC" letter-spacing="4">内核玩家出品</text>
+  <text x="450" y="560" text-anchor="middle" font-size="120" font-weight="bold" fill="#FFFFFF" font-family="Noto Sans SC">Linux内核日报</text>
+  <text x="450" y="640" text-anchor="middle" font-size="32" fill="#B9C6F2" font-family="Noto Sans SC">每日 3 分钟看懂 Linux 内核</text>
+  <line x1="320" y1="700" x2="580" y2="700" stroke="#B9C6F2" stroke-width="2"/>
+  <text x="450" y="760" text-anchor="middle" font-size="22" fill="#FFFFFF" font-family="Noto Sans SC">Linux 内核前沿动态 · 每日追踪</text>
+  <text x="450" y="860" text-anchor="middle" font-size="20" fill="#8FA3E8" font-family="Noto Sans SC">$ git log --oneline media · drm</text>
+  <text x="450" y="1030" text-anchor="middle" font-size="24" fill="#C5D0F7" font-family="Noto Sans SC">内核是主业，玩家是态度</text>
+  <line x1="300" y1="1080" x2="600" y2="1080" stroke="#4C6BE8" stroke-width="1.5"/>
+  <text x="450" y="1130" text-anchor="middle" font-size="22" fill="#FFFFFF" font-family="Noto Sans SC">Linux内核玩家 · 著</text>
+</svg>
