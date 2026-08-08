@@ -102,8 +102,9 @@ npm install
 cp .env.example .env
 #   填入：Giscus 评论配置 + OSS AccessKey/Secret/Bucket/Region
 
-# 3. Skills（排版/封面/日报生产，从 skills 仓库拷贝）
-#   ~/.claude/skills/ 下需有：wechat-article / kernel-patch-radar（见下方 skills 仓库）
+# 3. Skills（排版/封面/日报生产，就在本仓库 skills/ 下）
+mkdir -p ~/.claude/skills && cp -r skills/* ~/.claude/skills/
+#   wechat-article（排版/封面）+ kernel-patch-radar（日报生产）
 
 # 4. 部署 hook（自动发布用，可选）
 bash scripts/install-hook.sh    # 安装 post-commit hook
