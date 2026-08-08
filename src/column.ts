@@ -9,11 +9,11 @@ export interface ColumnMeta {
 }
 
 export const COLUMNS: ColumnMeta[] = [
-  { value: 'daily',     label: '每日', emoji: '📅', fullLabel: '每日内核日报' },
-  { value: 'weekly',    label: '每周', emoji: '📊', fullLabel: '每周雷达' },
-  { value: 'monthly',   label: '每月', emoji: '📈', fullLabel: '月报' },
-  { value: 'quarterly', label: '每季', emoji: '🎯', fullLabel: '季报' },
-  { value: 'yearly',    label: '每年', emoji: '📚', fullLabel: '年报' },
+  { value: 'daily',     label: '日报', emoji: '📅', fullLabel: '每日内核日报' },
+  { value: 'weekly',    label: '周报', emoji: '📊', fullLabel: '每周雷达' },
+  { value: 'monthly',   label: '月报', emoji: '📈', fullLabel: '月报' },
+  { value: 'quarterly', label: '季报', emoji: '🎯', fullLabel: '季报' },
+  { value: 'yearly',    label: '年报', emoji: '📚', fullLabel: '年报' },
 ];
 
 export const COLUMN_MAP: Record<string, ColumnMeta> = Object.fromEntries(
