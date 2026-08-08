@@ -8,6 +8,7 @@ blocks:
     text: >-
       今天的 Linux 内核圈，值得花 3 分钟看两件事：<strong>Maxim 把 GMSL2/3 加解串器收进统一框架（v15）</strong>，和 <strong>Tegra 显存保护区域首次走 dma-buf heaps</strong>。
   - type: image
+    src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-08/cover.png"
     alt: 封面示意 · 8月8日 · GMSL2/3 加解串器统一框架 + Tegra VPR 显存保护
   - type: divider
     label: 🎬 今日导读
