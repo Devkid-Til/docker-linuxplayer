@@ -198,25 +198,42 @@
 
   onScroll();
 
-  /* ── 标签过滤 ── */
+  /* ── 栏目 + 标签 双重过滤（交集）── */
+  var columnBar = document.getElementById('column-filter');
   var filterBar = document.getElementById('tag-filter');
   var items = document.querySelectorAll('.timeline-item');
+  var activeColumn = 'all';
+  var activeTag = 'all';
+
+  function applyFilters() {
+    items.forEach(function (item) {
+      var colMatch = activeColumn === 'all' || item.getAttribute('data-column') === activeColumn;
+      var tagMatch = activeTag === 'all' || (item.getAttribute('data-tags') || '').split(',').map(function(s){return s.trim();}).indexOf(activeTag) >= 0;
+      item.classList.toggle('hidden', !(colMatch && tagMatch));
+    });
+  }
+
+  if (columnBar && items.length) {
+    columnBar.addEventListener('click', function (e) {
+      var btn = e.target.closest('.filter-column');
+      if (!btn) return;
+      var col = btn.getAttribute('data-column');
+      activeColumn = col;
+      columnBar.querySelectorAll('.filter-column').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      applyFilters();
+    });
+  }
+
   if (filterBar && items.length) {
     filterBar.addEventListener('click', function (e) {
       var btn = e.target.closest('.filter-tag');
       if (!btn) return;
       var tag = btn.getAttribute('data-tag');
-      /* active 态 */
+      activeTag = tag;
       filterBar.querySelectorAll('.filter-tag').forEach(function (b) { b.classList.remove('active'); });
       btn.classList.add('active');
-      /* 过滤 */
-      items.forEach(function (item) {
-        if (tag === 'all' || (item.getAttribute('data-tags') || '').split(',').map(function(s){return s.trim();}).indexOf(tag) >= 0) {
-          item.classList.remove('hidden');
-        } else {
-          item.classList.add('hidden');
-        }
-      });
+      applyFilters();
     });
   }
 

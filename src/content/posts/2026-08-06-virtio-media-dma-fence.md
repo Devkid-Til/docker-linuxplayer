@@ -2,6 +2,7 @@
 title: 虚拟机里的摄像头，终于要成标准设备了
 date: "2026-08-06"
 desc: "virtio-media v6 + Rust dma_fence v9 双头条；设备页迁移修复、Starvis2 泛化。"
+column: "daily"
 tags: ["虚拟化", "Rust", "视频 / 相机", "显示 / DRM"]
 blocks:
   - type: hook
