@@ -4,16 +4,16 @@
   "lists": {
     "media": 24,
     "DRM": 92,
-    "mm": 143,
+    "mm": 142,
     "PCI": 44,
-    "net": 243,
+    "net": 242,
     "fs": 17,
     "virtio": 0,
-    "Rust": 31,
+    "Rust": 30,
     "LSM": 2,
     "block": 6,
     "arch": 2,
     "rt": 19,
-    "lkml": 400
+    "lkml": 1081
   }
 }
