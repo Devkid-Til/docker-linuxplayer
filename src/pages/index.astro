@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 import { COLUMNS, ALL_COLUMN } from '../column';
+import fs from 'node:fs';
 
 const posts = (await getCollection('posts')).sort((a, b) => b.data.date.localeCompare(a.data.date));
 const slugOf = p => String(p.id).split('/').pop().replace(/\.md$/, '');
@@ -39,6 +40,19 @@ const totalHeadlines = posts.reduce((n, p) => n + (p.data.blocks || []).filter(b
 const totalHighlights = posts.reduce((n, p) => n + (p.data.blocks || []).filter(b => b.type === 'highlight').length, 0);
 const coveredTags = new Set<string>();
 posts.forEach(p => (p.data.tags || []).forEach(t => coveredTags.add(t)));
+// 板块活跃度（雷达社区情报）：radar.sh stats 产出的 JSON，构建时读入；缺文件/坏 JSON 静默降级（不编造数据）
+let radarStats: { date?: string; window?: string; lists?: Record<string, number> } | null = null;
+{
+  const statsPath = new URL('../data/radar-stats.json', import.meta.url);
+  if (fs.existsSync(statsPath)) {
+    try { radarStats = JSON.parse(fs.readFileSync(statsPath, 'utf8')); } catch { /* 坏 JSON 当无数据 */ }
+  }
+}
+// 热度条：按消息量降序 + 最大归一化宽度
+const boardHeat: { name: string; count: number }[] = radarStats?.lists
+  ? Object.entries(radarStats.lists).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count)
+  : [];
+const heatMax = boardHeat.length > 0 ? Math.max(...boardHeat.map(h => h.count)) : 1;
 ---
 <Base title="Linux 内核玩家 · 每日内核雷达">
   <header class="hero">
@@ -71,6 +85,33 @@ posts.forEach(p => (p.data.tags || []).forEach(t => coveredTags.add(t)));
           <span class="dash-value">{coveredTags.size}</span>
           <span class="dash-label">覆盖板块</span>
         </div>
+      </div>
+      <div class="board-heat reveal">
+        <div class="board-heat-head">
+          <h4>板块活跃度</h4>
+          <span class="board-heat-meta">近 {radarStats?.window || '24h'}{radarStats?.date ? ` · ${radarStats.date}` : ''}</span>
+        </div>
+        {boardHeat.length > 0 ? (
+          boardHeat.map(h => (
+            <div class="heat-item">
+              <span class="heat-name">{h.name}</span>
+              <span class="heat-bar"><span class="heat-fill" style={`--w:${heatMax > 0 ? Math.round((h.count / heatMax) * 100) : 0}%`}></span></span>
+              <span class="heat-count">{h.count}</span>
+            </div>
+          ))
+        ) : (
+          /* 数据槽位：源未就绪时先以骨架占位（不显示假 0，避免误导"某板块 0 消息"） */
+          <div class="heat-placeholder">
+            {[...Array(8)].map(i => (
+              <div class="heat-placeholder-row">
+                <span class="ph ph-name"></span>
+                <span class="ph ph-bar"></span>
+                <span class="ph ph-count"></span>
+              </div>
+            ))}
+            <p class="board-heat-note">📡 板块活跃度数据同步中——先以设计稿占位，内核邮件源就绪后自动填充各板块近 24h 活跃度。</p>
+          </div>
+        )}
       </div>
     </div>
   </section>
