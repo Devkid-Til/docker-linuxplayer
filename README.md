@@ -100,10 +100,13 @@ npm run build
 bash <skill>/generate-cover.sh --date "08-08" --topic "头条钩子" --out cover.png
 npm run oss cover.png kernel-blog/YYYY-MM-DD/cover.png   # 传 OSS（可选）
 
-# 4. 公众号粘贴用 HTML（标题 + 封面通过 cc-connect 发你审阅，和截图一样）
+# 4. 公众号粘贴用 HTML
 node scripts/render-wechat.mjs 2026-08-08 --out
 
-# 5. 发布（git commit 触发 post-commit hook 自动部署到服务器）
+# 5. 公众号审阅：标题 + 封面发给董事长（和发截图一样简单）
+cc-connect send --image cover.png --message "📢 公众号审阅 · Linux内核玩家 · 8月8日｜<头条钩子>"
+
+# 6. 董事长确认后发布（post-commit hook 自动部署）
 git add -A && git commit -m "..." && git push
 ```
 
