@@ -145,6 +145,7 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 
 /* ── 11. Tag Filter Bar ──────────────────────────────────────── */
 .tag-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:var(--space-lg)}
+.tag-filter.hidden{display:none}
 .tag-filter .filter-tag{font-size:.75rem;font-weight:500;padding:4px 12px;border-radius:16px;background:var(--bg-alt);color:var(--text-secondary);border:1px solid var(--border);cursor:pointer;transition:all .15s;font-family:var(--font-sans)}
 .tag-filter .filter-tag:hover{background:var(--brand-bg);color:var(--brand);border-color:var(--brand-border)}
 .tag-filter .filter-tag.active{background:var(--brand);color:#fff;border-color:var(--brand)}

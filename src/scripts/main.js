@@ -198,12 +198,27 @@
 
   onScroll();
 
-  /* ── 栏目 + 标签 双重过滤（交集）── */
+  /* ── 栏目 + 标签 双重过滤（交集）
+     tag 栏按栏目作用域：每个栏目有自己的 .tag-filter（词表不同），
+     切栏目 = 换词表 = 重置 activeTag，旧标签过滤必须清零。 */
   var columnBar = document.getElementById('column-filter');
-  var filterBar = document.getElementById('tag-filter');
+  var tagBars = document.querySelectorAll('.tag-filter');
   var items = document.querySelectorAll('.timeline-item');
   var activeColumn = 'all';
   var activeTag = 'all';
+
+  /* 切栏目：显示该栏目的 tag 栏（若无则全隐藏），并把该栏 active 态重置到"全部" */
+  function setTagBarVisible(col) {
+    tagBars.forEach(function (bar) {
+      var show = bar.getAttribute('data-column') === col;
+      bar.classList.toggle('hidden', !show);
+      if (show) {
+        bar.querySelectorAll('.filter-tag').forEach(function (b) {
+          b.classList.toggle('active', b.getAttribute('data-tag') === 'all');
+        });
+      }
+    });
+  }
 
   function applyFilters() {
     items.forEach(function (item) {
@@ -219,23 +234,30 @@
       if (!btn) return;
       var col = btn.getAttribute('data-column');
       activeColumn = col;
+      activeTag = 'all';
       columnBar.querySelectorAll('.filter-column').forEach(function (b) { b.classList.remove('active'); });
       btn.classList.add('active');
+      setTagBarVisible(col);
       applyFilters();
     });
   }
 
-  if (filterBar && items.length) {
-    filterBar.addEventListener('click', function (e) {
-      var btn = e.target.closest('.filter-tag');
-      if (!btn) return;
-      var tag = btn.getAttribute('data-tag');
-      activeTag = tag;
-      filterBar.querySelectorAll('.filter-tag').forEach(function (b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      applyFilters();
+  if (tagBars.length && items.length) {
+    tagBars.forEach(function (bar) {
+      bar.addEventListener('click', function (e) {
+        var btn = e.target.closest('.filter-tag');
+        if (!btn) return;
+        var tag = btn.getAttribute('data-tag');
+        activeTag = tag;
+        bar.querySelectorAll('.filter-tag').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        applyFilters();
+      });
     });
   }
+
+  /* 初始：无栏目选中（全部）→ 所有 tag 栏隐藏 */
+  setTagBarVisible(activeColumn);
 
   /* ── 终端轮播动画 ── */
   var termDeco = document.querySelector('.term-deco');
