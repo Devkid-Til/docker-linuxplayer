@@ -2,9 +2,9 @@
 export function deriveSource(blocks: unknown[]): string {
   const mods = new Set<string>();
   for (const b of blocks as { type?: string; kind?: string; label?: string; items?: { label?: string }[] }[]) {
-    // 📰 栏目分隔 → 模块名（如 "📰 linux-media（视频/相机）" → linux-media）
+    // 📰 栏目分隔 → 模块名（如 "📰 linux-media（视频/相机）" → linux-media；"📰 mm / 内存" → mm）
     if (b.type === 'divider' && b.kind === 'section') {
-      const m = String(b.label || '').replace(/^[^\w]+/, '').split(/[（(]/)[0].trim();
+      const m = String(b.label || '').replace(/^[^\w]+/, '').split(/[（(]/)[0].trim().split(/\s+/)[0];
       if (m) mods.add(m);
     }
     // 机制雷达 toc 条目的子系统前缀（mm/sched/pci/rust/drm）
