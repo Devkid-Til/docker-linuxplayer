@@ -4,6 +4,7 @@ import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
 import { COLUMNS, ALL_COLUMN } from '../column';
 import fs from 'node:fs';
+import path from 'node:path';
 
 const posts = (await getCollection('posts')).sort((a, b) => b.data.date.localeCompare(a.data.date));
 const slugOf = p => String(p.id).split('/').pop().replace(/\.md$/, '');
@@ -48,7 +49,10 @@ const MOCK_STATS = { date: '2026-08-08', window: '24h', lists: { lkml: 986, net:
 let radarStats: { date?: string; window?: string; lists?: Record<string, number> } | null = null;
 let isMock = false;
 {
-  const statsPath = new URL('../data/radar-stats.json', import.meta.url);
+  // 注意：不能用 import.meta.url 解析相对路径——Astro build 时（Vite 打包）import.meta.url 指向
+  // 编译产物而非源码 src/pages/index.astro，../data/ 会错位导致读不到文件、误回退到模拟数据。
+  // 用 process.cwd()（build 时 = 项目根）拼绝对路径，稳定读取。
+  const statsPath = path.join(process.cwd(), 'src/data/radar-stats.json');
   if (fs.existsSync(statsPath)) {
     try { radarStats = JSON.parse(fs.readFileSync(statsPath, 'utf8')); } catch { /* 坏 JSON 当无数据 */ }
   }
