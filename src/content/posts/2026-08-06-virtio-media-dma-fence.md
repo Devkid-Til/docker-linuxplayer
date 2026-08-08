@@ -3,7 +3,7 @@ title: 虚拟机里的摄像头，终于要成标准设备了
 date: "2026-08-06"
 desc: "virtio-media v6 + Rust dma_fence v9 双头条；设备页迁移修复、Starvis2 泛化。"
 column: "daily"
-tags: ["虚拟化", "Rust", "视频/相机", "显示/DRM"]
+tags: ["virtio", "Rust", "media", "DRM"]
 blocks:
   - type: hook
     text: >-
@@ -63,7 +63,7 @@ blocks:
     verdict: "Rust 化不是炫技——GPU 是最容易出 UAF 的地方，交给编译器兜底。"
     link: "https://lore.kernel.org/linux-media/20260805145949.938505-2-phasta@kernel.org/"
   - type: divider
-    label: "📰 linux-media（视频/相机）"
+    label: "📰 media"
     kind: section
   - type: highlight
     title: "imx678 → 通用 Sony Starvis 2 驱动（RFC）"
@@ -120,7 +120,7 @@ blocks:
         text: "qcom shikra IMX577 相机 DT overlay"
         time: "08-05 21:53"
   - type: divider
-    label: "📰 dri-devel（显示/DRM）"
+    label: "📰 DRM"
     kind: section
   - type: highlight
     title: "低内存回退时设备页迁移修复（v3）"

@@ -10,12 +10,13 @@ export interface ColumnMeta {
 }
 
 /* 每档栏目的受控词表：栏目内容结构不同 → 标签域不同。
-   日报是 media/drm 双栏目综合简报 → 词表 = 子系统域（与报告分节对齐）；
+   日报是全内核雷达，词表 = 内核社区板块（13 个）：11 个 lore 源列表 + 跨域板块 sched / driver-core。
+   板块名用社区习惯的短名（media、DRM、mm、net…），即内容里 section 用的名字——社区怎么叫就怎么标；
    周报是 mm/sched/pci 雷达 → 词表 = 机制域；月/季/年报是盘点 → 词表 = 盘点视角。 */
 export const COLUMNS: ColumnMeta[] = [
   {
     value: 'daily', label: '日报', emoji: '📅', fullLabel: '每日内核日报',
-    tags: ['视频/相机', '显示/DRM', 'mm/内存', '虚拟化', 'Rust', '网络', '文件系统', '驱动框架', '安全'],
+    tags: ['media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio', 'Rust', 'LSM', 'block', 'arch', 'sched', 'driver-core'],
   },
   {
     value: 'weekly', label: '周报', emoji: '📊', fullLabel: '每周雷达',
