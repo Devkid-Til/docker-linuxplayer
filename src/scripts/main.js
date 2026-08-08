@@ -2,6 +2,9 @@
 (function () {
   'use strict';
 
+  /* 触摸设备检测：触摸用 touch 事件控制光晕/粒子，手指接触才显示、松手即隐 */
+  var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
   /* ── 暗色模式 ── */
   var html = document.documentElement;
   var themeBtn = document.getElementById('theme-toggle');
@@ -40,14 +43,29 @@
       });
     }
 
-    /* 尾迹粒子：从光标散射 */
+    /* 尾迹粒子：从指针散射 */
     var trail = [];
     var MAX_TRAIL = 26;
     var mx = 0, my = 0;
+    var touchActive = false;
 
-    document.addEventListener('mousemove', function (e) {
-      mx = e.clientX; my = e.clientY;
-    }, { passive: true });
+    /* 指针位置：触摸设备用 touch（手指接触才有），鼠标用 mousemove */
+    if (isTouch) {
+      document.addEventListener('touchstart', function (e) {
+        var t = e.touches[0]; if (t) { mx = t.clientX; my = t.clientY; }
+        touchActive = true;
+      }, { passive: true });
+      document.addEventListener('touchmove', function (e) {
+        var t = e.touches[0]; if (t) { mx = t.clientX; my = t.clientY; }
+        touchActive = true;
+      }, { passive: true });
+      document.addEventListener('touchend', function () { touchActive = false; });
+      document.addEventListener('touchcancel', function () { touchActive = false; });
+    } else {
+      document.addEventListener('mousemove', function (e) {
+        mx = e.clientX; my = e.clientY;
+      }, { passive: true });
+    }
 
     var emit = 0;
     function frame() {
@@ -72,7 +90,7 @@
 
       /* ── 尾迹发射 ── */
       emit++;
-      if (emit % 3 === 0 && trail.length < MAX_TRAIL && mx > 0) {
+      if (emit % 3 === 0 && trail.length < MAX_TRAIL && mx > 0 && (!isTouch || touchActive)) {
         trail.push({
           x: mx, y: my,
           vx: (Math.random() - .5) * 1.4,
@@ -99,16 +117,33 @@
     requestAnimationFrame(frame);
   })();
 
-  /* ── 鼠标光晕 ── */
+  /* ── 指针光晕：触摸设备手指接触才显示、松手即隐；鼠标跟随 ── */
   var glow = document.querySelector('.cursor-glow');
   if (glow) {
     var glowTick = false;
-    document.addEventListener('mousemove', function (e) {
-      var ex = e.clientX, ey = e.clientY;
-      if (!glowTick) { requestAnimationFrame(function () { glow.style.left = ex + 'px'; glow.style.top = ey + 'px'; glowTick = false; }); glowTick = true; }
-    }, { passive: true });
-    document.addEventListener('mouseenter', function () { glow.classList.add('visible'); });
-    document.addEventListener('mouseleave', function () { glow.classList.remove('visible'); });
+    function moveGlow(x, y) {
+      if (!glowTick) { requestAnimationFrame(function () { glow.style.left = x + 'px'; glow.style.top = y + 'px'; glowTick = false; }); glowTick = true; }
+    }
+    if (isTouch) {
+      document.addEventListener('touchstart', function (e) {
+        var t = e.touches[0]; if (!t) return;
+        glow.classList.add('visible');
+        moveGlow(t.clientX, t.clientY);
+      }, { passive: true });
+      document.addEventListener('touchmove', function (e) {
+        var t = e.touches[0]; if (!t) return;
+        glow.classList.add('visible');
+        moveGlow(t.clientX, t.clientY);
+      }, { passive: true });
+      document.addEventListener('touchend', function () { glow.classList.remove('visible'); });
+      document.addEventListener('touchcancel', function () { glow.classList.remove('visible'); });
+    } else {
+      document.addEventListener('mousemove', function (e) {
+        moveGlow(e.clientX, e.clientY);
+      }, { passive: true });
+      document.addEventListener('mouseenter', function () { glow.classList.add('visible'); });
+      document.addEventListener('mouseleave', function () { glow.classList.remove('visible'); });
+    }
   }
 
   /* ── 滚动进度 ── */
