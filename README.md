@@ -87,3 +87,31 @@ git add -A && git commit -m "..." && git push
 ```
 
 > ⚠️ 内容 YAML 规范：所有字符串值必须加双引号（值常含 `:`、`[`、`#` 等 YAML 敏感字符）。生成器遵守此规则，否则 js-yaml 解析报错。
+
+## 新机器接入（换环境无缝衔接）
+
+从零在新机器恢复整套环境：
+
+```bash
+# 1. 代码
+git clone git@github.com:Devkid-Til/docker-linuxplayer.git kernel-blog
+cd kernel-blog && git checkout feature/astro
+npm install
+
+# 2. 环境变量（.env 不入库，从模板复制后填真实值）
+cp .env.example .env
+#   填入：Giscus 评论配置 + OSS AccessKey/Secret/Bucket/Region
+
+# 3. Skills（排版/封面/日报生产，从 skills 仓库拷贝）
+#   ~/.claude/skills/ 下需有：wechat-article / kernel-patch-radar（见下方 skills 仓库）
+
+# 4. 部署 hook（自动发布用，可选）
+bash scripts/install-hook.sh    # 安装 post-commit hook
+
+# 5. 截图/视觉验证工具（可选）
+#   npm i playwright && npx playwright install chromium && sudo apt install fonts-noto-cjk fonts-noto-color-emoji
+```
+
+**换环境必带三样**：① git 仓库（代码全量）② skills 仓库（AI 排版能力）③ `.env`（凭据，用 `.env.example` 模板重建）。
+
+**验证**：`npm run build` 通过 + `npm run oss` 能上传 + `npm run wechat` 能出公众号 HTML，即环境就绪。
