@@ -1,10 +1,14 @@
 ---
-// 结尾 CTA 卡：金句 + 数据来源
+// 结尾 CTA 卡：金句 + 数据来源（来源为空时用动态推导的模块来源）
 import type { ClosingBlock } from './types';
-interface Props { block: ClosingBlock; }
-const { block } = Astro.props;
+interface Props {
+  block: ClosingBlock;
+  fallbackSource?: string;
+}
+const { block, fallbackSource = '' } = Astro.props;
+const src = block.source || fallbackSource;
 ---
 <div class="block-card block-closing">
   <p class="c-tagline" set:html={block.tagline} />
-  <p class="c-source" set:html={block.source} />
+  <p class="c-source" set:html={src} />
 </div>
