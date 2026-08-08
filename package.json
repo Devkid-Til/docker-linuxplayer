@@ -8,8 +8,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "wechat": "node scripts/render-wechat.mjs",
-    "oss": "node scripts/upload-oss.mjs",
-    "notify": "node scripts/notify-feishu.mjs"
+    "oss": "node scripts/upload-oss.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
