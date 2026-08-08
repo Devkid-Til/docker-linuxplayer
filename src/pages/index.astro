@@ -6,9 +6,6 @@ import { COLUMNS, ALL_COLUMN } from '../column';
 
 const posts = (await getCollection('posts')).sort((a, b) => b.data.date.localeCompare(a.data.date));
 const slugOf = p => String(p.id).split('/').pop().replace(/\.md$/, '');
-const allTags = [...new Set(posts.flatMap(p => p.data.tags))].sort();
-const tagCounts = {};
-posts.forEach(p => p.data.tags.forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; }));
 
 // 栏目计数（过滤栏 tab 所用）
 const columnCounts: Record<string, number> = {};
@@ -16,6 +13,23 @@ posts.forEach(p => {
   const c = p.data.column || 'daily';
   columnCounts[c] = (columnCounts[c] || 0) + 1;
 });
+
+// 每栏目独立 tag 栏：只统计该栏目自己的文章 + 该栏目词表内的标签
+// （词表由 schema 强制，这里只需按栏目聚合即可）
+const columnTags: Record<string, { name: string; count: number }[]> = {};
+const columnTagsUseful: Record<string, boolean> = {};
+for (const c of COLUMNS) {
+  const colPosts = posts.filter(p => (p.data.column || 'daily') === c.value);
+  const counts: Record<string, number> = {};
+  colPosts.forEach(p => p.data.tags.forEach(t => { counts[t] = (counts[t] || 0) + 1; }));
+  const list = Object.entries(counts)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+  columnTags[c.value] = list;
+  /* 自适应显隐：帖子 <2 / 标签 <2 / 每个标签都是常量（命中数=帖子数）→ 无筛选价值，隐藏 */
+  const hasDiscriminator = list.some(t => t.count < colPosts.length);
+  columnTagsUseful[c.value] = colPosts.length >= 2 && list.length >= 2 && hasDiscriminator;
+}
 
 // 最新一篇日报的 slug（"今日" 徽标锚定此篇）
 const dailyPosts = posts.filter(p => (p.data.column || 'daily') === 'daily');
@@ -49,10 +63,12 @@ const latestDailySlug = dailyPosts.length > 0 ? slugOf(dailyPosts[0]) : '';
       <button class="filter-column active" data-column="all">{ALL_COLUMN.label} <span class="count">{posts.length}</span></button>
       {COLUMNS.map(c => <button class="filter-column" data-column={c.value}>{c.emoji} {c.label}<span class="count"> {columnCounts[c.value] || 0}</span></button>)}
     </div>
-    <div class="tag-filter reveal" id="tag-filter">
-      <button class="filter-tag active" data-tag="all">全部 <span class="count">{posts.length}</span></button>
-      {allTags.map(t => <button class="filter-tag" data-tag={t}>{t}<span class="count"> {tagCounts[t]}</span></button>)}
-    </div>
+    {COLUMNS.filter(c => columnTagsUseful[c.value]).map(c => (
+      <div class="tag-filter reveal hidden" data-column={c.value}>
+        <button class="filter-tag active" data-tag="all">全部 <span class="count">{columnCounts[c.value] || 0}</span></button>
+        {columnTags[c.value].map(t => <button class="filter-tag" data-tag={t.name}>{t.name}<span class="count"> {t.count}</span></button>)}
+      </div>
+    ))}
     <div class="post-timeline">
       {posts.map((p, i) => <PostCard latest={slugOf(p) === latestDailySlug} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} />)}
     </div>

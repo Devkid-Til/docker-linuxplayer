@@ -3,7 +3,7 @@ title: GMSL2/3 加解串器统一框架 v15 · Tegra 显存保护接入 dma-buf
 date: "2026-08-08"
 desc: "GMSL2/3 统一框架 v15 收编 Maxim 老驱动；Tegra VPR 显存保护首次走 dma-buf heaps。"
 column: "daily"
-tags: ["视频 / 相机", "显示 / DRM", "mm / 内存"]
+tags: ["视频/相机", "显示/DRM", "mm/内存"]
 blocks:
   - type: hook
     text: >-
