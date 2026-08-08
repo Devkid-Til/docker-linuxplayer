@@ -54,8 +54,10 @@ const boardHeat: { name: string; count: number }[] = radarStats?.lists
   : [];
 const heatMax = boardHeat.length > 0 ? Math.max(...boardHeat.map(h => h.count)) : 1;
 // 数据槽位：13 板块固定榜单（与 radar.sh stats 的 SHORT 短名一致）。
-// 无数据时渲染为"榜单轮廓"占位（板块名 + 空条 + "—"，不编造消息数），数据就绪后替换为真实热度条。
-const BOARD_SLOTS = ['media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio', 'Rust', 'LSM', 'block', 'arch', 'rt', 'lkml'];
+// lkml（linux-kernel 全内核广播源）置顶——跨板块补丁都抄送这里，先看全局再看子板块；
+// 其余按 radar.sh 源顺序排布。无数据时渲染为"榜单轮廓"占位（板块名 + 空条 + "—"，不编造消息数），
+// 数据就绪后替换为真实热度条（届时按真实消息量降序，lkml 通常仍居首）。
+const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio', 'Rust', 'LSM', 'block', 'arch', 'rt'];
 ---
 <Base title="Linux 内核玩家 · 每日内核雷达">
   <header class="hero">
