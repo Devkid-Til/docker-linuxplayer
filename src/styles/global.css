@@ -150,11 +150,14 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .heat-placeholder-row{display:grid;grid-template-columns:3.5rem 1fr 2.75rem;align-items:center;gap:var(--space-md);padding:5px 0}
 .heat-empty{display:block;height:8px;border-radius:4px;background:var(--border)}
 .board-heat-note{grid-column:1/-1;margin:var(--space-sm) 0 0;font-size:.8125rem;color:var(--text-tertiary)}
-/* 移动端：2×2 小卡 */
+/* 移动端：2×2 小卡；板块活跃度改单列——两列时每列仅 ~120px，
+   而行内固定列(3.5rem+2.75rem+两处 gap)≈132px，1fr 的 bar 轨道会被压成 0px（条全消失） */
 @media(max-width:768px){
   .radar-dashboard{grid-template-columns:1fr 1fr;gap:var(--space-md);padding:var(--space-xl)}
   .dash-item{border-left:none;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-lg)}
   .dash-value{font-size:2rem}
+  .board-heat{grid-template-columns:1fr;gap:var(--space-sm);padding:var(--space-lg)}
+  .heat-placeholder{grid-template-columns:1fr;gap:var(--space-sm)}
 }
 
 /* ── 10. Section Header ──────────────────────────────────────── */
