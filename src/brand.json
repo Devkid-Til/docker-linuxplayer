@@ -1,44 +1,91 @@
 {
-  "version": "0.1.0",
-  "note": "品牌配色单一数据源——所有脚本/样式从这里读，禁止各端硬编码配色。按渠道分区，当前各渠道暂用同一套 violet 方案；未来某渠道要独立调整只改对应分区。",
-  "channels": {
-    "blog": {
-      "primary": "#7C3AED",
-      "primaryLight": "#A78BFA",
-      "primaryDark": "#5B21B6",
-      "primaryBg": "#F5F3FF",
-      "primaryBorder": "#DDD6FE",
-      "bg": "#FFFFFF",
-      "bgAlt": "#F8FAFC",
-      "text": "#181C28",
-      "textSecondary": "#4B5563",
-      "textTertiary": "#787F91",
-      "border": "#E5E7EB"
+  "version": "0.2.0",
+  "note": "品牌配色单一数据源——所有脚本/样式从这里读，禁止各端硬编码配色。两级结构：themes=配色方案（当前激活 current），每方案内按渠道分区（blog/wechat/cover）。切主题改 current 即可全端切换；调色只改对应方案对应渠道。",
+  "current": "violet",
+  "themes": {
+    "violet": {
+      "channels": {
+        "blog": {
+          "primary": "#7C3AED",
+          "primaryLight": "#A78BFA",
+          "primaryDark": "#5B21B6",
+          "primaryBg": "#F5F3FF",
+          "primaryBorder": "#DDD6FE",
+          "bg": "#FFFFFF",
+          "bgAlt": "#F8FAFC",
+          "text": "#181C28",
+          "textSecondary": "#4B5563",
+          "textTertiary": "#787F91",
+          "border": "#E5E7EB"
+        },
+        "wechat": {
+          "primary": "#7C3AED",
+          "primaryDark": "#5B21B6",
+          "primaryBg": "#EDE9FE",
+          "primaryBorder": "#C4B5FD",
+          "text": "#333333",
+          "textSecondary": "#4B5563",
+          "textTertiary": "#8C8C8C",
+          "bg": "#FFFFFF",
+          "border": "#E5E6EB",
+          "codeBg": "#1F2430",
+          "codeText": "#E6E6E6"
+        },
+        "cover": {
+          "gradientFrom": "#7C3AED",
+          "gradientTo": "#5B21B6",
+          "accent": "#A78BFA",
+          "border": "#DDD6FE",
+          "bg": "#F5F3FF",
+          "bgLight": "#EDE9FE",
+          "text": "#FFFFFF",
+          "textDark": "#1E1B4B",
+          "muted": "#8B7EC8",
+          "eyebrow": "#A78BFA"
+        }
+      }
     },
-    "wechat": {
-      "primary": "#7C3AED",
-      "primaryDark": "#5B21B6",
-      "primaryBg": "#EDE9FE",
-      "primaryBorder": "#C4B5FD",
-      "text": "#333333",
-      "textSecondary": "#4B5563",
-      "textTertiary": "#8C8C8C",
-      "bg": "#FFFFFF",
-      "border": "#E5E6EB",
-      "codeBg": "#1F2430",
-      "codeText": "#E6E6E6"
-    },
-    "cover": {
-      "gradientFrom": "#7C3AED",
-      "gradientTo": "#5B21B6",
-      "accent": "#A78BFA",
-      "border": "#DDD6FE",
-      "bg": "#F5F3FF",
-      "bgLight": "#EDE9FE",
-      "text": "#FFFFFF",
-      "textDark": "#1E1B4B",
-      "muted": "#8B7EC8",
-      "eyebrow": "#A78BFA"
+    "cyber": {
+      "channels": {
+        "blog": {
+          "primary": "#22D3EE",
+          "primaryLight": "#67E8F9",
+          "primaryDark": "#0E7490",
+          "primaryBg": "#0F2942",
+          "primaryBorder": "#155E75",
+          "bg": "#0B1220",
+          "bgAlt": "#111A2E",
+          "text": "#E2E8F0",
+          "textSecondary": "#94A3B8",
+          "textTertiary": "#64748B",
+          "border": "#1E293B"
+        },
+        "wechat": {
+          "primary": "#22D3EE",
+          "primaryDark": "#0E7490",
+          "primaryBg": "#0F2942",
+          "primaryBorder": "#155E75",
+          "text": "#E2E8F0",
+          "textSecondary": "#94A3B8",
+          "textTertiary": "#64748B",
+          "bg": "#0B1220",
+          "border": "#1E293B",
+          "codeBg": "#1E293B",
+          "codeText": "#E2E8F0"
+        },
+        "cover": {
+          "gradientFrom": "#22D3EE",
+          "gradientTo": "#E879F9",
+          "accent": "#67E8F9",
+          "border": "#155E75",
+          "bg": "#0B1220",
+          "bgLight": "#0F2942",
+          "text": "#0B1220",
+          "textDark": "#22D3EE",
+          "muted": "#64748B",
+          "eyebrow": "#67E8F9"
+        }
+      }
     }
   }
 }

@@ -9,14 +9,8 @@
   /* 品牌 token（--brand 系列）由 Base.astro 从 src/brand.json 注入——此处不再硬编码，
      改品牌配色只改 brand.json，勿在此改色 */
 
-  --bg:           #FFFFFF;
-  --bg-alt:       #F8FAFC;
-  --card:         #FFFFFF;
-  --border:       #E5E7EB;
-  --border-light: #F3F4F6;
-  --text:         #0F172A;
-  --text-secondary: #64748B;
-  --text-tertiary:  #94A3B8;
+  /* 页面基础色（--bg/--text/--border 等）由 Base.astro 从 brand.json 注入——此处不再硬编码；
+     保留 --code-*（代码块独立配色，不随主题） */
   --code-bg:      #1E293B;
   --code-text:    #E2E8F0;
   --code-accent:  #C4B5FD;
@@ -100,9 +94,9 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
 
 /* ── 7. Hero（专业分层版）─────────────────────────────────────── */
-.hero{position:relative;overflow:hidden;padding:var(--space-3xl) 0 var(--space-2xl);background:linear-gradient(170deg,#F5F3FF 0%,#FFFFFF 30%,#F8FAFC 70%,#F0F4FF 100%);border-bottom:1px solid var(--border-light);text-align:center}
+.hero{position:relative;overflow:hidden;padding:var(--space-3xl) 0 var(--space-2xl);background:linear-gradient(170deg,var(--brand-bg) 0%,var(--bg) 30%,var(--bg-alt) 70%,var(--bg-alt) 100%);border-bottom:1px solid var(--border-light);text-align:center}
 /* 背景网格 */
-.hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 25% 30%,rgba(124,58,237,.06) 0%,transparent 50%),radial-gradient(circle at 75% 60%,rgba(124,58,237,.04) 0%,transparent 50%);pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 25% 30%,color-mix(in srgb,var(--brand) 6%,transparent) 0%,transparent 50%),radial-gradient(circle at 75% 60%,color-mix(in srgb,var(--brand) 4%,transparent) 0%,transparent 50%);pointer-events:none}
 .hero-inner{position:relative;z-index:1}
 .hero-eyebrow{display:inline-block;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--brand);background:var(--brand-bg);padding:5px 16px;border-radius:20px;margin-bottom:var(--space-lg)}
 .hero h1{margin-bottom:var(--space-sm)}
@@ -118,7 +112,7 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:10px 22px;border-radius:24px;font-size:.875rem;font-weight:600;text-decoration:none;border:none;cursor:pointer;transition:transform .15s var(--ease-out),box-shadow .15s var(--ease-out),background .15s;position:relative;overflow:hidden}
 .btn:hover{text-decoration:none;transform:translateY(-1px)}
 .btn:active{transform:scale(.97)}
-.btn-primary{background:var(--brand);color:#fff;box-shadow:0 2px 12px rgba(124,58,237,.3)}
+.btn-primary{background:var(--brand);color:#fff;box-shadow:0 2px 12px color-mix(in srgb,var(--brand) 30%,transparent)}
 .btn-primary:hover{box-shadow:0 6px 20px rgba(124,58,237,.4)}
 .btn-ghost{background:var(--card);color:var(--text);border:1px solid var(--border)}
 .btn-ghost:hover{border-color:var(--brand);color:var(--brand)}
