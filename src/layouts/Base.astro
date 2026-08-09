@@ -40,8 +40,10 @@ function buildTokens(cfg) {
 
 const lightTokens = buildTokens(lightCfg);
 const darkTokens = darkCfg ? buildTokens(darkCfg) : '';
+// 轮播命令(term-deco)在 hero 有背景图时强制白色（深色图上可读）——直接规则，绕过 CSS 变量层叠问题
+const termRule = lightCfg.effects.heroImage ? '.hero .term-deco{color:#fff}' : '';
 // 品牌 token 以字符串注入（is:global style 的 {expr} 插值不生效，用 is:inline + set:html）
-const brandCss = `:root{${lightTokens}}${darkTokens ? ` html.dark{${darkTokens}}` : ''}`;
+const brandCss = `:root{${lightTokens}}${termRule}${darkTokens ? ` html.dark{${darkTokens}}` : ''}`;
 ---
 <!DOCTYPE html>
 <html lang="zh-CN">
