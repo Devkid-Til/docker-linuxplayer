@@ -1,5 +1,5 @@
 ---
-// GitHub 风格彩色撒花：评论区加载成功/进入视口时触发（庆祝登录成功）
+// GitHub 风格彩色撒花：评论真实加载成功（giscus:ready）时庆祝
 // 用 canvas-confetti 库复刻 GitHub merge-PR 的淡彩彩虹 + 两侧礼炮
 ---
 <script>
@@ -46,18 +46,13 @@
     }, 200);
   }
 
-  // 双触发：① Giscus 加载成功消息 ② 评论区进入视口（用户来看评论）——只庆祝一次
+  // 触发：① Giscus 评论真实加载成功（giscus:ready）→ 庆祝一次；② 无 IO 环境的点击兜底。
+  // 刻意不做「进入视口即撒花」——任何访客滑到评论区就触发会显得噪（M11）
   window.addEventListener('message', function (e) {
     if (e.data && e.data.type === 'giscus:ready') celebrate();
   });
   var comments = document.getElementById('comments');
-  if (comments && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) celebrate();
-      });
-    }, { threshold: 0.3 }).observe(comments);
-  } else if (comments) {
+  if (comments && !('IntersectionObserver' in window)) {
     comments.addEventListener('click', function () { celebrate(); });
   }
 </script>

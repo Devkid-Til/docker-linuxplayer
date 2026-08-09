@@ -4,14 +4,26 @@ import { BLOCK_TYPES } from './components/article/blocks/types';
 import { COLUMN_VALUES, COLUMN_TAG_MAP } from './column';
 
 /* 板块 schema：type 用枚举校验（拼写错误构建即报），
-   其余字段 passthrough 交给各组件做运行时读取——板块类型扩展不用改 schema */
-const block = z.object({ type: z.enum(BLOCK_TYPES) }).passthrough();
+   其余字段 passthrough 交给各组件做运行时读取——板块类型扩展不用改 schema。
+   src（image 板块的图片地址）必须是绝对 http(s) URL：杜绝本地/相对路径残留进公众号产物 */
+const block = z.object({
+  type: z.enum(BLOCK_TYPES),
+  src: z.string().url().optional(),
+}).passthrough().superRefine((b, ctx) => {
+  // 必填字段构建期校验，报「哪篇文章哪个板块」可读错误（避免运行时 TypeError 晦涩炸掉整次构建）
+  const issue = (path: string, msg: string) => ctx.addIssue({ code: z.ZodIssueCode.custom, path: [path], message: msg });
+  if ((b.type === 'headline' || b.type === 'highlight') && !Array.isArray(b.points)) issue('points', `「${b.type}」板块缺 points 数组`);
+  if ((b.type === 'toc' || b.type === 'more') && !Array.isArray(b.items)) issue('items', `「${b.type}」板块缺 items 数组`);
+  if (['hook', 'paragraph', 'quote', 'code'].includes(b.type) && typeof b.text !== 'string') issue('text', `「${b.type}」板块缺 text`);
+  if (b.type === 'closing' && typeof b.tagline !== 'string') issue('tagline', '「closing」板块缺 tagline');
+  if (b.type === 'image' && typeof b.alt !== 'string') issue('alt', '「image」板块缺 alt');
+});
 
 const posts = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
   schema: z.object({
     title: z.string(),
-    date: z.string(),          // YYYY-MM-DD
+    date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'date 必须为 YYYY-MM-DD 格式'),
     desc: z.string(),
     column: z.enum(COLUMN_VALUES).default('daily'),
     /* tags 用受控词表：必须是该 post 所在栏目的词表成员，构建即报错。

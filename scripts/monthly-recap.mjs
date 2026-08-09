@@ -64,6 +64,7 @@ const agg = {
   mechanisms: [],      // {date, label, text}
   terms: [],           // {term, n} 速查术语词频
   moreCount: 0,        // 常规动态条目总数
+  highlightCount: 0,   // highlight 板块条数（亮点数独立统计，不靠 sections-moreCount 推算）
 };
 
 let curSection = null;      // 当前 divider(section) 名
@@ -88,6 +89,7 @@ for (const p of posts) {
         agg.headlines.push({ date: p.date, title: b.title, verdict: b.verdict || '', link: b.link || '' });
         break;
       case 'highlight':
+        agg.highlightCount += 1;
         if (curSection) agg.sections[curSection] = (agg.sections[curSection] || 0) + 1;
         break;
       case 'more':
@@ -127,7 +129,7 @@ const L = s => console.log(s);
 L(`# 盘点素材 · ${agg.month} · ${agg.column}`);
 L('');
 L(`## 一、规模`);
-L(`- 文章 ${agg.posts} 篇 · 头条 ${agg.headlines.length} 条 · 亮点 ${Object.values(agg.sections).reduce((a, b) => a + b, 0) - agg.moreCount} 条 · 常规动态 ${agg.moreCount} 条 · 机制雷达 ${agg.mechanisms.length} 条 · 速查术语 ${agg.terms.length} 词`);
+L(`- 文章 ${agg.posts} 篇 · 头条 ${agg.headlines.length} 条 · 亮点 ${agg.highlightCount} 条 · 常规动态 ${agg.moreCount} 条 · 机制雷达 ${agg.mechanisms.length} 条 · 速查术语 ${agg.terms.length} 词`);
 L('');
 L(`## 二、标签频次（趋势观察素材）`);
 L(`| 标签 | 次数 |`);

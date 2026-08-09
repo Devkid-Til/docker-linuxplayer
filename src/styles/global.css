@@ -15,7 +15,7 @@
   --code-text:    #E2E8F0;
   --code-accent:  #C4B5FD;
 
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Noto Sans SC', 'Noto Sans CJK SC', 'Microsoft YaHei', sans-serif;
   --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
   --font-size-base: 16px;
   --line-height-base: 1.75;
@@ -95,10 +95,6 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 
 /* ── 7. Hero（专业分层版）─────────────────────────────────────── */
 .hero{position:relative;overflow:hidden;padding:var(--space-3xl) 0 var(--space-2xl);background-color:var(--brand-bg);background-image:linear-gradient(180deg,transparent 52%,color-mix(in srgb,var(--bg) 68%,transparent) 86%,var(--bg) 100%),var(--hero-image);background-size:auto,cover;background-position:center;background-repeat:no-repeat,no-repeat;border-bottom:1px solid var(--border-light);text-align:center}
-/* hero 背景图：<img> + object-fit:cover 保证任何 hero 宽高都等比填满（无留白）——图在 z0 */
-.hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;pointer-events:none}
-/* 遮罩只在底部做接缝过渡（深空→页面 bg），不覆盖中部文字区——文字(z2)直接落在银河图上保持清晰 */
-.hero-mask{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,transparent 52%,color-mix(in srgb,var(--bg) 68%,transparent) 86%,var(--bg) 100%)}
 /* hero 星空：星点漂移 + 整体缓慢浮动（白星 + 主题色星交替，颜色随 --fx-particle，如 cyber 青色星云） */
 .hero::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.95;background-image:
   radial-gradient(3px 3px at 8% 25%,#fff 70%,transparent),
@@ -121,6 +117,7 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .radar-dashboard,.board-heat,.timeline-card,.about-card,.post-card{border-color:var(--fx-card-border);box-shadow:0 0 22px color-mix(in srgb,var(--fx-card-glow) 16%,transparent)}
 /* 网格背景：由主题 effects.grid 驱动（--fx-grid/--fx-grid-opacity），disabled 时透明无副作用 */
 body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--fx-grid) 1px,transparent 1px),linear-gradient(90deg,var(--fx-grid) 1px,transparent 1px);background-size:44px 44px;opacity:var(--fx-grid-opacity)}
+.hero .term-deco{position:absolute;top:var(--space-md);right:var(--space-md);z-index:3;font-family:var(--font-mono);font-size:.75rem;color:#fff;opacity:.85}
 .hero-inner{position:relative;z-index:2}
 .hero-eyebrow{display:inline-block;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--hero-text);background:var(--hero-eyebrow-bg);padding:5px 16px;border-radius:20px;margin-bottom:var(--space-lg)}
 .hero h1{margin-bottom:var(--space-sm);color:var(--hero-text)}
@@ -235,8 +232,8 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .article-hero .hero-inner{position:relative;z-index:2}
 .article-hero .back-link{position:absolute;top:var(--space-md);left:var(--space-md);z-index:1;font-size:.8125rem;color:var(--text-tertiary);display:inline-flex;align-items:center;gap:4px}
 .article-hero .back-link:hover{color:var(--brand)}
-.article-hero .term-deco{position:absolute;top:var(--space-md);right:var(--space-md);z-index:1;font-family:var(--font-mono);font-size:.75rem;color:var(--hero-text);opacity:.85}
-.article-hero .hero-eyebrow{position:relative;z-index:1}
+.article-hero .term-deco{position:absolute;top:var(--space-md);right:var(--space-md);z-index:1;font-family:var(--font-mono);font-size:.75rem;color:var(--text-secondary);opacity:.85}
+.article-hero .hero-eyebrow{position:relative;z-index:1;color:var(--text);background:var(--brand-bg)}
 .article-hero h1{position:relative;z-index:1;font-size:2.5rem;line-height:1.25;font-weight:700;color:var(--text);max-width:26ch;margin:0 auto var(--space-sm)}
 .article-hero .subtitle{position:relative;z-index:1;color:var(--text-secondary);font-size:1.0625rem;line-height:1.75;max-width:460px;margin:0 auto}
 html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#09090D 40%,#0D0D18 70%,#121023 100%);border-bottom-color:var(--border)}

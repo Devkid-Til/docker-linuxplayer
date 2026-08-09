@@ -13,14 +13,25 @@ echo "[deploy] rebuilding (Astro)..."
 cd "$ROOT"
 npm run build
 
+# 守卫：build 成功但内容为空时禁止部署（防 rsync --delete 清空线上全部文章）
+if [ ! -f "$ROOT/site/index.html" ] || [ -z "$(ls -A "$ROOT/site/posts" 2>/dev/null)" ]; then
+  echo "[deploy] ⛔ 构建产物缺 index.html 或 posts 为空，中止部署（防 --delete 清空线上）"
+  exit 1
+fi
+
 echo "[deploy] syncing to $SERVER..."
-rsync -az --delete "$ROOT/site/" "$SERVER:$DEST/"
+rsync -az --delete --timeout=15 "$ROOT/site/" "$SERVER:$DEST/"
 
 echo "[deploy] verifying..."
-if curl -sf -o /dev/null http://118.31.67.240; then
-  echo "  ✓ HTTP 200"
+# 健康检查：验最新文章页可达（不只看首页），失败即中止——不再静默通过
+LATEST_POST="$(ls -d "$ROOT/site/posts/"*/ 2>/dev/null | sort | tail -1 | xargs -n1 basename)"
+if [ -n "$LATEST_POST" ] && curl -sf --max-time 10 -o /dev/null "http://118.31.67.240/posts/$LATEST_POST/"; then
+  echo "  ✓ 最新文章 $LATEST_POST HTTP 200"
+elif curl -sf --max-time 10 -o /dev/null http://118.31.67.240; then
+  echo "  ✓ HTTP 200（无文章页，仅首页）"
 else
-  echo "  ⚠️ 健康检查未通过（已 rsync，继续）"
+  echo "  ⛔ 健康检查失败：$SERVER 不可达或站点异常"
+  exit 1
 fi
 
 if [ -z "${SKIP_DEPLOY:-}" ]; then

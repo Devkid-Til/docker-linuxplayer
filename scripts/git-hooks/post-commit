@@ -1,3 +1,9 @@
 #!/bin/bash
-# 每次 commit 自动部署（SKIP_DEPLOY 防止 deploy.sh 内部 commit 触发递归）
+# 每次 commit 自动部署（SKIP_DEPLOY 可外部 opt-out；deploy.sh 内部同变量防递归）
+# 合并提交（merge/cherry-pick 落地）跳过——操作的是中间态，交给显式部署
+if [ -n "${SKIP_DEPLOY:-}" ]; then exit 0; fi
+if git rev-parse --verify HEAD^2 >/dev/null 2>&1; then
+  echo "[post-commit] 合并提交，跳过自动部署（可手动 bash scripts/deploy.sh）"
+  exit 0
+fi
 SKIP_DEPLOY=1 bash "$(git rev-parse --show-toplevel)/scripts/deploy.sh" "auto: post-commit deploy"

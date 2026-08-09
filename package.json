@@ -12,7 +12,6 @@
     "recap": "node scripts/monthly-recap.mjs"
   },
   "dependencies": {
-    "@astrojs/rss": "^4.0.19",
     "ali-oss": "^6.23.0",
     "astro": "^7.2.0",
     "canvas-confetti": "^1.9.4",

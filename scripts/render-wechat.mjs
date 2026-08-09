@@ -8,6 +8,8 @@ import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import yaml from 'js-yaml';
+// 数据来源逻辑与博客端共享（src/components/article/blocks/derive-source.js，防双份漂移）
+import { deriveSource } from '../src/components/article/blocks/derive-source.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const POSTS_DIR = path.join(ROOT, 'src/content/posts');
@@ -40,24 +42,6 @@ function inline(t) {
 /* 带标签要点行（头条/亮点卡共用）；last=true 时底部 margin 归零 */
 function pointP(label, text, last) {
   return `<p style="font-size:15px;line-height:1.8;color:#333333;margin-bottom:${last ? '0' : '8px'}"><span style="color:#7C3AED">•</span> <span style="color:#7C3AED;font-weight:bold">${esc(label)}</span>：${inline(text)}</p>`;
-}
-
-/* 动态数据来源：扫描 blocks 的栏目分隔 + 机制雷达条目，提取当天覆盖的模块 */
-function deriveSource(blocks) {
-  const mods = new Set();
-  for (const b of blocks) {
-    if (b.type === 'divider' && b.kind === 'section') {
-      const m = String(b.label || '').replace(/^[^\w]+/, '').split(/[（(]/)[0].trim().split(/\s+/)[0];
-      if (m) mods.add(m);
-    }
-    if (b.type === 'toc' && Array.isArray(b.items)) {
-      for (const it of b.items) {
-        const m = String(it.label || '').match(/^(mm|sched|pci|rust|drm)\b/i);
-        if (m) mods.add(m[1].toLowerCase());
-      }
-    }
-  }
-  return `数据来源：${[...mods].join(' / ')}（lore.kernel.org）· 北京时间`;
 }
 
 function renderBlock(b, fallbackSource = '') {
@@ -174,8 +158,10 @@ const COLOR_MAP = {
   '#E5E6EB': w.border,
   '#FFFFFF': w.bg,
 };
-let outHtml = html;
-for (const [k, v] of Object.entries(COLOR_MAP)) outHtml = outHtml.split(k).join(v);
+// 单次正则替换全部 key（避免链式 split/join 的二次替换：某值恰好命中另一 key 会被再换一次）
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const colorRe = new RegExp(Object.keys(COLOR_MAP).map(reEsc).join('|'), 'g');
+const outHtml = html.replace(colorRe, m => COLOR_MAP[m]);
 
 if (writeOut) {
   mkdirSync(path.join(ROOT, 'output'), { recursive: true });

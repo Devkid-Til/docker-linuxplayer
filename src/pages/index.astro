@@ -5,13 +5,6 @@ import { getCollection } from 'astro:content';
 import { COLUMNS, ALL_COLUMN } from '../column';
 import fs from 'node:fs';
 import path from 'node:path';
-import brand from '../brand.json';
-
-// 当前主题的 hero 背景图（如 galaxy 银河）。用 <img> + object-fit:cover 渲染，
-// 无论 hero 卡片多高多宽都能等比填满（比 CSS background 更可靠、无留白）
-const _t = brand.themes[brand.current];
-const heroImg = (_t.variants ? _t.variants.light : _t).effects.heroImage || '';
-
 const posts = (await getCollection('posts')).sort((a, b) => b.data.date.localeCompare(a.data.date));
 const slugOf = p => String(p.id).split('/').pop().replace(/\.md$/, '');
 
