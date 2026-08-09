@@ -295,7 +295,7 @@
       "variants": {
         "light": {
           "effects": {
-            "heroImage": "/milkyway-hero.jpg",
+            "heroImage": "/nebula-carina.jpg",
             "heroGlow": {
               "enabled": true,
               "color": "#8B5CF6",
