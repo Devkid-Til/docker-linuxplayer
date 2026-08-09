@@ -5,6 +5,12 @@ import { getCollection } from 'astro:content';
 import { COLUMNS, ALL_COLUMN } from '../column';
 import fs from 'node:fs';
 import path from 'node:path';
+import brand from '../brand.json';
+
+// 当前主题的 hero 背景图（如 galaxy 银河）。用 <img> + object-fit:cover 渲染，
+// 无论 hero 卡片多高多宽都能等比填满（比 CSS background 更可靠、无留白）
+const _t = brand.themes[brand.current];
+const heroImg = (_t.variants ? _t.variants.light : _t).effects.heroImage || '';
 
 const posts = (await getCollection('posts')).sort((a, b) => b.data.date.localeCompare(a.data.date));
 const slugOf = p => String(p.id).split('/').pop().replace(/\.md$/, '');
@@ -71,6 +77,7 @@ const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio',
 ---
 <Base title="Linux 内核玩家 · 每日内核雷达">
   <header class="hero">
+    {heroImg && <><img class="hero-bg" src={heroImg} alt="" /><div class="hero-mask"></div></>}
     <span class="term-deco">$ watch -n 10 kernel-patches</span>
     <div class="container hero-inner">
       <span class="hero-eyebrow reveal">KERNEL DAILY · 每日内核雷达</span>
