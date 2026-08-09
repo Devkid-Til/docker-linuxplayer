@@ -30,7 +30,12 @@ function buildTokens(cfg) {
   const heroImg = fx.heroImage ? `url('${fx.heroImage}')` : 'none';
   // hero 遮蔽率（overlay）：顶部/中部/底部三档，light 调低让图透出、dark 适中做品牌过渡（UI 默认值兜底）
   const ov = fx.overlay || { top: 0.5, mid: 0.42, bottom: 0.55 };
-  return `--brand:${b.primary};--brand-light:${b.primaryLight};--brand-dark:${b.primaryDark};--brand-bg:${b.primaryBg};--brand-border:${b.primaryBorder};--brand-glow:${glow};--bg:${b.bg};--bg-alt:${b.bgAlt};--card:${b.bg};--border:${b.border};--border-light:${b.border};--text:${b.text};--text-secondary:${b.textSecondary};--text-tertiary:${b.textTertiary};--fx-glow:${fx.heroGlow.color};--fx-grid:${grid};--fx-grid-opacity:${gridOp};--fx-particle:${fx.particles.color};--fx-card-glow:${cardGlow};--fx-card-border:${cardBorder};--hero-image:${heroImg};--hero-ov-top:${ov.top};--hero-ov-mid:${ov.mid};--hero-ov-bottom:${ov.bottom}`;
+  // hero 文字色：有 heroImage（深色背景图）时用浅色保证可读；无图用主题文字色
+  const heroText = fx.heroImage ? '#FFFFFF' : b.text;
+  const heroTextSec = fx.heroImage ? 'rgba(255,255,255,.82)' : b.textSecondary;
+  const heroAccent = fx.heroImage ? '#C4B5FD' : b.primary;
+  const heroEyebrowBg = fx.heroImage ? 'rgba(255,255,255,.14)' : b.primaryBg;
+  return `--brand:${b.primary};--brand-light:${b.primaryLight};--brand-dark:${b.primaryDark};--brand-bg:${b.primaryBg};--brand-border:${b.primaryBorder};--brand-glow:${glow};--bg:${b.bg};--bg-alt:${b.bgAlt};--card:${b.bg};--border:${b.border};--border-light:${b.border};--text:${b.text};--text-secondary:${b.textSecondary};--text-tertiary:${b.textTertiary};--fx-glow:${fx.heroGlow.color};--fx-grid:${grid};--fx-grid-opacity:${gridOp};--fx-particle:${fx.particles.color};--fx-card-glow:${cardGlow};--fx-card-border:${cardBorder};--hero-image:${heroImg};--hero-ov-top:${ov.top};--hero-ov-mid:${ov.mid};--hero-ov-bottom:${ov.bottom};--hero-text:${heroText};--hero-text-secondary:${heroTextSec};--hero-accent:${heroAccent};--hero-eyebrow-bg:${heroEyebrowBg}`;
 }
 
 const lightTokens = buildTokens(lightCfg);
