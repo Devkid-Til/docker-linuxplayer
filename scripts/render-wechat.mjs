@@ -13,7 +13,8 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const POSTS_DIR = path.join(ROOT, 'src/content/posts');
 // 品牌配色单一数据源：渲染默认色在输出端映射到 brand.json wechat 渠道（改色只改 brand.json）
 const brand = JSON.parse(readFileSync(path.join(ROOT, 'src/brand.json'), 'utf8'));
-const w = brand.themes[brand.current].channels.wechat;
+const _t = brand.themes[brand.current];
+const w = (_t.variants ? _t.variants.light : _t).channels.wechat;
 const slugArg = process.argv[2];
 const writeOut = process.argv.includes('--out');
 
