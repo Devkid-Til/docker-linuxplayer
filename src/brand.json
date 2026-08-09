@@ -7,28 +7,140 @@
       "variants": {
         "light": {
           "effects": {
-            "heroGlow": { "enabled": true, "color": "#7C3AED", "intensity": 0.18 },
-            "grid":     { "enabled": false, "color": "#DDD6FE", "opacity": 0.1 },
-            "particles":{ "enabled": true, "color": "#7C3AED", "count": 45 },
-            "cardNeon": { "enabled": false, "glowColor": "#7C3AED", "borderColor": "#DDD6FE" }
+            "heroGlow": {
+              "enabled": true,
+              "color": "#7C3AED",
+              "intensity": 0.18
+            },
+            "grid": {
+              "enabled": false,
+              "color": "#DDD6FE",
+              "opacity": 0.1
+            },
+            "particles": {
+              "enabled": true,
+              "color": "#7C3AED",
+              "count": 45
+            },
+            "cardNeon": {
+              "enabled": false,
+              "glowColor": "#7C3AED",
+              "borderColor": "#DDD6FE"
+            },
+            "overlay": {
+              "top": 0.5,
+              "mid": 0.42,
+              "bottom": 0.55
+            }
           },
           "channels": {
-            "blog": { "primary": "#7C3AED", "primaryLight": "#A78BFA", "primaryDark": "#5B21B6", "primaryBg": "#F5F3FF", "primaryBorder": "#DDD6FE", "bg": "#FFFFFF", "bgAlt": "#F8FAFC", "text": "#181C28", "textSecondary": "#4B5563", "textTertiary": "#787F91", "border": "#E5E7EB" },
-            "wechat": { "primary": "#7C3AED", "primaryDark": "#5B21B6", "primaryBg": "#EDE9FE", "primaryBorder": "#C4B5FD", "text": "#333333", "textSecondary": "#4B5563", "textTertiary": "#8C8C8C", "bg": "#FFFFFF", "border": "#E5E6EB", "codeBg": "#1F2430", "codeText": "#E6E6E6" },
-            "cover": { "gradientFrom": "#7C3AED", "gradientTo": "#5B21B6", "accent": "#A78BFA", "border": "#DDD6FE", "bg": "#F5F3FF", "bgLight": "#EDE9FE", "text": "#FFFFFF", "textDark": "#1E1B4B", "muted": "#8B7EC8", "eyebrow": "#A78BFA" }
+            "blog": {
+              "primary": "#7C3AED",
+              "primaryLight": "#A78BFA",
+              "primaryDark": "#5B21B6",
+              "primaryBg": "#F5F3FF",
+              "primaryBorder": "#DDD6FE",
+              "bg": "#FFFFFF",
+              "bgAlt": "#F8FAFC",
+              "text": "#181C28",
+              "textSecondary": "#4B5563",
+              "textTertiary": "#787F91",
+              "border": "#E5E7EB"
+            },
+            "wechat": {
+              "primary": "#7C3AED",
+              "primaryDark": "#5B21B6",
+              "primaryBg": "#EDE9FE",
+              "primaryBorder": "#C4B5FD",
+              "text": "#333333",
+              "textSecondary": "#4B5563",
+              "textTertiary": "#8C8C8C",
+              "bg": "#FFFFFF",
+              "border": "#E5E6EB",
+              "codeBg": "#1F2430",
+              "codeText": "#E6E6E6"
+            },
+            "cover": {
+              "gradientFrom": "#7C3AED",
+              "gradientTo": "#5B21B6",
+              "accent": "#A78BFA",
+              "border": "#DDD6FE",
+              "bg": "#F5F3FF",
+              "bgLight": "#EDE9FE",
+              "text": "#FFFFFF",
+              "textDark": "#1E1B4B",
+              "muted": "#8B7EC8",
+              "eyebrow": "#A78BFA"
+            }
           }
         },
         "dark": {
           "effects": {
-            "heroGlow": { "enabled": true, "color": "#A78BFA", "intensity": 0.22 },
-            "grid":     { "enabled": false, "color": "#3B2E58", "opacity": 0.1 },
-            "particles":{ "enabled": true, "color": "#A78BFA", "count": 50 },
-            "cardNeon": { "enabled": false, "glowColor": "#A78BFA", "borderColor": "#3B2E58" }
+            "heroGlow": {
+              "enabled": true,
+              "color": "#A78BFA",
+              "intensity": 0.22
+            },
+            "grid": {
+              "enabled": false,
+              "color": "#3B2E58",
+              "opacity": 0.1
+            },
+            "particles": {
+              "enabled": true,
+              "color": "#A78BFA",
+              "count": 50
+            },
+            "cardNeon": {
+              "enabled": false,
+              "glowColor": "#A78BFA",
+              "borderColor": "#3B2E58"
+            },
+            "overlay": {
+              "top": 0.5,
+              "mid": 0.42,
+              "bottom": 0.55
+            }
           },
           "channels": {
-            "blog": { "primary": "#A78BFA", "primaryLight": "#C4B5FD", "primaryDark": "#7C3AED", "primaryBg": "#1F1833", "primaryBorder": "#3B2E58", "bg": "#12101F", "bgAlt": "#1A1630", "text": "#E5E7EB", "textSecondary": "#9CA3AF", "textTertiary": "#6B7280", "border": "#2A2A38" },
-            "wechat": { "primary": "#A78BFA", "primaryDark": "#7C3AED", "primaryBg": "#1F1833", "primaryBorder": "#3B2E58", "text": "#E5E7EB", "textSecondary": "#9CA3AF", "textTertiary": "#6B7280", "bg": "#12101F", "border": "#2A2A38", "codeBg": "#0D0D15", "codeText": "#E5E5EC" },
-            "cover": { "gradientFrom": "#7C3AED", "gradientTo": "#4C1D95", "accent": "#A78BFA", "border": "#3B2E58", "bg": "#12101F", "bgLight": "#1F1833", "text": "#FFFFFF", "textDark": "#C4B5FD", "muted": "#8B7EC8", "eyebrow": "#A78BFA" }
+            "blog": {
+              "primary": "#A78BFA",
+              "primaryLight": "#C4B5FD",
+              "primaryDark": "#7C3AED",
+              "primaryBg": "#1F1833",
+              "primaryBorder": "#3B2E58",
+              "bg": "#12101F",
+              "bgAlt": "#1A1630",
+              "text": "#E5E7EB",
+              "textSecondary": "#9CA3AF",
+              "textTertiary": "#6B7280",
+              "border": "#2A2A38"
+            },
+            "wechat": {
+              "primary": "#A78BFA",
+              "primaryDark": "#7C3AED",
+              "primaryBg": "#1F1833",
+              "primaryBorder": "#3B2E58",
+              "text": "#E5E7EB",
+              "textSecondary": "#9CA3AF",
+              "textTertiary": "#6B7280",
+              "bg": "#12101F",
+              "border": "#2A2A38",
+              "codeBg": "#0D0D15",
+              "codeText": "#E5E5EC"
+            },
+            "cover": {
+              "gradientFrom": "#7C3AED",
+              "gradientTo": "#4C1D95",
+              "accent": "#A78BFA",
+              "border": "#3B2E58",
+              "bg": "#12101F",
+              "bgLight": "#1F1833",
+              "text": "#FFFFFF",
+              "textDark": "#C4B5FD",
+              "muted": "#8B7EC8",
+              "eyebrow": "#A78BFA"
+            }
           }
         }
       }
@@ -37,29 +149,144 @@
       "variants": {
         "light": {
           "effects": {
-            "heroGlow": { "enabled": true, "color": "#0891B2", "intensity": 0.22 },
-            "grid":     { "enabled": true, "color": "#7DD3FC", "opacity": 0.12 },
-            "particles":{ "enabled": true, "color": "#0891B2", "count": 60 },
-            "cardNeon": { "enabled": true, "glowColor": "#22D3EE", "borderColor": "#7DD3FC" }
+            "heroGlow": {
+              "enabled": true,
+              "color": "#0891B2",
+              "intensity": 0.22
+            },
+            "grid": {
+              "enabled": true,
+              "color": "#7DD3FC",
+              "opacity": 0.12
+            },
+            "particles": {
+              "enabled": true,
+              "color": "#0891B2",
+              "count": 60
+            },
+            "cardNeon": {
+              "enabled": true,
+              "glowColor": "#22D3EE",
+              "borderColor": "#7DD3FC"
+            },
+            "overlay": {
+              "top": 0.4,
+              "mid": 0.3,
+              "bottom": 0.45
+            }
           },
           "channels": {
-            "blog": { "primary": "#0891B2", "primaryLight": "#22D3EE", "primaryDark": "#155E75", "primaryBg": "#E0F7FA", "primaryBorder": "#7DD3FC", "bg": "#F4FCFF", "bgAlt": "#E8F7FA", "text": "#0F172A", "textSecondary": "#334155", "textTertiary": "#64748B", "border": "#CBD5E1" },
-            "wechat": { "primary": "#0891B2", "primaryDark": "#155E75", "primaryBg": "#E0F7FA", "primaryBorder": "#7DD3FC", "text": "#0F172A", "textSecondary": "#334155", "textTertiary": "#64748B", "bg": "#FFFFFF", "border": "#CBD5E1", "codeBg": "#1F2430", "codeText": "#E6E6E6" },
-            "cover": { "gradientFrom": "#22D3EE", "gradientTo": "#0891B2", "accent": "#67E8F9", "border": "#7DD3FC", "bg": "#F4FCFF", "bgLight": "#E0F7FA", "text": "#FFFFFF", "textDark": "#0F172A", "muted": "#64748B", "eyebrow": "#0891B2" }
+            "blog": {
+              "primary": "#0891B2",
+              "primaryLight": "#22D3EE",
+              "primaryDark": "#155E75",
+              "primaryBg": "#E0F7FA",
+              "primaryBorder": "#7DD3FC",
+              "bg": "#F4FCFF",
+              "bgAlt": "#E8F7FA",
+              "text": "#0F172A",
+              "textSecondary": "#334155",
+              "textTertiary": "#64748B",
+              "border": "#CBD5E1"
+            },
+            "wechat": {
+              "primary": "#0891B2",
+              "primaryDark": "#155E75",
+              "primaryBg": "#E0F7FA",
+              "primaryBorder": "#7DD3FC",
+              "text": "#0F172A",
+              "textSecondary": "#334155",
+              "textTertiary": "#64748B",
+              "bg": "#FFFFFF",
+              "border": "#CBD5E1",
+              "codeBg": "#1F2430",
+              "codeText": "#E6E6E6"
+            },
+            "cover": {
+              "gradientFrom": "#22D3EE",
+              "gradientTo": "#0891B2",
+              "accent": "#67E8F9",
+              "border": "#7DD3FC",
+              "bg": "#F4FCFF",
+              "bgLight": "#E0F7FA",
+              "text": "#FFFFFF",
+              "textDark": "#0F172A",
+              "muted": "#64748B",
+              "eyebrow": "#0891B2"
+            }
           }
         },
         "dark": {
           "effects": {
-            "heroGlow": { "enabled": true, "color": "#00E5FF", "intensity": 0.35 },
-            "grid":     { "enabled": true, "color": "#155E75", "opacity": 0.14 },
-            "particles":{ "enabled": true, "color": "#00E5FF", "count": 70 },
-            "cardNeon": { "enabled": true, "glowColor": "#00E5FF", "borderColor": "#155E75" },
-            "scan":     { "enabled": true, "color": "#FF2A6D" }
+            "heroGlow": {
+              "enabled": true,
+              "color": "#00E5FF",
+              "intensity": 0.35
+            },
+            "grid": {
+              "enabled": true,
+              "color": "#155E75",
+              "opacity": 0.14
+            },
+            "particles": {
+              "enabled": true,
+              "color": "#00E5FF",
+              "count": 70
+            },
+            "cardNeon": {
+              "enabled": true,
+              "glowColor": "#00E5FF",
+              "borderColor": "#155E75"
+            },
+            "scan": {
+              "enabled": true,
+              "color": "#FF2A6D"
+            },
+            "overlay": {
+              "top": 0.45,
+              "mid": 0.32,
+              "bottom": 0.5
+            }
           },
           "channels": {
-            "blog": { "primary": "#00E5FF", "primaryLight": "#7DF9FF", "primaryDark": "#00A3C4", "primaryBg": "#0A1530", "primaryBorder": "#155E75", "bg": "#0A0E1F", "bgAlt": "#111635", "text": "#E6F1FF", "textSecondary": "#9DB8D9", "textTertiary": "#6B87A8", "border": "#1E2A4A" },
-            "wechat": { "primary": "#00E5FF", "primaryDark": "#00A3C4", "primaryBg": "#0A1530", "primaryBorder": "#155E75", "text": "#E6F1FF", "textSecondary": "#9DB8D9", "textTertiary": "#6B87A8", "bg": "#0A0E1F", "border": "#1E2A4A", "codeBg": "#1E2A4A", "codeText": "#E6F1FF" },
-            "cover": { "gradientFrom": "#00E5FF", "gradientTo": "#FF2A6D", "accent": "#7DF9FF", "border": "#155E75", "bg": "#0A0E1F", "bgLight": "#0A1530", "text": "#0A0E1F", "textDark": "#00E5FF", "muted": "#6B87A8", "eyebrow": "#7DF9FF" }
+            "blog": {
+              "primary": "#00E5FF",
+              "primaryLight": "#7DF9FF",
+              "primaryDark": "#00A3C4",
+              "primaryBg": "#0A1530",
+              "primaryBorder": "#155E75",
+              "bg": "#0A0E1F",
+              "bgAlt": "#111635",
+              "text": "#E6F1FF",
+              "textSecondary": "#9DB8D9",
+              "textTertiary": "#6B87A8",
+              "border": "#1E2A4A"
+            },
+            "wechat": {
+              "primary": "#00E5FF",
+              "primaryDark": "#00A3C4",
+              "primaryBg": "#0A1530",
+              "primaryBorder": "#155E75",
+              "text": "#E6F1FF",
+              "textSecondary": "#9DB8D9",
+              "textTertiary": "#6B87A8",
+              "bg": "#0A0E1F",
+              "border": "#1E2A4A",
+              "codeBg": "#1E2A4A",
+              "codeText": "#E6F1FF"
+            },
+            "cover": {
+              "gradientFrom": "#00E5FF",
+              "gradientTo": "#FF2A6D",
+              "accent": "#7DF9FF",
+              "border": "#155E75",
+              "bg": "#0A0E1F",
+              "bgLight": "#0A1530",
+              "text": "#0A0E1F",
+              "textDark": "#00E5FF",
+              "muted": "#6B87A8",
+              "eyebrow": "#7DF9FF"
+            }
           }
         }
       }
@@ -69,29 +296,141 @@
         "light": {
           "effects": {
             "heroImage": "/milkyway-hero.jpg",
-            "heroGlow": { "enabled": true, "color": "#8B5CF6", "intensity": 0.2 },
-            "grid":     { "enabled": false, "color": "#C9B8F5", "opacity": 0.08 },
-            "particles":{ "enabled": true, "color": "#8B5CF6", "count": 45 },
-            "cardNeon": { "enabled": false, "glowColor": "#8B5CF6", "borderColor": "#C9B8F5" }
+            "heroGlow": {
+              "enabled": true,
+              "color": "#8B5CF6",
+              "intensity": 0.2
+            },
+            "grid": {
+              "enabled": false,
+              "color": "#C9B8F5",
+              "opacity": 0.08
+            },
+            "particles": {
+              "enabled": true,
+              "color": "#8B5CF6",
+              "count": 45
+            },
+            "cardNeon": {
+              "enabled": false,
+              "glowColor": "#8B5CF6",
+              "borderColor": "#C9B8F5"
+            },
+            "overlay": {
+              "top": 0.32,
+              "mid": 0.22,
+              "bottom": 0.42
+            }
           },
           "channels": {
-            "blog": { "primary": "#6D28D9", "primaryLight": "#8B5CF6", "primaryDark": "#4C1D95", "primaryBg": "#F3EEFF", "primaryBorder": "#C9B8F5", "bg": "#FAFBFF", "bgAlt": "#F0F3FF", "text": "#241B4D", "textSecondary": "#5B5B7A", "textTertiary": "#8A8FA8", "border": "#E2E5F0" },
-            "wechat": { "primary": "#6D28D9", "primaryDark": "#4C1D95", "primaryBg": "#F3EEFF", "primaryBorder": "#C9B8F5", "text": "#333333", "textSecondary": "#4B5563", "textTertiary": "#8C8C8C", "bg": "#FFFFFF", "border": "#E5E6EB", "codeBg": "#1F2430", "codeText": "#E6E6E6" },
-            "cover": { "gradientFrom": "#7C3AED", "gradientTo": "#6D28D9", "accent": "#A78BFA", "border": "#C4B5FD", "bg": "#F5F3FF", "bgLight": "#EDE9FE", "text": "#FFFFFF", "textDark": "#1E1B4B", "muted": "#8B7EC8", "eyebrow": "#A78BFA" }
+            "blog": {
+              "primary": "#6D28D9",
+              "primaryLight": "#8B5CF6",
+              "primaryDark": "#4C1D95",
+              "primaryBg": "#F3EEFF",
+              "primaryBorder": "#C9B8F5",
+              "bg": "#FAFBFF",
+              "bgAlt": "#F0F3FF",
+              "text": "#241B4D",
+              "textSecondary": "#5B5B7A",
+              "textTertiary": "#8A8FA8",
+              "border": "#E2E5F0"
+            },
+            "wechat": {
+              "primary": "#6D28D9",
+              "primaryDark": "#4C1D95",
+              "primaryBg": "#F3EEFF",
+              "primaryBorder": "#C9B8F5",
+              "text": "#333333",
+              "textSecondary": "#4B5563",
+              "textTertiary": "#8C8C8C",
+              "bg": "#FFFFFF",
+              "border": "#E5E6EB",
+              "codeBg": "#1F2430",
+              "codeText": "#E6E6E6"
+            },
+            "cover": {
+              "gradientFrom": "#7C3AED",
+              "gradientTo": "#6D28D9",
+              "accent": "#A78BFA",
+              "border": "#C4B5FD",
+              "bg": "#F5F3FF",
+              "bgLight": "#EDE9FE",
+              "text": "#FFFFFF",
+              "textDark": "#1E1B4B",
+              "muted": "#8B7EC8",
+              "eyebrow": "#A78BFA"
+            }
           }
         },
         "dark": {
           "effects": {
             "heroImage": "/milkyway-hero.jpg",
-            "heroGlow": { "enabled": true, "color": "#A78BFA", "intensity": 0.3 },
-            "grid":     { "enabled": false, "color": "#4338CA", "opacity": 0.08 },
-            "particles":{ "enabled": true, "color": "#C4B5FD", "count": 60 },
-            "cardNeon": { "enabled": true, "glowColor": "#A78BFA", "borderColor": "#4338CA" }
+            "heroGlow": {
+              "enabled": true,
+              "color": "#A78BFA",
+              "intensity": 0.3
+            },
+            "grid": {
+              "enabled": false,
+              "color": "#4338CA",
+              "opacity": 0.08
+            },
+            "particles": {
+              "enabled": true,
+              "color": "#C4B5FD",
+              "count": 60
+            },
+            "cardNeon": {
+              "enabled": true,
+              "glowColor": "#A78BFA",
+              "borderColor": "#4338CA"
+            },
+            "overlay": {
+              "top": 0.42,
+              "mid": 0.28,
+              "bottom": 0.52
+            }
           },
           "channels": {
-            "blog": { "primary": "#A78BFA", "primaryLight": "#C4B5FD", "primaryDark": "#6D28D9", "primaryBg": "#1E1B4B", "primaryBorder": "#4338CA", "bg": "#0B0B1E", "bgAlt": "#14143A", "text": "#E0E7FF", "textSecondary": "#A5B4FC", "textTertiary": "#8B93C9", "border": "#312E81" },
-            "wechat": { "primary": "#A78BFA", "primaryDark": "#6D28D9", "primaryBg": "#1E1B4B", "primaryBorder": "#4338CA", "text": "#E0E7FF", "textSecondary": "#A5B4FC", "textTertiary": "#8B93C9", "bg": "#0B0B1E", "border": "#312E81", "codeBg": "#1E1B4B", "codeText": "#E0E7FF" },
-            "cover": { "gradientFrom": "#818CF8", "gradientTo": "#6D28D9", "accent": "#C4B5FD", "border": "#4338CA", "bg": "#0B0B1E", "bgLight": "#1E1B4B", "text": "#FFFFFF", "textDark": "#C4B5FD", "muted": "#8B93C9", "eyebrow": "#C4B5FD" }
+            "blog": {
+              "primary": "#A78BFA",
+              "primaryLight": "#C4B5FD",
+              "primaryDark": "#6D28D9",
+              "primaryBg": "#1E1B4B",
+              "primaryBorder": "#4338CA",
+              "bg": "#0B0B1E",
+              "bgAlt": "#14143A",
+              "text": "#E0E7FF",
+              "textSecondary": "#A5B4FC",
+              "textTertiary": "#8B93C9",
+              "border": "#312E81"
+            },
+            "wechat": {
+              "primary": "#A78BFA",
+              "primaryDark": "#6D28D9",
+              "primaryBg": "#1E1B4B",
+              "primaryBorder": "#4338CA",
+              "text": "#E0E7FF",
+              "textSecondary": "#A5B4FC",
+              "textTertiary": "#8B93C9",
+              "bg": "#0B0B1E",
+              "border": "#312E81",
+              "codeBg": "#1E1B4B",
+              "codeText": "#E0E7FF"
+            },
+            "cover": {
+              "gradientFrom": "#818CF8",
+              "gradientTo": "#6D28D9",
+              "accent": "#C4B5FD",
+              "border": "#4338CA",
+              "bg": "#0B0B1E",
+              "bgLight": "#1E1B4B",
+              "text": "#FFFFFF",
+              "textDark": "#C4B5FD",
+              "muted": "#8B93C9",
+              "eyebrow": "#C4B5FD"
+            }
           }
         }
       }
