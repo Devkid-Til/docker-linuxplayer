@@ -9,13 +9,13 @@ blocks:
     text: >-
       本周内核全局看点：内存管理是机制重心——<strong>TDX 动态 PAMT</strong>（节省内存可达 100 倍）与 <strong>per-VMA 锁全面放开</strong>；<strong>Rust 驱动抽象进入快速扩张期</strong>（寄存器类型化 + DMA 类型安全 + virtio 模块一周三连）；block 侧 blk-crypto 死锁修复是<strong>本周唯一已进 linux-next 队列</strong>的报道补丁。
   - type: image
-    src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-09/cover.png"
+    src: "https://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-09/cover.png"
     alt: 封面 · 8月9日 · 每周全局雷达
   - type: divider
     label: 📊 板块活跃度
     kind: section
   - type: image
-    src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-09/board-heat.png"
+    src: "https://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-09/board-heat.png"
     alt: 板块活跃度条形图 · 近 24h
   - type: paragraph
     text: >-

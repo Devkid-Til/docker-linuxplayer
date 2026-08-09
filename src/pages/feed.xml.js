@@ -17,11 +17,13 @@ export async function GET(context) {
   const items = posts.map(p => `  <item>
     <title>${esc(p.data.title)}</title>
     <link>${base}/posts/${slugOf(p)}/</link>
+    <guid isPermaLink="false">${base}/posts/${slugOf(p)}/</guid>
     <pubDate>${rfc822(p.data.date)}</pubDate>
     <description>${esc(p.data.desc)}</description>
   </item>`).join('\n');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/assets/rss.xsl"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
   <title>Linux 内核玩家 · 博客</title>

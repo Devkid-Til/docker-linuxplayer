@@ -8,10 +8,27 @@
   /* ── 暗色模式 ── */
   var html = document.documentElement;
   var themeBtn = document.getElementById('theme-toggle');
-  function apply(d) { d ? html.classList.add('dark') : html.classList.remove('dark'); }
+  /* Giscus 评论主题：跟随站点切换钮（不再跟 OS）——iframe 出现后立即同步一次 */
+  function syncGiscus(t) {
+    var f = document.querySelector('iframe.giscus-frame');
+    if (f) f.contentWindow.postMessage({ giscus: { setConfig: { theme: t } } }, 'https://giscus.app');
+  }
+  function apply(d) {
+    d ? html.classList.add('dark') : html.classList.remove('dark');
+    syncGiscus(d ? 'dark' : 'light');
+  }
   var s = localStorage.getItem('kernel-blog-theme');
   if (s !== null) apply(s === 'dark');
   else if (matchMedia('(prefers-color-scheme:dark)').matches) apply(true);
+  /* 评论 iframe 异步加载，出现后同步一次主题（10s 兜底停止轮询） */
+  (function () {
+    var tries = 0;
+    var iv = setInterval(function () {
+      var f = document.querySelector('iframe.giscus-frame');
+      if (f) { clearInterval(iv); syncGiscus(html.classList.contains('dark') ? 'dark' : 'light'); }
+      else if (++tries > 30) clearInterval(iv);
+    }, 300);
+  })();
   if (themeBtn) {
     function icon() { themeBtn.textContent = html.classList.contains('dark') ? '🌙' : '☀️'; }
     icon();

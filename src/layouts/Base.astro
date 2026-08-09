@@ -11,6 +11,9 @@ interface Props {
   desc?: string;
 }
 const { title, desc = '每天 10 分钟，追踪 Linux 内核前沿动态' } = Astro.props;
+// SEO：canonical + OG/Twitter 卡片（分享到微信/社交有预览）。Astro.site 在 build 时取 astro.config 的 site
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'http://localhost:4321').href;
+const ogImage = new URL('/milkyway-hero.jpg', Astro.site ?? 'http://localhost:4321').href;
 // 读当前激活主题（brand.json current 字段）。主题含 variants.light/dark 时按 html.dark 选套；
 // 无 variants 的主题（兼容）单套注入 :root。
 const theme = brand.themes[brand.current];
@@ -51,6 +54,17 @@ const brandCss = `:root{${lightTokens}}${termRule}${darkTokens ? ` html.dark{${d
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content={desc} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="Linux 内核玩家" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={desc} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={desc} />
+  <meta name="twitter:image" content={ogImage} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
   <title>{title}</title>
   <script is:inline>

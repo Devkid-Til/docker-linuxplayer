@@ -1,18 +1,25 @@
 # Linux内核玩家 · 博客（本地原型 / 服务器副本共用同一套）
-# 本地主本：git push → 服务器 git pull → docker compose up -d
+# 本地主本：post-commit hook 自动 npm run build → rsync site/ 到服务器（118.31.67.240）
+# 服务器：nginx 容器只读挂载 ./site 伺服（更新无需重启容器）
 # 远程访问：docker compose --profile tunnel up -d（Cloudflare 临时隧道，bridge 网络隔离）
 services:
   blog:
-    image: nginx:alpine
+    image: nginx:1.27-alpine
     container_name: kernel-blog
     ports:
       - "80:80"             # 生产端口
     volumes:
-      - ./site:/usr/share/nginx/html:ro   # 静态文件，只读挂载；git pull 后无需重启容器即生效
+      - ./site:/usr/share/nginx/html:ro   # 静态文件，只读挂载；rsync 更新后无需重启容器即生效
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
     restart: unless-stopped
 
   tunnel:
-    image: cloudflare/cloudflared
+    image: cloudflare/cloudflared:2024.6.1
     container_name: cf-tunnel
     profiles: ["tunnel"]          # 仅需要远程访问时启动；默认 docker compose up 不含它
     depends_on: [blog]

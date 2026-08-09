@@ -31,7 +31,7 @@ npm run build    # 构建出 site/
 
 ```bash
 git clone git@github.com:Devkid-Til/docker-linuxplayer.git kernel-blog
-cd kernel-blog && git checkout feature/astro
+cd kernel-blog && git checkout main
 bash setup.sh      # 交互式配置 .env → 装依赖 → 装 skills → 配 hook → 验证
 ```
 
