@@ -308,7 +308,7 @@
             },
             "particles": {
               "enabled": true,
-              "color": "#8B5CF6",
+              "color": "#B7C6FF",
               "count": 45
             },
             "cardNeon": {
@@ -383,7 +383,7 @@
             },
             "particles": {
               "enabled": true,
-              "color": "#C4B5FD",
+              "color": "#FFFFFF",
               "count": 60
             },
             "cardNeon": {

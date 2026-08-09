@@ -46,13 +46,19 @@
     }, 200);
   }
 
-  // 触发：① Giscus 评论真实加载成功（giscus:ready）→ 庆祝一次；② 无 IO 环境的点击兜底。
-  // 刻意不做「进入视口即撒花」——任何访客滑到评论区就触发会显得噪（M11）
+  // 触发：① Giscus 评论加载成功（giscus:ready）② 评论区进入视口（用户来看评论）——只庆祝一次
+  // 双触发保证：Giscus 外部资源加载慢/失败时，滑到评论区依然能庆祝（董事长反馈"撒花消失"）
   window.addEventListener('message', function (e) {
     if (e.data && e.data.type === 'giscus:ready') celebrate();
   });
   var comments = document.getElementById('comments');
-  if (comments && !('IntersectionObserver' in window)) {
+  if (comments && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) celebrate();
+      });
+    }, { threshold: 0.3 }).observe(comments);
+  } else if (comments) {
     comments.addEventListener('click', function () { celebrate(); });
   }
 </script>
