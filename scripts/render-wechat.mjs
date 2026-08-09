@@ -11,6 +11,9 @@ import yaml from 'js-yaml';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const POSTS_DIR = path.join(ROOT, 'src/content/posts');
+// 品牌配色单一数据源：渲染默认色在输出端映射到 brand.json wechat 渠道（改色只改 brand.json）
+const brand = JSON.parse(readFileSync(path.join(ROOT, 'src/brand.json'), 'utf8'));
+const w = brand.channels.wechat;
 const slugArg = process.argv[2];
 const writeOut = process.argv.includes('--out');
 
@@ -157,11 +160,27 @@ const html = `<!-- 公众号粘贴用 · ${data.title} -->
 ${body}
 `;
 
+// 默认渲染色 → 品牌配置色（brand.json wechat 渠道；改品牌色只改 brand.json，勿改下方映射 key）
+const COLOR_MAP = {
+  '#7C3AED': w.primary,
+  '#5B21B6': w.primaryDark,
+  '#EDE9FE': w.primaryBg,
+  '#C4B5FD': w.primaryBorder,
+  '#8C8C8C': w.textTertiary,
+  '#333333': w.text,
+  '#1F2430': w.codeBg,
+  '#E6E6E6': w.codeText,
+  '#E5E6EB': w.border,
+  '#FFFFFF': w.bg,
+};
+let outHtml = html;
+for (const [k, v] of Object.entries(COLOR_MAP)) outHtml = outHtml.split(k).join(v);
+
 if (writeOut) {
   mkdirSync(path.join(ROOT, 'output'), { recursive: true });
   const out = path.join(ROOT, 'output', `公众号-${data.date}.html`);
-  writeFileSync(out, html);
+  writeFileSync(out, outHtml);
   console.log(`✓ 已写入 ${out}`);
 } else {
-  process.stdout.write(html);
+  process.stdout.write(outHtml);
 }

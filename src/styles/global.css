@@ -6,12 +6,8 @@
 
 /* ── 1. Design Tokens ────────────────────────────────────────── */
 :root {
-  --brand:        #7C3AED;
-  --brand-light:  #A78BFA;
-  --brand-dark:   #5B21B6;
-  --brand-bg:     #F5F3FF;
-  --brand-border: #DDD6FE;
-  --brand-glow:   rgba(124,58,237,0.18);
+  /* 品牌 token（--brand 系列）由 Base.astro 从 src/brand.json 注入——此处不再硬编码，
+     改品牌配色只改 brand.json，勿在此改色 */
 
   --bg:           #FFFFFF;
   --bg-alt:       #F8FAFC;

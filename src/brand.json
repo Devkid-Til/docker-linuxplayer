@@ -1,0 +1,44 @@
+{
+  "version": "0.1.0",
+  "note": "品牌配色单一数据源——所有脚本/样式从这里读，禁止各端硬编码配色。按渠道分区，当前各渠道暂用同一套 violet 方案；未来某渠道要独立调整只改对应分区。",
+  "channels": {
+    "blog": {
+      "primary": "#7C3AED",
+      "primaryLight": "#A78BFA",
+      "primaryDark": "#5B21B6",
+      "primaryBg": "#F5F3FF",
+      "primaryBorder": "#DDD6FE",
+      "bg": "#FFFFFF",
+      "bgAlt": "#F8FAFC",
+      "text": "#181C28",
+      "textSecondary": "#4B5563",
+      "textTertiary": "#787F91",
+      "border": "#E5E7EB"
+    },
+    "wechat": {
+      "primary": "#7C3AED",
+      "primaryDark": "#5B21B6",
+      "primaryBg": "#EDE9FE",
+      "primaryBorder": "#C4B5FD",
+      "text": "#333333",
+      "textSecondary": "#4B5563",
+      "textTertiary": "#8C8C8C",
+      "bg": "#FFFFFF",
+      "border": "#E5E6EB",
+      "codeBg": "#1F2430",
+      "codeText": "#E6E6E6"
+    },
+    "cover": {
+      "gradientFrom": "#7C3AED",
+      "gradientTo": "#5B21B6",
+      "accent": "#A78BFA",
+      "border": "#DDD6FE",
+      "bg": "#F5F3FF",
+      "bgLight": "#EDE9FE",
+      "text": "#FFFFFF",
+      "textDark": "#1E1B4B",
+      "muted": "#8B7EC8",
+      "eyebrow": "#A78BFA"
+    }
+  }
+}
