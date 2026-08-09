@@ -13,7 +13,7 @@
   if (s !== null) apply(s === 'dark');
   else if (matchMedia('(prefers-color-scheme:dark)').matches) apply(true);
   if (themeBtn) {
-    function icon() { themeBtn.textContent = html.classList.contains('dark') ? '☀️' : '🌙'; }
+    function icon() { themeBtn.textContent = html.classList.contains('dark') ? '🌙' : '☀️'; }
     icon();
     themeBtn.addEventListener('click', function () {
       var d = !html.classList.contains('dark');

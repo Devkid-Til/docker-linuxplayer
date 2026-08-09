@@ -317,9 +317,9 @@
               "borderColor": "#C9B8F5"
             },
             "overlay": {
-              "top": 0.32,
-              "mid": 0.22,
-              "bottom": 0.42
+              "top": 0.18,
+              "mid": 0.1,
+              "bottom": 0.28
             }
           },
           "channels": {

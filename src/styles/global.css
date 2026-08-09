@@ -121,11 +121,11 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 /* 网格背景：由主题 effects.grid 驱动（--fx-grid/--fx-grid-opacity），disabled 时透明无副作用 */
 body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--fx-grid) 1px,transparent 1px),linear-gradient(90deg,var(--fx-grid) 1px,transparent 1px);background-size:44px 44px;opacity:var(--fx-grid-opacity)}
 .hero-inner{position:relative;z-index:2}
-.hero-eyebrow{display:inline-block;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--brand);background:var(--brand-bg);padding:5px 16px;border-radius:20px;margin-bottom:var(--space-lg)}
-.hero h1{margin-bottom:var(--space-sm)}
-.hero h1 span:not(.wave-char){color:var(--brand)}
+.hero-eyebrow{display:inline-block;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--hero-text);background:var(--hero-eyebrow-bg);padding:5px 16px;border-radius:20px;margin-bottom:var(--space-lg)}
+.hero h1{margin-bottom:var(--space-sm);color:var(--hero-text)}
+.hero h1 span:not(.wave-char){color:var(--hero-accent)}
 .hero h1 .wave-char{color:inherit}
-.hero .subtitle{color:var(--text-secondary);font-size:1.0625rem;max-width:460px;margin:0 auto var(--space-xl);font-weight:400}
+.hero .subtitle{color:var(--hero-text-secondary);font-size:1.0625rem;max-width:460px;margin:0 auto var(--space-xl);font-weight:400}
 .hero-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
 
 /* 时间线卡片上的「今日」标记（最新一期） */
@@ -403,4 +403,4 @@ html.dark .timeline-item::before{border-color:var(--bg)}
 @keyframes wave{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 
 /* 标题内 em 不斜体 */
-.hero h1 em{font-style:normal;color:var(--brand)}
+.hero h1 em{font-style:normal;color:var(--hero-accent)}
