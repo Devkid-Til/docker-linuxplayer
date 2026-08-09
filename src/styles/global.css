@@ -235,7 +235,7 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .article-hero .hero-inner{position:relative;z-index:2}
 .article-hero .back-link{position:absolute;top:var(--space-md);left:var(--space-md);z-index:1;font-size:.8125rem;color:var(--text-tertiary);display:inline-flex;align-items:center;gap:4px}
 .article-hero .back-link:hover{color:var(--brand)}
-.article-hero .term-deco{position:absolute;top:var(--space-md);right:var(--space-md);z-index:1;font-family:var(--font-mono);font-size:.75rem;color:var(--text-tertiary);opacity:.85}
+.article-hero .term-deco{position:absolute;top:var(--space-md);right:var(--space-md);z-index:1;font-family:var(--font-mono);font-size:.75rem;color:var(--hero-text);opacity:.85}
 .article-hero .hero-eyebrow{position:relative;z-index:1}
 .article-hero h1{position:relative;z-index:1;font-size:2.5rem;line-height:1.25;font-weight:700;color:var(--text);max-width:26ch;margin:0 auto var(--space-sm)}
 .article-hero .subtitle{position:relative;z-index:1;color:var(--text-secondary);font-size:1.0625rem;line-height:1.75;max-width:460px;margin:0 auto}
