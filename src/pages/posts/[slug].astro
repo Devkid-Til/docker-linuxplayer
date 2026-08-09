@@ -32,6 +32,7 @@ const { post, prev, next } = Astro.props;
 const displayDate = post.data.date.slice(5);
 ---
 <Base title={`${post.data.title} · Linux 内核玩家`} desc={post.data.desc}>
+  <div class="article-bg">
   <main class="container">
     <!-- ① 文章头卡（与主页 hero 同款：全宽渐变带 + term-deco + eyebrow） -->
     <header class="article-hero">
@@ -81,4 +82,5 @@ const displayDate = post.data.date.slice(5);
     </nav>
 
   </main>
+  </div>
 </Base>

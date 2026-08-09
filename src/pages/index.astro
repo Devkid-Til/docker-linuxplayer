@@ -33,13 +33,7 @@ for (const c of COLUMNS) {
 }
 
 // 最新一篇的 slug（"今日" 徽标锚定列表最顶一篇，不限栏目——周报/日报都是当日产出；posts 已按日期降序）
-const dailyPosts = posts.filter(p => (p.data.column || 'daily') === 'daily');
 const latestSlug = posts.length > 0 ? slugOf(posts[0]) : '';
-// 雷达仪表盘：全部从已发布文章静态计算（不硬编码、不编造），随内容增长自动变化
-const totalHeadlines = posts.reduce((n, p) => n + (p.data.blocks || []).filter(b => b.type === 'headline').length, 0);
-const totalHighlights = posts.reduce((n, p) => n + (p.data.blocks || []).filter(b => b.type === 'highlight').length, 0);
-const coveredTags = new Set<string>();
-posts.forEach(p => (p.data.tags || []).forEach(t => coveredTags.add(t)));
 // 板块活跃度（雷达社区情报）：radar.sh stats 产出的 JSON，构建时读入；缺文件/坏 JSON 静默降级（不编造数据）
 // 模拟数据（预览）：真数据（radar.sh stats）就绪前，先用模拟数字展示条形+数字效果。
 // 取值按真实热度形态（lkml 广播源最大、net 次之、virtio-dev 极低频最冷），UI 显式标注"模拟预览"。
@@ -70,6 +64,7 @@ const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio',
 ---
 <Base title="Linux 内核玩家 · 每日内核雷达">
   <header class="hero">
+    <div class="hero-bg"></div>
     <span class="term-deco">$ watch -n 10 kernel-patches</span>
     <div class="container hero-inner">
       <span class="hero-eyebrow reveal">KERNEL DAILY · 每日内核雷达</span>
@@ -81,28 +76,9 @@ const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio',
 
   <section class="features">
     <div class="container">
-      <div class="section-header reveal"><h2>雷达仪表盘</h2><span class="mono">/ radar status</span></div>
-      <div class="radar-dashboard reveal">
-        <div class="dash-item">
-          <span class="dash-value">{dailyPosts.length}</span>
-          <span class="dash-label">已发布日报</span>
-        </div>
-        <div class="dash-item">
-          <span class="dash-value">{totalHeadlines}</span>
-          <span class="dash-label">累计头条</span>
-        </div>
-        <div class="dash-item">
-          <span class="dash-value">{totalHighlights}</span>
-          <span class="dash-label">累计亮点</span>
-        </div>
-        <div class="dash-item">
-          <span class="dash-value">{coveredTags.size}</span>
-          <span class="dash-label">覆盖板块</span>
-        </div>
-      </div>
+      <div class="section-header reveal"><h2>模块活跃度</h2><span class="mono">/ radar status</span></div>
       <div class="board-heat reveal">
         <div class="board-heat-head">
-          <h4>板块活跃度</h4>
           <span class="board-heat-meta">近 {radarStats?.window || '24h'}{radarStats?.date ? ` · ${radarStats.date}` : ''}{isMock ? ' · 模拟预览' : ''}</span>
         </div>
         {boardHeat.length > 0 ? (

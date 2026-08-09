@@ -320,6 +320,11 @@
               "top": 0.18,
               "mid": 0.1,
               "bottom": 0.28
+            },
+            "articleOverlay": {
+              "top": 0.78,
+              "mid": 0.88,
+              "bottom": 0.93
             }
           },
           "channels": {
@@ -390,6 +395,11 @@
               "top": 0.42,
               "mid": 0.28,
               "bottom": 0.52
+            },
+            "articleOverlay": {
+              "top": 0.80,
+              "mid": 0.90,
+              "bottom": 0.95
             }
           },
           "channels": {
