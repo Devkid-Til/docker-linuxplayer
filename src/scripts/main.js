@@ -26,6 +26,9 @@
     var c = document.getElementById('particles-canvas');
     if (!c) return;
     var ctx = c.getContext('2d');
+    /* 粒子颜色从主题 effects 注入的 --fx-particle 读（不硬编码） */
+    var pc = getComputedStyle(document.documentElement).getPropertyValue('--fx-particle').trim() || '#7C3AED';
+    function pr(c_, a) { var h = c_.replace('#', ''); return 'rgba(' + parseInt(h.substr(0, 2), 16) + ',' + parseInt(h.substr(2, 2), 16) + ',' + parseInt(h.substr(4, 2), 16) + ',' + a + ')'; }
     function resize() { c.width = innerWidth; c.height = innerHeight; }
     resize(); addEventListener('resize', resize);
 
@@ -85,7 +88,7 @@
         if (a.y > c.height + 20) a.y = -20;
         ctx.beginPath();
         ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(124,58,237,' + a.a + ')';
+        ctx.fillStyle = pr(pc, a.a);
         ctx.fill();
       }
 
@@ -105,7 +108,7 @@
         if (p.life <= 0) { path.splice(j, 1); continue; }
         ctx.beginPath();
         ctx.arc(p.x, p.y, .5 + p.life * 2, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(124,58,237,' + (p.life * .7) + ')';
+        ctx.fillStyle = pr(pc, p.life * .7);
         ctx.fill();
       }
     }
