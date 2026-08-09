@@ -1,9 +1,15 @@
 {
-  "version": "0.2.0",
-  "note": "品牌配色单一数据源——所有脚本/样式从这里读，禁止各端硬编码配色。两级结构：themes=配色方案（当前激活 current），每方案内按渠道分区（blog/wechat/cover）。切主题改 current 即可全端切换；调色只改对应方案对应渠道。",
-  "current": "violet",
+  "version": "0.3.1",
+  "note": "品牌单一数据源——颜色 + 特效都从这里读，禁止各端硬编码。两级结构：themes=主题方案（current 切换），每方案含 channels(渠道配色) + effects(视觉特效)。",
+  "current": "cyber",
   "themes": {
-    "violet": {
+    "classic": {
+      "effects": {
+        "heroGlow": { "enabled": true, "color": "#7C3AED", "intensity": 0.18 },
+        "grid":     { "enabled": false, "color": "#DDD6FE", "opacity": 0.1 },
+        "particles":{ "enabled": true, "color": "#7C3AED", "count": 45 },
+        "cardNeon": { "enabled": false, "glowColor": "#7C3AED", "borderColor": "#DDD6FE" }
+      },
       "channels": {
         "blog": {
           "primary": "#7C3AED",
@@ -46,44 +52,51 @@
       }
     },
     "cyber": {
+      "effects": {
+        "heroGlow": { "enabled": true, "color": "#00E5FF", "intensity": 0.35 },
+        "grid":     { "enabled": true, "color": "#155E75", "opacity": 0.14 },
+        "particles":{ "enabled": true, "color": "#00E5FF", "count": 70 },
+        "cardNeon": { "enabled": true, "glowColor": "#00E5FF", "borderColor": "#155E75" },
+        "scan":     { "enabled": true, "color": "#FF2A6D" }
+      },
       "channels": {
         "blog": {
-          "primary": "#22D3EE",
-          "primaryLight": "#67E8F9",
-          "primaryDark": "#0E7490",
-          "primaryBg": "#0F2942",
+          "primary": "#00E5FF",
+          "primaryLight": "#7DF9FF",
+          "primaryDark": "#00A3C4",
+          "primaryBg": "#0A1530",
           "primaryBorder": "#155E75",
-          "bg": "#0B1220",
-          "bgAlt": "#111A2E",
-          "text": "#E2E8F0",
-          "textSecondary": "#94A3B8",
-          "textTertiary": "#64748B",
-          "border": "#1E293B"
+          "bg": "#0A0E1F",
+          "bgAlt": "#111635",
+          "text": "#E6F1FF",
+          "textSecondary": "#9DB8D9",
+          "textTertiary": "#6B87A8",
+          "border": "#1E2A4A"
         },
         "wechat": {
-          "primary": "#22D3EE",
-          "primaryDark": "#0E7490",
-          "primaryBg": "#0F2942",
+          "primary": "#00E5FF",
+          "primaryDark": "#00A3C4",
+          "primaryBg": "#0A1530",
           "primaryBorder": "#155E75",
-          "text": "#E2E8F0",
-          "textSecondary": "#94A3B8",
-          "textTertiary": "#64748B",
-          "bg": "#0B1220",
-          "border": "#1E293B",
-          "codeBg": "#1E293B",
-          "codeText": "#E2E8F0"
+          "text": "#E6F1FF",
+          "textSecondary": "#9DB8D9",
+          "textTertiary": "#6B87A8",
+          "bg": "#0A0E1F",
+          "border": "#1E2A4A",
+          "codeBg": "#1E2A4A",
+          "codeText": "#E6F1FF"
         },
         "cover": {
-          "gradientFrom": "#22D3EE",
-          "gradientTo": "#E879F9",
-          "accent": "#67E8F9",
+          "gradientFrom": "#00E5FF",
+          "gradientTo": "#FF2A6D",
+          "accent": "#7DF9FF",
           "border": "#155E75",
-          "bg": "#0B1220",
-          "bgLight": "#0F2942",
-          "text": "#0B1220",
-          "textDark": "#22D3EE",
-          "muted": "#64748B",
-          "eyebrow": "#67E8F9"
+          "bg": "#0A0E1F",
+          "bgLight": "#0A1530",
+          "text": "#0A0E1F",
+          "textDark": "#00E5FF",
+          "muted": "#6B87A8",
+          "eyebrow": "#7DF9FF"
         }
       }
     }
