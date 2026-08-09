@@ -102,7 +102,7 @@
     },
     "galaxy": {
       "effects": {
-        "heroImage": "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-09/milkyway-wide.jpg",
+        "heroImage": "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-09/milkyway-hero.jpg",
         "heroGlow": { "enabled": true, "color": "#A78BFA", "intensity": 0.3 },
         "grid":     { "enabled": false, "color": "#4338CA", "opacity": 0.08 },
         "particles":{ "enabled": true, "color": "#C4B5FD", "count": 60 },
