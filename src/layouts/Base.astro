@@ -22,7 +22,9 @@ const _grid = fx.grid.enabled ? fx.grid.color : 'transparent';
 const _gridOp = fx.grid.enabled ? fx.grid.opacity : 0;
 const _cardGlow = fx.cardNeon.enabled ? fx.cardNeon.glowColor : 'transparent';
 const _cardBorder = fx.cardNeon.enabled ? fx.cardNeon.borderColor : 'var(--border)';
-const brandCss = `:root{--brand:${b.primary};--brand-light:${b.primaryLight};--brand-dark:${b.primaryDark};--brand-bg:${b.primaryBg};--brand-border:${b.primaryBorder};--brand-glow:${brandGlow};--bg:${b.bg};--bg-alt:${b.bgAlt};--card:${b.bg};--border:${b.border};--border-light:${b.border};--text:${b.text};--text-secondary:${b.textSecondary};--text-tertiary:${b.textTertiary};--fx-glow:${fx.heroGlow.color};--fx-grid:${_grid};--fx-grid-opacity:${_gridOp};--fx-particle:${fx.particles.color};--fx-card-glow:${_cardGlow};--fx-card-border:${_cardBorder}}`;
+// hero 背景图（主题 effects.heroImage 配置，如 galaxy 银河；无则 none）
+const _heroImg = fx.heroImage ? `url('${fx.heroImage}')` : 'none';
+const brandCss = `:root{--brand:${b.primary};--brand-light:${b.primaryLight};--brand-dark:${b.primaryDark};--brand-bg:${b.primaryBg};--brand-border:${b.primaryBorder};--brand-glow:${brandGlow};--bg:${b.bg};--bg-alt:${b.bgAlt};--card:${b.bg};--border:${b.border};--border-light:${b.border};--text:${b.text};--text-secondary:${b.textSecondary};--text-tertiary:${b.textTertiary};--fx-glow:${fx.heroGlow.color};--fx-grid:${_grid};--fx-grid-opacity:${_gridOp};--fx-particle:${fx.particles.color};--fx-card-glow:${_cardGlow};--fx-card-border:${_cardBorder};--hero-image:${_heroImg}}`;
 ---
 <!DOCTYPE html>
 <html lang="zh-CN">
