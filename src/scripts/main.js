@@ -267,9 +267,10 @@
   if (termDeco) {
     var cmds = [
       '$ watch -n 10 kernel-patches',
-      '$ git log --oneline linux-media',
-      '$ git log --oneline dri-devel',
-      '$ git log --oneline linux-mm',
+      '$ ./radar.sh daily --all',
+      '$ git log --oneline -3',
+      '$ git branch -r --contains <patch>',
+      '$ python3 draw-heat.py stats.json',
       '$ diff -u yesterday today',
     ];
     var idx = 0;
