@@ -1,7 +1,7 @@
 {
   "version": "0.3.1",
   "note": "品牌单一数据源——颜色 + 特效都从这里读，禁止各端硬编码。两级结构：themes=主题方案（current 切换），每方案含 channels(渠道配色) + effects(视觉特效)。",
-  "current": "cyber",
+  "current": "galaxy",
   "themes": {
     "classic": {
       "effects": {
@@ -97,6 +97,55 @@
           "textDark": "#00E5FF",
           "muted": "#6B87A8",
           "eyebrow": "#7DF9FF"
+        }
+      }
+    },
+    "galaxy": {
+      "effects": {
+        "heroImage": "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-09/milkyway-wide.jpg",
+        "heroGlow": { "enabled": true, "color": "#A78BFA", "intensity": 0.3 },
+        "grid":     { "enabled": false, "color": "#4338CA", "opacity": 0.08 },
+        "particles":{ "enabled": true, "color": "#C4B5FD", "count": 60 },
+        "cardNeon": { "enabled": true, "glowColor": "#A78BFA", "borderColor": "#4338CA" }
+      },
+      "channels": {
+        "blog": {
+          "primary": "#A78BFA",
+          "primaryLight": "#C4B5FD",
+          "primaryDark": "#6D28D9",
+          "primaryBg": "#1E1B4B",
+          "primaryBorder": "#4338CA",
+          "bg": "#0B0B1E",
+          "bgAlt": "#14143A",
+          "text": "#E0E7FF",
+          "textSecondary": "#A5B4FC",
+          "textTertiary": "#8B93C9",
+          "border": "#312E81"
+        },
+        "wechat": {
+          "primary": "#A78BFA",
+          "primaryDark": "#6D28D9",
+          "primaryBg": "#1E1B4B",
+          "primaryBorder": "#4338CA",
+          "text": "#E0E7FF",
+          "textSecondary": "#A5B4FC",
+          "textTertiary": "#8B93C9",
+          "bg": "#0B0B1E",
+          "border": "#312E81",
+          "codeBg": "#1E1B4B",
+          "codeText": "#E0E7FF"
+        },
+        "cover": {
+          "gradientFrom": "#818CF8",
+          "gradientTo": "#6D28D9",
+          "accent": "#C4B5FD",
+          "border": "#4338CA",
+          "bg": "#0B0B1E",
+          "bgLight": "#1E1B4B",
+          "text": "#FFFFFF",
+          "textDark": "#C4B5FD",
+          "muted": "#8B93C9",
+          "eyebrow": "#C4B5FD"
         }
       }
     }
