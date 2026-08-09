@@ -36,9 +36,17 @@ function buildTokens(cfg) {
   // hero 文字色：有 heroImage（深色背景图）时用浅色保证可读；无图用主题文字色
   const heroText = fx.heroImage ? '#FFFFFF' : b.text;
   const heroTextSec = fx.heroImage ? 'rgba(255,255,255,.82)' : b.textSecondary;
-  const heroAccent = fx.heroImage ? '#C4B5FD' : b.primary;
+  // heroAccent 按主题 primaryLight 取色（light 中紫 / dark 淡紫），不再两模式硬编码同一 #C4B5FD
+  const heroAccent = fx.heroImage ? b.primaryLight : b.primary;
   const heroEyebrowBg = fx.heroImage ? 'rgba(255,255,255,.14)' : b.primaryBg;
-  return `--brand:${b.primary};--brand-light:${b.primaryLight};--brand-dark:${b.primaryDark};--brand-bg:${b.primaryBg};--brand-border:${b.primaryBorder};--brand-glow:${glow};--bg:${b.bg};--bg-alt:${b.bgAlt};--card:${b.bg};--border:${b.border};--border-light:${b.border};--text:${b.text};--text-secondary:${b.textSecondary};--text-tertiary:${b.textTertiary};--fx-glow:${fx.heroGlow.color};--fx-grid:${grid};--fx-grid-opacity:${gridOp};--fx-particle:${fx.particles.color};--fx-card-glow:${cardGlow};--fx-card-border:${cardBorder};--hero-image:${heroImg};--hero-ov-top:${ov.top};--hero-ov-mid:${ov.mid};--hero-ov-bottom:${ov.bottom};--hero-text:${heroText};--hero-text-secondary:${heroTextSec};--hero-accent:${heroAccent};--hero-eyebrow-bg:${heroEyebrowBg}`;
+  // 首页 hero 遮蔽渐变（沿用既有 CSS 值：52% 透明→86% bg68%→100% bg 纯色），token 化输出到 --hero-overlay
+  const heroOverlay = fx.heroImage ? `linear-gradient(180deg,transparent 52%,color-mix(in srgb,${b.bg} 68%,transparent) 86%,${b.bg} 100%)` : 'none';
+  // 文章页全幅星空遮罩：articleOverlay 高不透明度保证正文可读（随主题变体配置，缺省兜底）
+  const ao = fx.articleOverlay || { top: 0.85, mid: 0.92, bottom: 0.97 };
+  const articleShield = fx.heroImage
+    ? `linear-gradient(180deg,color-mix(in srgb,${b.bg} ${Math.round(ao.top * 100)}%,transparent) 0%,color-mix(in srgb,${b.bg} ${Math.round(ao.mid * 100)}%,transparent) 55%,color-mix(in srgb,${b.bg} ${Math.round(ao.bottom * 100)}%,transparent) 100%)`
+    : 'none';
+  return `--brand:${b.primary};--brand-light:${b.primaryLight};--brand-dark:${b.primaryDark};--brand-bg:${b.primaryBg};--brand-border:${b.primaryBorder};--brand-glow:${glow};--bg:${b.bg};--bg-alt:${b.bgAlt};--card:${b.bg};--border:${b.border};--border-light:${b.border};--text:${b.text};--text-secondary:${b.textSecondary};--text-tertiary:${b.textTertiary};--fx-glow:${fx.heroGlow.color};--fx-grid:${grid};--fx-grid-opacity:${gridOp};--fx-particle:${fx.particles.color};--fx-card-glow:${cardGlow};--fx-card-border:${cardBorder};--hero-image:${heroImg};--hero-ov-top:${ov.top};--hero-ov-mid:${ov.mid};--hero-ov-bottom:${ov.bottom};--hero-text:${heroText};--hero-text-secondary:${heroTextSec};--hero-accent:${heroAccent};--hero-eyebrow-bg:${heroEyebrowBg};--hero-overlay:${heroOverlay};--article-shield:${articleShield}`;
 }
 
 const lightTokens = buildTokens(lightCfg);

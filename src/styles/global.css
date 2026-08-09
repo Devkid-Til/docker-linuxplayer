@@ -94,7 +94,10 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
 
 /* ── 7. Hero（专业分层版）─────────────────────────────────────── */
-.hero{position:relative;overflow:hidden;padding:var(--space-3xl) 0 var(--space-2xl);background-color:var(--brand-bg);background-image:linear-gradient(180deg,transparent 52%,color-mix(in srgb,var(--bg) 68%,transparent) 86%,var(--bg) 100%),var(--hero-image);background-size:auto,cover;background-position:center;background-repeat:no-repeat,no-repeat;border-bottom:1px solid var(--border-light);text-align:center}
+/* hero 背景层：背景图+遮蔽渐变由 buildTokens 的 --hero-overlay/--hero-image 注入（与文章页同源），呼吸缩放载体 */
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;background-image:var(--hero-overlay),var(--hero-image);background-size:auto,cover;background-position:center;background-repeat:no-repeat,no-repeat;transform-origin:center;animation:breathe-hero 60s ease-in-out infinite alternate}
+@keyframes breathe-hero{from{transform:scale(1)}to{transform:scale(1.05)}}
+.hero{position:relative;overflow:hidden;padding:var(--space-3xl) 0 var(--space-2xl);background-color:var(--brand-bg);border-bottom:1px solid var(--border-light);text-align:center}
 /* hero 星空：星点漂移 + 整体缓慢浮动（白星 + 主题色星交替，颜色随 --fx-particle，如 cyber 青色星云） */
 .hero::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.95;background-image:
   radial-gradient(3px 3px at 8% 25%,#fff 70%,transparent),
@@ -114,7 +117,7 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 /* 背景网格 */
 .hero::after{content:"";position:absolute;inset:0;z-index:1;background-image:radial-gradient(circle at 25% 30%,color-mix(in srgb,var(--fx-glow) 18%,transparent) 0%,transparent 50%),radial-gradient(circle at 75% 60%,color-mix(in srgb,var(--fx-glow) 12%,transparent) 0%,transparent 50%);pointer-events:none}
 /* 霓虹卡片：由主题 effects.cardNeon 驱动（--fx-card-border/--fx-card-glow），violet 等禁用时回退 var(--border)/无辉光 */
-.radar-dashboard,.board-heat,.timeline-card,.about-card,.post-card{border-color:var(--fx-card-border);box-shadow:0 0 22px color-mix(in srgb,var(--fx-card-glow) 16%,transparent)}
+.board-heat,.timeline-card,.about-card,.post-card{border-color:var(--fx-card-border);box-shadow:0 0 22px color-mix(in srgb,var(--fx-card-glow) 16%,transparent)}
 /* 网格背景：由主题 effects.grid 驱动（--fx-grid/--fx-grid-opacity），disabled 时透明无副作用 */
 body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--fx-grid) 1px,transparent 1px),linear-gradient(90deg,var(--fx-grid) 1px,transparent 1px);background-size:44px 44px;opacity:var(--fx-grid-opacity)}
 .hero .term-deco{position:absolute;top:var(--space-md);right:var(--space-md);z-index:3;font-family:var(--font-mono);font-size:.75rem;color:#fff;opacity:.85}
@@ -140,15 +143,9 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 
 /* ── 9. Radar Dashboard（雷达仪表盘：运营数据，非内容预览）────────────── */
 .features{padding:var(--space-2xl) 0;background:var(--bg)}
-.radar-dashboard{background:linear-gradient(170deg,var(--brand-bg) 0%,var(--card) 55%);border:1px solid var(--brand-border);border-radius:var(--radius-lg);padding:var(--space-xl) var(--space-2xl);display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-lg)}
-.dash-item{display:flex;flex-direction:column;align-items:center;gap:8px;padding:var(--space-sm) 0;border-left:1px solid var(--border);text-align:center}
-.dash-item:first-child{border-left:none}
-.dash-value{font-family:var(--font-mono);font-size:2.5rem;font-weight:700;line-height:1;color:var(--brand)}
-.dash-label{font-size:.8125rem;color:var(--text-tertiary);letter-spacing:.02em}
 /* 板块活跃度（雷达社区情报：各列表 24h 消息量热度条，max 归一化） */
 .board-heat{margin-top:var(--space-lg);background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-xl);display:grid;grid-template-columns:1fr 1fr;gap:var(--space-sm) var(--space-2xl)}
 .board-heat-head{grid-column:1/-1;display:flex;align-items:baseline;justify-content:space-between;margin-bottom:var(--space-sm)}
-.board-heat-head h4{font-size:1rem;color:var(--text);margin:0}
 .board-heat-meta{font-family:var(--font-mono);font-size:.75rem;color:var(--text-tertiary)}
 .heat-item{display:grid;grid-template-columns:3.5rem 1fr 2.75rem;align-items:center;gap:var(--space-md);padding:5px 0}
 .heat-name{font-family:var(--font-mono);font-size:.8125rem;font-weight:600;color:var(--text)}
@@ -158,7 +155,7 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
    fill 较宽时效果明显，窄条光带相应更短——宽窄条都保持从左到右方向 */
 .heat-fill::after{content:'';position:absolute;top:0;bottom:0;left:0;width:38%;background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,.42) 50%,transparent 100%);transform:translateX(-100%);animation:heat-shine 2.6s linear infinite}
 @keyframes heat-shine{0%{transform:translateX(-100%)}100%{transform:translateX(320%)}}
-@media(prefers-reduced-motion:reduce){.heat-fill::after{animation:none;display:none}}
+@media(prefers-reduced-motion:reduce){.heat-fill::after{animation:none;display:none}.hero-bg,.article-bg::before,.article-bg::after{animation:none}.article-bg::before{transform:scale(1)}}
 .heat-count{font-family:var(--font-mono);font-size:.75rem;color:var(--text-secondary);text-align:right}
 /* 板块活跃度 · 数据槽位（源未就绪：13 板块榜单轮廓——板块名可见 + 空条 + "—"，
    不编造消息数；数据就绪后替换为真实热度条） */
@@ -169,9 +166,6 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 /* 移动端：2×2 小卡；板块活跃度改单列——两列时每列仅 ~120px，
    而行内固定列(3.5rem+2.75rem+两处 gap)≈132px，1fr 的 bar 轨道会被压成 0px（条全消失） */
 @media(max-width:768px){
-  .radar-dashboard{grid-template-columns:1fr 1fr;gap:var(--space-md);padding:var(--space-xl)}
-  .dash-item{border-left:none;background:var(--card);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-lg)}
-  .dash-value{font-size:2rem}
   .board-heat{grid-template-columns:1fr;gap:var(--space-sm);padding:var(--space-lg)}
   .heat-placeholder{grid-template-columns:1fr;gap:var(--space-sm)}
 }
@@ -226,9 +220,17 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .article-divider{width:56px;height:3px;border-radius:2px;background:var(--brand);margin-bottom:var(--space-xl)}
 .article-body{font-size:1rem;line-height:1.85}
 
-/* ── 文章头卡（hero 渐变卡，46rem 与卡片列对齐） ── */
-.article-hero{position:relative;overflow:hidden;padding:var(--space-xl) var(--space-lg);background:linear-gradient(170deg,#F5F3FF 0%,#FFFFFF 45%,#F8FAFC 100%);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);text-align:center;margin-bottom:var(--space-lg)}
-.article-hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 25% 30%,rgba(124,58,237,.06) 0%,transparent 50%),radial-gradient(circle at 75% 60%,rgba(124,58,237,.04) 0%,transparent 50%);pointer-events:none}
+/* ── 文章页全幅星域：星空延续自首页 hero（--hero-image 同源），全屏 fixed + 展开/呼吸动画 ── */
+.article-bg{position:relative}
+/* 背景图 + 高不透明度遮罩（--article-shield 保证正文可读）；动画 = 0-2% 展开（1.15→1）+ 2-100% 呼吸（1↔1.12） */
+.article-bg::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;background-image:var(--article-shield),var(--hero-image);background-size:auto,cover;background-position:center;background-repeat:no-repeat,no-repeat;transform-origin:center;animation:article-bg-motion 50s ease-in-out infinite}
+/* 星点（与首页 hero 位置不同，营造"同一片星空的另一视角"）+ 光晕（--fx-glow token 驱动） */
+.article-bg::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.95;background-image:radial-gradient(3px 3px at 8% 18%,#fff 70%,transparent),radial-gradient(2px 2px at 16% 55%,var(--fx-particle) 70%,transparent),radial-gradient(2px 2px at 23% 30%,#fff 70%,transparent),radial-gradient(3px 3px at 31% 65%,var(--fx-particle) 70%,transparent),radial-gradient(1.5px 1.5px at 39% 18%,#fff 70%,transparent),radial-gradient(2.5px 2.5px at 47% 50%,var(--fx-particle) 70%,transparent),radial-gradient(2px 2px at 55% 25%,#fff 70%,transparent),radial-gradient(3px 3px at 63% 60%,var(--fx-particle) 70%,transparent),radial-gradient(1.5px 1.5px at 70% 20%,#fff 70%,transparent),radial-gradient(2px 2px at 78% 50%,var(--fx-particle) 70%,transparent),radial-gradient(3px 3px at 86% 30%,#fff 70%,transparent),radial-gradient(2px 2px at 93% 60%,var(--fx-particle) 70%,transparent),radial-gradient(circle at 25% 30%,color-mix(in srgb,var(--fx-glow) 18%,transparent) 0%,transparent 50%),radial-gradient(circle at 75% 60%,color-mix(in srgb,var(--fx-glow) 12%,transparent) 0%,transparent 50%);animation:hero-warp 8s ease-in-out infinite alternate}
+@keyframes article-bg-motion{0%{transform:scale(1.15)}2%{transform:scale(1)}50%{transform:scale(1.12)}100%{transform:scale(1)}}
+
+/* ── 文章头卡（玻璃质卡片，浮在全幅星域上） ── */
+.article-hero{position:relative;overflow:hidden;padding:var(--space-xl) var(--space-lg);background:color-mix(in srgb,var(--card) 85%,transparent);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);text-align:center;margin-bottom:var(--space-lg)}
+.article-hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 25% 30%,color-mix(in srgb,var(--fx-glow) 8%,transparent) 0%,transparent 50%),radial-gradient(circle at 75% 60%,color-mix(in srgb,var(--fx-glow) 5%,transparent) 0%,transparent 50%);pointer-events:none}
 .article-hero .hero-inner{position:relative;z-index:2}
 .article-hero .back-link{position:absolute;top:var(--space-md);left:var(--space-md);z-index:1;font-size:.8125rem;color:var(--text-tertiary);display:inline-flex;align-items:center;gap:4px}
 .article-hero .back-link:hover{color:var(--brand)}
@@ -236,7 +238,7 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .article-hero .hero-eyebrow{position:relative;z-index:1;color:var(--text);background:var(--brand-bg)}
 .article-hero h1{position:relative;z-index:1;font-size:2.5rem;line-height:1.25;font-weight:700;color:var(--text);max-width:26ch;margin:0 auto var(--space-sm)}
 .article-hero .subtitle{position:relative;z-index:1;color:var(--text-secondary);font-size:1.0625rem;line-height:1.75;max-width:460px;margin:0 auto}
-html.dark .article-hero{background:linear-gradient(170deg,#1A1430 0%,#09090D 40%,#0D0D18 70%,#121023 100%);border-bottom-color:var(--border)}
+html.dark .article-hero{background:color-mix(in srgb,var(--card) 88%,transparent)}
 
 /* ── 文章正文板块（卡片式，全 token，暗色自动适配） ── */
 .article-blocks{display:flex;flex-direction:column}
