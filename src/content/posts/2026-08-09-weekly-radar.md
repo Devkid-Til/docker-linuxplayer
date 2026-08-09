@@ -8,9 +8,15 @@ blocks:
   - type: hook
     text: >-
       本周内核全局看点：内存管理是机制重心——<strong>TDX 动态 PAMT</strong>（节省内存可达 100 倍）与 <strong>per-VMA 锁全面放开</strong>；<strong>Rust 驱动抽象进入快速扩张期</strong>（寄存器类型化 + DMA 类型安全 + virtio 模块一周三连）；block 侧 blk-crypto 死锁修复是<strong>本周唯一已进 linux-next 队列</strong>的报道补丁。
+  - type: image
+    src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-09/cover.png"
+    alt: 封面 · 8月9日 · 每周全局雷达
   - type: divider
     label: 📊 板块活跃度
     kind: section
+  - type: image
+    src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-09/board-heat.png"
+    alt: 板块活跃度条形图 · 近 24h
   - type: paragraph
     text: >-
       近 24h 各板块热度（13 板块真实统计）：lkml 868 · net 212 · DRM 94 · mm 57 · PCI 23 · media 21 · Rust 23 · rt 16 · fs 15 · block 6 · arch 2 · LSM 0 · virtio 0。lkml 全内核广播源一骑绝尘；网络/显示/内存是持续高热板块；virtio/LSM 邮件本周沉寂，但机制级动作（见对应章节）不缺席。
