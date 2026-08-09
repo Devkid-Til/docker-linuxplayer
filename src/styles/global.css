@@ -95,6 +95,18 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 
 /* ── 7. Hero（专业分层版）─────────────────────────────────────── */
 .hero{position:relative;overflow:hidden;padding:var(--space-3xl) 0 var(--space-2xl);background:linear-gradient(170deg,var(--brand-bg) 0%,var(--bg) 30%,var(--bg-alt) 70%,var(--bg-alt) 100%);border-bottom:1px solid var(--border-light);text-align:center}
+/* hero 星空：星点漂移 + 整体缓慢浮动（颜色随主题 --fx-particle，如 cyber 青色星云） */
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.8;background-image:
+  radial-gradient(2px 2px at 12% 22%,var(--fx-particle) 50%,transparent),
+  radial-gradient(1px 1px at 24% 55%,var(--fx-particle) 50%,transparent),
+  radial-gradient(2px 2px at 38% 18%,var(--fx-particle) 50%,transparent),
+  radial-gradient(1px 1px at 52% 65%,var(--fx-particle) 50%,transparent),
+  radial-gradient(2px 2px at 66% 28%,var(--fx-particle) 50%,transparent),
+  radial-gradient(1px 1px at 78% 52%,var(--fx-particle) 50%,transparent),
+  radial-gradient(2px 2px at 88% 32%,var(--fx-particle) 50%,transparent),
+  radial-gradient(1px 1px at 95% 70%,var(--fx-particle) 50%,transparent);
+  animation:hero-warp 7s ease-in-out infinite alternate}
+@keyframes hero-warp{from{transform:translateY(0) scale(1);opacity:.5}to{transform:translateY(-10px) scale(1.04);opacity:1}}
 /* 背景网格 */
 .hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 25% 30%,color-mix(in srgb,var(--fx-glow) 18%,transparent) 0%,transparent 50%),radial-gradient(circle at 75% 60%,color-mix(in srgb,var(--fx-glow) 12%,transparent) 0%,transparent 50%);pointer-events:none}
 /* 霓虹卡片：由主题 effects.cardNeon 驱动（--fx-card-border/--fx-card-glow），violet 等禁用时回退 var(--border)/无辉光 */

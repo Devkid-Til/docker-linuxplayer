@@ -20,7 +20,7 @@ const colMeta = COLUMN_MAP[column] || COLUMN_MAP.daily;
     <div class="timeline-meta">
       <span class="timeline-date">{displayDate}</span>
       <span class="timeline-cat">{colMeta.emoji} {colMeta.label}</span>
-      {latest && column === 'daily' && <span class="timeline-latest">今日</span>}
+      {latest && <span class="timeline-latest">今日</span>}
     </div>
     <h3>{title}</h3>
     <p class="timeline-excerpt">{desc}</p>

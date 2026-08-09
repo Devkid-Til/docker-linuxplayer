@@ -33,9 +33,9 @@ for (const c of COLUMNS) {
   columnTagsUseful[c.value] = colPosts.length >= 2 && list.length >= 2 && hasDiscriminator;
 }
 
-// 最新一篇日报的 slug（"今日" 徽标锚定此篇）
+// 最新一篇的 slug（"今日" 徽标锚定列表最顶一篇，不限栏目——周报/日报都是当日产出；posts 已按日期降序）
 const dailyPosts = posts.filter(p => (p.data.column || 'daily') === 'daily');
-const latestDailySlug = dailyPosts.length > 0 ? slugOf(dailyPosts[0]) : '';
+const latestSlug = posts.length > 0 ? slugOf(posts[0]) : '';
 // 雷达仪表盘：全部从已发布文章静态计算（不硬编码、不编造），随内容增长自动变化
 const totalHeadlines = posts.reduce((n, p) => n + (p.data.blocks || []).filter(b => b.type === 'headline').length, 0);
 const totalHighlights = posts.reduce((n, p) => n + (p.data.blocks || []).filter(b => b.type === 'highlight').length, 0);
@@ -145,7 +145,7 @@ const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio',
       </div>
     ))}
     <div class="post-timeline">
-      {posts.map((p, i) => <PostCard latest={slugOf(p) === latestDailySlug} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} />)}
+      {posts.map((p, i) => <PostCard latest={slugOf(p) === latestSlug} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} />)}
     </div>
     <div class="about-card reveal">
       <div class="about-avatar">&gt;_<span class="cursor">▋</span></div>
