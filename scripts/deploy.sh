@@ -6,7 +6,7 @@ set -euo pipefail
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT="$(dirname "$DIR")"
 SERVER="admin@118.31.67.240"
-DEST="~/kernel-blog/site"
+DEST="/home/admin/kernel-blog/site"   # 绝对路径（ssh 校验里 ~ 在引号内不展开，用绝对路径）
 MSG="${1:-update}"
 
 echo "[deploy] rebuilding (Astro)..."
