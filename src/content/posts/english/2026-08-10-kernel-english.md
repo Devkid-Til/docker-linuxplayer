@@ -1,5 +1,5 @@
 ---
-title: "内核英语 · 8月10日｜virtio DMB 补丁标题拆解"
+title: "virtio DMB 补丁标题拆解"
 date: "2026-08-10"
 desc: "今日重点：标题解析——拆解真实的 virtio DMB 补丁标题，学内核标题的命名惯例。"
 column: "english"

@@ -1,5 +1,5 @@
 ---
-title: "Linux内核玩家 · 每周全局雷达｜TDX 动态 PAMT + Rust 驱动抽象扩张"
+title: "TDX 动态 PAMT + Rust 驱动抽象扩张"
 date: "2026-08-09"
 desc: "本周内核全局：TDX 动态 PAMT 内存节省可达百倍、Rust 驱动抽象一周三连、block 加密死锁修复已进 next 队列"
 column: "weekly"
