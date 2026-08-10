@@ -223,23 +223,21 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 /* ── 文章页全幅星域：星空延续自首页 hero（--hero-image 同源），全屏 fixed + 展开/呼吸动画 ── */
 .article-bg{position:relative}
 /* 背景图 + 高不透明度遮罩（--article-shield 保证正文可读）；
-   动画 = ① article-bg-enter：以 hero 为起点（scale 0.5 top）快速放大到峰值 1.12（0.6s，一次性）
-          ② article-bg-breathe：缓慢呼吸，从大到小再从小到大循环（1.12→1→1.12→1，alternate 从 from 起步） */
-.article-bg::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:var(--article-shield),var(--hero-image);background-size:auto,cover;background-position:center;background-repeat:no-repeat,no-repeat;transform-origin:top center;animation:article-bg-enter .6s ease-out forwards,article-bg-breathe 50s ease-in-out .6s infinite alternate}
+   动画 = 仅缓慢呼吸（阅读界面求专注，不做放大）：从大到小循环（1.08→1→1.08，120s 周期，慢到不头晕） */
+.article-bg::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:var(--article-shield),var(--hero-image);background-size:auto,cover;background-position:center;background-repeat:no-repeat,no-repeat;transform-origin:top center;animation:article-bg-breathe 120s ease-in-out infinite alternate}
 /* 星点（与首页 hero 位置不同，营造"同一片星空的另一视角"）+ 光晕（--fx-glow token 驱动） */
 .article-bg::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.95;background-image:radial-gradient(3px 3px at 8% 18%,#fff 70%,transparent),radial-gradient(2px 2px at 16% 55%,var(--fx-particle) 70%,transparent),radial-gradient(2px 2px at 23% 30%,#fff 70%,transparent),radial-gradient(3px 3px at 31% 65%,var(--fx-particle) 70%,transparent),radial-gradient(1.5px 1.5px at 39% 18%,#fff 70%,transparent),radial-gradient(2.5px 2.5px at 47% 50%,var(--fx-particle) 70%,transparent),radial-gradient(2px 2px at 55% 25%,#fff 70%,transparent),radial-gradient(3px 3px at 63% 60%,var(--fx-particle) 70%,transparent),radial-gradient(1.5px 1.5px at 70% 20%,#fff 70%,transparent),radial-gradient(2px 2px at 78% 50%,var(--fx-particle) 70%,transparent),radial-gradient(3px 3px at 86% 30%,#fff 70%,transparent),radial-gradient(2px 2px at 93% 60%,var(--fx-particle) 70%,transparent),radial-gradient(circle at 25% 30%,color-mix(in srgb,var(--fx-glow) 18%,transparent) 0%,transparent 50%),radial-gradient(circle at 75% 60%,color-mix(in srgb,var(--fx-glow) 12%,transparent) 0%,transparent 50%);animation:hero-warp 8s ease-in-out infinite alternate}
-@keyframes article-bg-enter{0%{transform:scale(0.5)}100%{transform:scale(1.12)}}
-@keyframes article-bg-breathe{from{transform:scale(1.12)}to{transform:scale(1)}}
+@keyframes article-bg-breathe{from{transform:scale(1.08)}to{transform:scale(1)}}
 
 /* ── 文章头卡（玻璃质卡片，浮在全幅星域上） ── */
-.article-hero{position:relative;overflow:hidden;padding:var(--space-xl) var(--space-lg);background:color-mix(in srgb,var(--card) 85%,transparent);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);text-align:center;margin-bottom:var(--space-lg)}
+.article-hero{position:relative;overflow:hidden;padding:var(--space-xl) var(--space-lg);background:color-mix(in srgb,var(--card) 85%,transparent);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);text-align:center;margin:var(--space-3xl) 0 var(--space-lg)}
 .article-hero::after{content:"";position:absolute;inset:0;background-image:radial-gradient(circle at 25% 30%,color-mix(in srgb,var(--fx-glow) 8%,transparent) 0%,transparent 50%),radial-gradient(circle at 75% 60%,color-mix(in srgb,var(--fx-glow) 5%,transparent) 0%,transparent 50%);pointer-events:none}
 .article-hero .hero-inner{position:relative;z-index:2}
 .article-hero .back-link{position:absolute;top:var(--space-md);left:var(--space-md);z-index:1;font-size:.8125rem;color:var(--text-tertiary);display:inline-flex;align-items:center;gap:4px}
 .article-hero .back-link:hover{color:var(--brand)}
 .article-hero .term-deco{position:absolute;top:var(--space-md);right:var(--space-md);z-index:1;font-family:var(--font-mono);font-size:.75rem;color:var(--text-secondary);opacity:.85}
 .article-hero .hero-eyebrow{position:relative;z-index:1;color:var(--text);background:var(--brand-bg)}
-.article-hero h1{position:relative;z-index:1;font-size:2.5rem;line-height:1.25;font-weight:700;color:var(--text);max-width:26ch;margin:0 auto var(--space-sm)}
+.article-hero h1{position:relative;z-index:1;font-size:1.75rem;line-height:1.4;font-weight:700;color:var(--text);max-width:26ch;margin:0 auto var(--space-sm)}
 .article-hero .subtitle{position:relative;z-index:1;color:var(--text-secondary);font-size:1.0625rem;line-height:1.75;max-width:460px;margin:0 auto}
 html.dark .article-hero{background:color-mix(in srgb,var(--card) 88%,transparent)}
 
