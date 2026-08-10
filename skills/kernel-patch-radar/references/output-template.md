@@ -303,6 +303,8 @@ blocks:
 
 ### 内核英语模板（column=english，每日一篇）
 
+**产出路径**：`<kernel-blog>/src/content/posts/english/YYYY-MM-DD-slug.md`（**独立子目录**，与内核日报分离；URL/slug 仍取文件名，不受路径影响）。
+
 **定位**：用今日解锁的内核英文资料学英语——**独立栏目**（非日报周边）。素材 = 当天 radar 抓取/分析的英文补丁标题、内核术语、LKML 邮件表达。
 
 **结构**（blocks 复用现有类型）：

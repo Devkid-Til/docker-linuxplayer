@@ -13,19 +13,28 @@ interface Adjacent {
 
 export async function getStaticPaths() {
   const slugOf = p => String(p.id).split('/').pop().replace(/\.md$/, '');
-  const posts = (await getCollection('posts')).sort((a, b) => a.data.date.localeCompare(b.data.date));
-  return posts.map((p, i) => ({
-    params: { slug: slugOf(p) },
-    props: {
-      post: p,
-      prev: i > 0
-        ? { slug: slugOf(posts[i - 1]), date: posts[i - 1].data.date, title: posts[i - 1].data.title }
-        : null,
-      next: i < posts.length - 1
-        ? { slug: slugOf(posts[i + 1]), date: posts[i + 1].data.date, title: posts[i + 1].data.title }
-        : null,
-    },
-  }));
+  const all = await getCollection('posts');
+  // pager 按类别隔离：prev/next 只在本 column 内翻（内核日报/周报…一组、内核英语一组），
+  // 共用数据源但互不越界（英语文章不会翻到内核日报）
+  return all.map(p => {
+    const col = p.data.column || 'daily';
+    const same = all
+      .filter(q => (q.data.column || 'daily') === col)
+      .sort((a, b) => a.data.date.localeCompare(b.data.date));
+    const i = same.findIndex(q => q.id === p.id);
+    return {
+      params: { slug: slugOf(p) },
+      props: {
+        post: p,
+        prev: i > 0
+          ? { slug: slugOf(same[i - 1]), date: same[i - 1].data.date, title: same[i - 1].data.title }
+          : null,
+        next: i < same.length - 1
+          ? { slug: slugOf(same[i + 1]), date: same[i + 1].data.date, title: same[i + 1].data.title }
+          : null,
+      },
+    };
+  });
 }
 
 const { post, prev, next } = Astro.props;
