@@ -20,7 +20,7 @@ if [ ! -f "$ROOT/site/index.html" ] || [ -z "$(ls -A "$ROOT/site/posts" 2>/dev/n
 fi
 
 echo "[deploy] syncing to $SERVER..."
-rsync -az --delete --timeout=15 "$ROOT/site/" "$SERVER:$DEST/"
+rsync -azc --delete --timeout=15 "$ROOT/site/" "$SERVER:$DEST/"   # -c 按内容校验，不依赖 mtime
 
 echo "[deploy] verifying..."
 # 健康检查：验最新文章页可达（不只看首页），失败即中止——不再静默通过
@@ -33,6 +33,21 @@ else
   echo "  ⛔ 健康检查失败：$SERVER 不可达或站点异常"
   exit 1
 fi
+
+# 内容完整性校验：关键文件本地 vs 服务器 sha256 一致（防 rsync 半传/篡改）
+echo "[deploy] verifying content hashes..."
+HASH_FAIL=0
+for f in index.html feed.xml robots.txt; do
+  local_h="$(sha256sum "$ROOT/site/$f" 2>/dev/null | cut -d' ' -f1)"
+  remote_h="$(ssh "$SERVER" "sha256sum '$DEST/$f' 2>/dev/null | cut -d' ' -f1")"
+  if [ -n "$local_h" ] && [ "$local_h" = "$remote_h" ]; then
+    echo "  ✓ $f"
+  else
+    echo "  ✗ $f 哈希不一致（本地 ${local_h:-无} / 远端 ${remote_h:-无}）"
+    HASH_FAIL=1
+  fi
+done
+[ "$HASH_FAIL" -eq 0 ] || { echo "  ⛔ 内容校验失败，部署中止"; exit 1; }
 
 if [ -z "${SKIP_DEPLOY:-}" ]; then
   cd "$ROOT"
