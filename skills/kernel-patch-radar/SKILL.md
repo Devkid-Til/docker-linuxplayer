@@ -44,7 +44,7 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
    等董事长确认后再发布；其余平台读 `references/platform-templates.md` 产小红书帖 / 抖音脚本 / GitHub 日报 md，随文章文件一并输出；图形走飞书画板、视频走外部工具，本步只做文字
 
 ### 每周雷达（mm/sched/pci + LWN + 板块热度 + 三镜像反查）
-1. **板块活跃度数据（本周热度之和）**：`python3 <本 skill>/scripts/sum-week.py <kernel-blog>/src/data/radar-history.json /tmp/week-heat.json` → 读每日落盘历史（refresh-heat.sh 每天 upsert），求**本周（周一~今天）各板块计数之和**，作为周报「板块热度」数据源。历史不足 7 天时用已有天数求和（标题如实标注如"本周 3 天累计"）；无历史则跳过活跃度图
+1. **板块活跃度数据（本周热度之和）**：`python3 <本 skill>/scripts/sum-range.py --period week <kernel-blog>/src/data/radar-history.json --out /tmp/week-heat.json` → 读每日落盘历史（refresh-heat.sh 每天 upsert），求**本周（周一~今天）各板块计数之和**，作为周报「板块热度」数据源。历史不足 7 天时用已有天数求和（标题如实标注如"本周 3 天累计"）；无历史则跳过活跃度图
 2. 用 Workflow 工具**以 `scriptPath`** 运行 `<本 skill 目录>/scripts/weekly-radar.workflow.js`（并行 13 板块 agent 搜全内核近期重点——media/DRM/mm/PCI/net/fs/virtio/Rust/LSM/block/arch/rt/lkml，返回含子层/机制标注/来源链接/mid 的结构化摘要；低频板块搜不到如实报「暂无重点」）——**不要用 `name:`**，该文件未注册到 `~/.claude/workflows/`
 3. `bash scripts/radar.sh lwn 10` → 本周 LWN 标题（⚠️ LWN 部分文章有订阅墙，标题可抓、正文可能需订阅，成文时如实处理）
 4. **三镜像合入状态反查**：对周报报道的重点补丁批量 `bash scripts/mirror-lookup.sh query <mid> [...]`（本地三镜像：mainline 是否合入 / next 是否排队 / stable 是否回移植）——结果补进各补丁条目与「合入状态」节
@@ -55,6 +55,7 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 ### 月/季/年报（盘点式回顾）
 **无每日抓取**——基于当期已产出的日/周报积累内容做盘点，重**趋势与指标**，轻逐条新闻：
 1. **先跑聚合脚本拿素材**：`cd <kernel-blog> && node scripts/monthly-recap.mjs --month YYYY-MM`（`--column` 可筛栏目，`--json` 出结构化数据）——确定性聚合当期文章：规模/标签频次/分节活跃度/头条/机制雷达/速查术语/交叉信号。**文章文件即单一数据源，不维护台账**
+2. **板块热度趋势（可选）**：`python3 <本 skill>/scripts/sum-range.py --period month --out /tmp/month-heat.json`（季报用 `--period quarter`、年报用 `--period year`）→ `draw-heat.py /tmp/month-heat.json month-heat.png --title "板块热度 · 本月"`——从 radar-history.json 每日落盘热度求周期累计，展示当月/季/年板块热度趋势
 2. 以聚合素材为底，抽出跨域大改动、趋势、指标
 3. **低频板块专项**：virtio / RT / LSM 等低频列表日报只作信号提示、不展开（12 列表按 24h、virtio-dev 按 20 条）——盘点时按需 `bash scripts/radar.sh fetch <list> 30` 拉长期趋势素材，补进「趋势观察」
 4. **合入状态追踪（命运追踪 / 队列状态 / 修复盘点）**：对本期报道过的补丁批量反查——`bash scripts/mirror-lookup.sh query <mid> [...]`（本地三镜像：mainline 是否合入+首发版本 / linux-next 是否排队 / stable 是否回移植+到哪些版本）。本地全历史（mainline 146 万 commit）、毫秒级、无 API 限流；镜像在 `/ws/dev/kernel-mirrors/{linux,linux-next,linux-stable}`，改动镜像后先 `mirror-lookup.sh index` 重建 mid 索引（一次性 ~4 分钟）。未命中 = 未合入 / 被后续版本取代 / 该 mid 引用不存在（如实标注）。结果补进「趋势观察」的『哪些进了 mainline / 哪些在排队 / 哪些已回移植』。**仅用于盘点/头条深挖**——当日 patch 因合入滞后（review→维护者树→next→merge window）几乎必未命中，别在日报强用
