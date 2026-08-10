@@ -130,10 +130,21 @@ function renderBlock(b, fallbackSource = '') {
 }
 
 /* ── 主流程 ── */
-const files = readdirSync(POSTS_DIR).filter(f => f.endsWith('.md')).sort();
+/* 递归收集 posts 下所有 .md（含 english/ 子目录）——r1 修复：此前 readdirSync 非递归漏读子目录 */
+function listMarkdown(dir, prefix = '') {
+  const out = [];
+  for (const ent of readdirSync(dir, { withFileTypes: true })) {
+    const rel = prefix ? `${prefix}/${ent.name}` : ent.name;
+    if (ent.isDirectory()) out.push(...listMarkdown(path.join(dir, ent.name), rel));
+    else if (ent.name.endsWith('.md')) out.push(rel);
+  }
+  return out;
+}
+const files = listMarkdown(POSTS_DIR).sort();
 if (!files.length) { console.error('没有文章'); process.exit(1); }
+const base = f => path.basename(f);
 const target = slugArg
-  ? files.find(f => f.startsWith(slugArg + '.') || f.startsWith(slugArg + '-') || f === slugArg + '.md')
+  ? files.find(f => base(f).startsWith(slugArg + '.') || base(f).startsWith(slugArg + '-') || base(f) === slugArg + '.md')
   : files[files.length - 1];
 if (!target) { console.error(`找不到 ${slugArg}`); process.exit(1); }
 

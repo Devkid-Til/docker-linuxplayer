@@ -51,6 +51,8 @@ const posts = defineCollection({
         ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['focus'], message: 'english 文章必须有 focus（今日主维度）' });
       } else if (!vocab.has(data.focus)) {
         ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['focus'], message: `focus「${data.focus}」不在学习维度词表内。可用：${[...vocab].join('、')}` });
+      } else if (!data.tags.includes(data.focus)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['tags'], message: `focus「${data.focus}」必须包含在 tags 中（主维度必含于 tags，模板纸面规则强制化）` });
       }
     }
   }),

@@ -38,7 +38,17 @@ function parseFrontmatter(md) {
   return yaml.load(m[1]);
 }
 
-const files = readdirSync(POSTS_DIR).filter(f => f.endsWith('.md')).sort();
+/* 递归收集 posts 下所有 .md（含 english/ 子目录）——r1 修复：此前 readdirSync 非递归漏读子目录 */
+function listMarkdown(dir, prefix = '') {
+  const out = [];
+  for (const ent of readdirSync(dir, { withFileTypes: true })) {
+    const rel = prefix ? `${prefix}/${ent.name}` : ent.name;
+    if (ent.isDirectory()) out.push(...listMarkdown(path.join(dir, ent.name), rel));
+    else if (ent.name.endsWith('.md')) out.push(rel);
+  }
+  return out;
+}
+const files = listMarkdown(POSTS_DIR).sort();
 const posts = [];
 for (const f of files) {
   const md = readFileSync(path.join(POSTS_DIR, f), 'utf8');
