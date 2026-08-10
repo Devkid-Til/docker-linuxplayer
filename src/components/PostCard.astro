@@ -1,5 +1,6 @@
 ---
 // 文章卡片组件（首页/标签页共用）；latest=true 时标记「今日」（不限栏目，latest 由 index 页按最新一篇计算）
+// focus（english 栏目主维度）显示「🎯 今日重点」徽标——每篇英语文章有明确学习侧重
 import { COLUMN_MAP } from '../column';
 
 interface Props {
@@ -10,8 +11,12 @@ interface Props {
   title: string;
   desc: string;
   tags: string[];
+  focus?: string;
 }
-const { latest = false, column = 'daily', slug, date, title, desc, tags } = Astro.props;
+const FOCUS_EMOJI: Record<string, string> = {
+  '标题解析': '🔖', '术语卡': '🃏', '地道表达': '💬', '阅读': '📖', '写作': '✍️', '口语': '🎤',
+};
+const { latest = false, column = 'daily', slug, date, title, desc, tags, focus } = Astro.props;
 const displayDate = date.slice(5); // MM-DD
 const colMeta = COLUMN_MAP[column] || COLUMN_MAP.daily;
 ---
@@ -20,6 +25,7 @@ const colMeta = COLUMN_MAP[column] || COLUMN_MAP.daily;
     <div class="timeline-meta">
       <span class="timeline-date">{displayDate}</span>
       <span class="timeline-cat">{colMeta.emoji} {colMeta.label}</span>
+      {focus && <span class="focus-badge">🎯 今日重点：{FOCUS_EMOJI[focus] || ''} {focus}</span>}
       {latest && <span class="timeline-latest">今日</span>}
     </div>
     <h3>{title}</h3>

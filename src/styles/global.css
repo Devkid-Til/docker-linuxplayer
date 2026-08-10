@@ -417,3 +417,6 @@ html.dark .timeline-item::before{border-color:var(--bg)}
 
 /* 标题内 em 不斜体 */
 .hero h1 em{font-style:normal;color:var(--hero-accent)}
+
+/* 英语文章「今日重点」徽标（focus 主维度） */
+.focus-badge{font-size:.6875rem;font-weight:600;color:var(--brand);background:var(--brand-bg);padding:2px 8px;border-radius:10px;letter-spacing:.02em}

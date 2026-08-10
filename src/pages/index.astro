@@ -151,7 +151,7 @@ const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio',
         {englishFilterTabs.map(t => <button class="filter-tag" data-tag={t.name}>{t.emoji} {t.name}<span class="count"> {t.count}</span></button>)}
       </div>
       <div class="post-timeline">
-        {englishPosts.map((p, i) => <PostCard latest={false} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} />)}
+        {englishPosts.map((p, i) => <PostCard latest={false} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} focus={p.data.focus} />)}
       </div>
     </div>
 
