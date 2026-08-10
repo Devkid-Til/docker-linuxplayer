@@ -25,9 +25,11 @@ rsync -azc --delete --timeout=15 "$ROOT/site/" "$SERVER:$DEST/"   # -c 按内容
 echo "[deploy] verifying..."
 # 健康检查：验最新文章页可达（不只看首页），失败即中止——不再静默通过
 LATEST_POST="$(ls -d "$ROOT/site/posts/"*/ 2>/dev/null | sort | tail -1 | xargs -n1 basename)"
-if [ -n "$LATEST_POST" ] && curl -sf --max-time 10 -o /dev/null "http://118.31.67.240/posts/$LATEST_POST/"; then
+# 注意：健康检查 curl 必须带浏览器 UA——nginx 防爬会 403 拦截默认 curl UA（自伤陷阱）
+HC_UA="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"
+if [ -n "$LATEST_POST" ] && curl -sf --max-time 10 -o /dev/null -A "$HC_UA" "http://118.31.67.240/posts/$LATEST_POST/"; then
   echo "  ✓ 最新文章 $LATEST_POST HTTP 200"
-elif curl -sf --max-time 10 -o /dev/null http://118.31.67.240; then
+elif curl -sf --max-time 10 -o /dev/null -A "$HC_UA" http://118.31.67.240; then
   echo "  ✓ HTTP 200（无文章页，仅首页）"
 else
   echo "  ⛔ 健康检查失败：$SERVER 不可达或站点异常"
