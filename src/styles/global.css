@@ -178,11 +178,11 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 /* ── 11. Tag Filter Bar ──────────────────────────────────────── */
 .tag-filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:var(--space-lg)}
 .tag-filter.hidden{display:none}
-.tag-filter .filter-tag{font-size:.75rem;font-weight:500;padding:4px 12px;border-radius:16px;background:var(--bg-alt);color:var(--text-secondary);border:1px solid var(--border);cursor:pointer;transition:all .15s;font-family:var(--font-sans)}
-.tag-filter .filter-tag:hover{background:var(--brand-bg);color:var(--brand);border-color:var(--brand-border)}
-.tag-filter .filter-tag.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+.tag-filter .filter-tag,#english-filter .filter-tag{font-size:.75rem;font-weight:500;padding:4px 12px;border-radius:16px;background:var(--bg-alt);color:var(--text-secondary);border:1px solid var(--border);cursor:pointer;transition:all .15s;font-family:var(--font-sans)}
+.tag-filter .filter-tag:hover,#english-filter .filter-tag:hover{background:var(--brand-bg);color:var(--brand);border-color:var(--brand-border)}
+.tag-filter .filter-tag.active,#english-filter .filter-tag.active{background:var(--brand);color:#fff;border-color:var(--brand)}
 .timeline-item.hidden{display:none}
-.tag-filter .filter-tag .count{font-size:.7em;opacity:.7;margin-left:3px}
+.tag-filter .filter-tag .count,#english-filter .filter-tag .count{font-size:.7em;opacity:.7;margin-left:3px}
 
 /* ── 11b. Column Filter Bar —— 导航层：下划线式 tab（区别于下方胶囊标签） ── */
 /* 主切换 tab：全部栏目 | 内核英语（同级视图切换）——文字 tab，下划线式（与 column-filter 一致，非胶囊） */
