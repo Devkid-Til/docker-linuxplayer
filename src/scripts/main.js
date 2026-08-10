@@ -132,34 +132,6 @@
     requestAnimationFrame(frame);
   })();
 
-  /* ── 指针光晕：Pointer Events 统一鼠标/触摸；连续 rAF 读最新位置不丢帧 ── */
-  var glow = document.querySelector('.cursor-glow');
-  if (glow) {
-    var gx = -999, gy = -999, lastX = -999, lastY = -999;
-    /* 每帧把最新位置应用到光晕（只写变化，不丢事件 → 不卡顿） */
-    (function frame() {
-      if (gx !== lastX || gy !== lastY) {
-        glow.style.left = gx + 'px'; glow.style.top = gy + 'px';
-        lastX = gx; lastY = gy;
-      }
-      requestAnimationFrame(frame);
-    })();
-    function place(x, y) { gx = x; gy = y; }
-    if ('PointerEvent' in window) {
-      document.addEventListener('pointermove', function (e) { place(e.clientX, e.clientY); glow.classList.add('visible'); }, { passive: true });
-      document.addEventListener('pointerdown', function (e) { if (e.pointerType === 'touch') { place(e.clientX, e.clientY); glow.classList.add('visible'); } }, { passive: true });
-      document.addEventListener('pointerup', function (e) { if (e.pointerType === 'touch') glow.classList.remove('visible'); });
-      document.addEventListener('pointercancel', function () { glow.classList.remove('visible'); });
-      document.addEventListener('pointerleave', function (e) { if (e.pointerType !== 'touch') glow.classList.remove('visible'); });
-    } else {
-      document.addEventListener('mousemove', function (e) { place(e.clientX, e.clientY); glow.classList.add('visible'); }, { passive: true });
-      document.addEventListener('mouseleave', function () { glow.classList.remove('visible'); });
-      document.addEventListener('touchstart', function (e) { var t = e.touches[0]; if (t) { place(t.clientX, t.clientY); glow.classList.add('visible'); } }, { passive: true });
-      document.addEventListener('touchmove', function (e) { var t = e.touches[0]; if (t) { place(t.clientX, t.clientY); glow.classList.add('visible'); } }, { passive: true });
-      document.addEventListener('touchend', function () { glow.classList.remove('visible'); });
-      document.addEventListener('touchcancel', function () { glow.classList.remove('visible'); });
-    }
-  }
 
   /* ── 滚动进度 ── */
   var bar = document.querySelector('.progress-bar');
