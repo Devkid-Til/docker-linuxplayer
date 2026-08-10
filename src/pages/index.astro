@@ -15,6 +15,14 @@ posts.forEach(p => {
   columnCounts[c] = (columnCounts[c] || 0) + 1;
 });
 
+// 主切换视图：内核内容流（全部栏目，不含英语）与「内核英语」独立视图——两者平级
+const kernelPosts = posts.filter(p => (p.data.column || 'daily') !== 'english');
+const englishPosts = posts.filter(p => p.data.column === 'english');
+// 英语视图标签（学习维度）统计
+const englishTags: { name: string; count: number }[] = Object.entries(
+  englishPosts.reduce((acc, p) => { p.data.tags.forEach(t => { acc[t] = (acc[t] || 0) + 1; }); return acc; }, {} as Record<string, number>)
+).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+
 // 每栏目独立 tag 栏：只统计该栏目自己的文章 + 该栏目词表内的标签
 // （词表由 schema 强制，这里只需按栏目聚合即可）
 const columnTags: Record<string, { name: string; count: number }[]> = {};
@@ -109,19 +117,40 @@ const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio',
 
   <main class="container">
     <div class="section-header reveal"><h2>全部栏目</h2><span class="mono">/ columns</span></div>
-    <div class="column-filter reveal" id="column-filter">
-      <button class="filter-column active" data-column="all">{ALL_COLUMN.label} <span class="count">{posts.length}</span></button>
-      {COLUMNS.map(c => <button class="filter-column" data-column={c.value}>{c.emoji} {c.label}<span class="count"> {columnCounts[c.value] || 0}</span></button>)}
+    <!-- 主切换：全部栏目（内核内容流）| 内核英语（独立视图）——同级 tab -->
+    <div class="main-tabs reveal">
+      <button class="main-tab active" data-view="kernel">全部栏目 <span class="count">{kernelPosts.length}</span></button>
+      <button class="main-tab" data-view="english">📖 内核英语 <span class="count">{englishPosts.length}</span></button>
     </div>
-    {COLUMNS.filter(c => columnTagsUseful[c.value]).map(c => (
-      <div class="tag-filter reveal hidden" data-column={c.value}>
-        <button class="filter-tag active" data-tag="all">全部 <span class="count">{columnCounts[c.value] || 0}</span></button>
-        {columnTags[c.value].map(t => <button class="filter-tag" data-tag={t.name}>{t.name}<span class="count"> {t.count}</span></button>)}
+
+    <!-- 视图①：全部栏目（日报/周报/月报/季报/年报，不含英语） -->
+    <div class="main-view" id="view-kernel">
+      <div class="column-filter reveal" id="column-filter">
+        <button class="filter-column active" data-column="all">{ALL_COLUMN.label} <span class="count">{kernelPosts.length}</span></button>
+        {COLUMNS.filter(c => c.value !== 'english').map(c => <button class="filter-column" data-column={c.value}>{c.emoji} {c.label}<span class="count"> {columnCounts[c.value] || 0}</span></button>)}
       </div>
-    ))}
-    <div class="post-timeline">
-      {posts.map((p, i) => <PostCard latest={slugOf(p) === latestSlug} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} />)}
+      {COLUMNS.filter(c => c.value !== 'english' && columnTagsUseful[c.value]).map(c => (
+        <div class="tag-filter reveal hidden" data-column={c.value}>
+          <button class="filter-tag active" data-tag="all">全部 <span class="count">{columnCounts[c.value] || 0}</span></button>
+          {columnTags[c.value].map(t => <button class="filter-tag" data-tag={t.name}>{t.name}<span class="count"> {t.count}</span></button>)}
+        </div>
+      ))}
+      <div class="post-timeline">
+        {kernelPosts.map((p, i) => <PostCard latest={slugOf(p) === latestSlug} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} />)}
+      </div>
     </div>
+
+    <!-- 视图②：内核英语（学习维度标签过滤 + 英语文章流，独立于全部栏目） -->
+    <div class="main-view hidden" id="view-english">
+      <div class="column-filter reveal" id="english-filter">
+        <button class="filter-tag active" data-tag="all">全部 <span class="count">{englishPosts.length}</span></button>
+        {englishTags.map(t => <button class="filter-tag" data-tag={t.name}>{t.name}<span class="count"> {t.count}</span></button>)}
+      </div>
+      <div class="post-timeline">
+        {englishPosts.map((p, i) => <PostCard latest={false} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} />)}
+      </div>
+    </div>
+
     <div class="about-card reveal">
       <div class="about-avatar">&gt;_<span class="cursor">▋</span></div>
       <div class="about-main">
