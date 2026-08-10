@@ -15,8 +15,8 @@ posts.forEach(p => {
   columnCounts[c] = (columnCounts[c] || 0) + 1;
 });
 
-// 主切换视图：内核内容流（全部栏目，不含英语）与「内核英语」独立视图——两者平级
-const kernelPosts = posts.filter(p => (p.data.column || 'daily') !== 'english');
+// 主切换视图：内核内容流（全部栏目，不含英语/手记）与「内核英语」「站长手记」独立视图——平级
+const kernelPosts = posts.filter(p => !['english', 'journal'].includes(p.data.column || 'daily'));
 const englishPosts = posts.filter(p => p.data.column === 'english');
 // 英语视图维度 tab：固定词表（column.ts english.tags，稳定不随文章变动）+ emoji + 文章计数
 const ENGLISH_TAG_EMOJI: Record<string, string> = {
@@ -25,6 +25,13 @@ const ENGLISH_TAG_EMOJI: Record<string, string> = {
 const englishCounts = englishPosts.reduce((acc, p) => { p.data.tags.forEach(t => { acc[t] = (acc[t] || 0) + 1; }); return acc; }, {} as Record<string, number>);
 const englishFilterTabs = (COLUMN_MAP['english']?.tags ?? []).map(t => ({
   name: t, emoji: ENGLISH_TAG_EMOJI[t] || '', count: englishCounts[t] || 0,
+}));
+// 站长手记：独立视图（低频不定期），固定词表 + emoji
+const journalPosts = posts.filter(p => p.data.column === 'journal');
+const JOURNAL_TAG_EMOJI: Record<string, string> = { '笔记': '📓', '感谢': '🙏', '随想': '💭' };
+const journalCounts = journalPosts.reduce((acc, p) => { p.data.tags.forEach(t => { acc[t] = (acc[t] || 0) + 1; }); return acc; }, {} as Record<string, number>);
+const journalFilterTabs = (COLUMN_MAP['journal']?.tags ?? []).map(t => ({
+  name: t, emoji: JOURNAL_TAG_EMOJI[t] || '', count: journalCounts[t] || 0,
 }));
 
 // 每栏目独立 tag 栏：只统计该栏目自己的文章 + 该栏目词表内的标签
@@ -125,15 +132,16 @@ const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio',
     <div class="main-tabs reveal">
       <button class="main-tab active" data-view="kernel">内核日报 <span class="count">{kernelPosts.length}</span></button>
       <button class="main-tab" data-view="english">内核英语 <span class="count">{englishPosts.length}</span></button>
+      <button class="main-tab" data-view="journal">站长手记 <span class="count">{journalPosts.length}</span></button>
     </div>
 
     <!-- 视图①：全部栏目（日报/周报/月报/季报/年报，不含英语） -->
     <div class="main-view" id="view-kernel">
       <div class="column-filter reveal" id="column-filter">
         <button class="filter-column active" data-column="all">{ALL_COLUMN.label} <span class="count">{kernelPosts.length}</span></button>
-        {COLUMNS.filter(c => c.value !== 'english').map(c => <button class="filter-column" data-column={c.value}>{c.emoji} {c.label}<span class="count"> {columnCounts[c.value] || 0}</span></button>)}
+        {COLUMNS.filter(c => !['english', 'journal'].includes(c.value)).map(c => <button class="filter-column" data-column={c.value}>{c.emoji} {c.label}<span class="count"> {columnCounts[c.value] || 0}</span></button>)}
       </div>
-      {COLUMNS.filter(c => c.value !== 'english' && columnTagsUseful[c.value]).map(c => (
+      {COLUMNS.filter(c => !['english', 'journal'].includes(c.value) && columnTagsUseful[c.value]).map(c => (
         <div class="tag-filter reveal hidden" data-column={c.value}>
           <button class="filter-tag active" data-tag="all">全部 <span class="count">{columnCounts[c.value] || 0}</span></button>
           {columnTags[c.value].map(t => <button class="filter-tag" data-tag={t.name}>{t.name}<span class="count"> {t.count}</span></button>)}
@@ -152,6 +160,17 @@ const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio',
       </div>
       <div class="post-timeline">
         {englishPosts.map((p, i) => <PostCard latest={false} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} focus={p.data.focus} />)}
+      </div>
+    </div>
+
+    <!-- 视图③：站长手记（笔记/感谢/随想，独立视图，低频不定期） -->
+    <div class="main-view hidden" id="view-journal">
+      <div class="column-filter reveal" id="journal-filter">
+        <button class="filter-tag active" data-tag="all">全部 <span class="count">{journalPosts.length}</span></button>
+        {journalFilterTabs.map(t => <button class="filter-tag" data-tag={t.name}>{t.emoji} {t.name}<span class="count"> {t.count}</span></button>)}
+      </div>
+      <div class="post-timeline">
+        {journalPosts.map((p, i) => <PostCard latest={false} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} />)}
       </div>
     </div>
 

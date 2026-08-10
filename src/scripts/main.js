@@ -307,6 +307,22 @@
     });
   }
 
+  /* ── 站长手记视图：笔记/感谢/随想 标签过滤（独立视图） ── */
+  var journalBar = document.getElementById('journal-filter');
+  if (journalBar) {
+    journalBar.addEventListener('click', function (e) {
+      var btn = e.target.closest('.filter-tag');
+      if (!btn) return;
+      var tag = btn.getAttribute('data-tag');
+      journalBar.querySelectorAll('.filter-tag').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelectorAll('#view-journal .timeline-item').forEach(function (item) {
+        var match = tag === 'all' || (item.getAttribute('data-tags') || '').split(',').map(function (s) { return s.trim(); }).indexOf(tag) >= 0;
+        item.classList.toggle('hidden', !match);
+      });
+    });
+  }
+
   /* ── 终端轮播动画 ── */
   var termDeco = document.querySelector('.term-deco');
   if (termDeco) {
