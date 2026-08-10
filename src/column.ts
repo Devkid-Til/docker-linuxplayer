@@ -1,5 +1,5 @@
 /* 栏目元数据 —— 主页过滤栏、PostCard 徽标、content.config.ts enum 的单一数据源 */
-export type ColumnValue = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly' | 'english';
+export type ColumnValue = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly' | 'english' | 'journal';
 
 export interface ColumnMeta {
   value: ColumnValue;
@@ -39,6 +39,11 @@ export const COLUMNS: ColumnMeta[] = [
   {
     value: 'english', label: '内核英语', emoji: '📖', fullLabel: '内核英语',
     tags: ['标题解析', '术语卡', '地道表达', '阅读', '写作', '口语'],
+  },
+  /* 站长手记：独立栏目——笔记/感谢/随想，低频不定期（贵在真实不日更） */
+  {
+    value: 'journal', label: '站长手记', emoji: '📔', fullLabel: '站长手记',
+    tags: ['笔记', '感谢', '随想'],
   },
 ];
 
