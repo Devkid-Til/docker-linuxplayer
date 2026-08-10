@@ -56,6 +56,7 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 **无每日抓取**——基于当期已产出的日/周报积累内容做盘点，重**趋势与指标**，轻逐条新闻：
 1. **先跑聚合脚本拿素材**：`cd <kernel-blog> && node scripts/monthly-recap.mjs --month YYYY-MM`（`--column` 可筛栏目，`--json` 出结构化数据）——确定性聚合当期文章：规模/标签频次/分节活跃度/头条/机制雷达/速查术语/交叉信号。**文章文件即单一数据源，不维护台账**
 2. **板块热度趋势（可选）**：`python3 <本 skill>/scripts/sum-range.py --period month --out /tmp/month-heat.json`（季报用 `--period quarter`、年报用 `--period year`）→ `draw-heat.py /tmp/month-heat.json month-heat.png --title "板块热度 · 本月"`——从 radar-history.json 每日落盘热度求周期累计，展示当月/季/年板块热度趋势
+3. **数据铁律（防双重求和）**：`radar-history.json` 只存**每日原始 24h 值**（refresh-heat.sh 每日 upsert），周/月/季/年求和一律用 `sum-range.py` 对周期内**每天原始值**累加。**禁止**把周和/月和等聚合结果写进 history，也禁止基于聚合值再叠加（否则年=周和的重复求和，数据失真）
 2. 以聚合素材为底，抽出跨域大改动、趋势、指标
 3. **低频板块专项**：virtio / RT / LSM 等低频列表日报只作信号提示、不展开（12 列表按 24h、virtio-dev 按 20 条）——盘点时按需 `bash scripts/radar.sh fetch <list> 30` 拉长期趋势素材，补进「趋势观察」
 4. **合入状态追踪（命运追踪 / 队列状态 / 修复盘点）**：对本期报道过的补丁批量反查——`bash scripts/mirror-lookup.sh query <mid> [...]`（本地三镜像：mainline 是否合入+首发版本 / linux-next 是否排队 / stable 是否回移植+到哪些版本）。本地全历史（mainline 146 万 commit）、毫秒级、无 API 限流；镜像在 `/ws/dev/kernel-mirrors/{linux,linux-next,linux-stable}`，改动镜像后先 `mirror-lookup.sh index` 重建 mid 索引（一次性 ~4 分钟）。未命中 = 未合入 / 被后续版本取代 / 该 mid 引用不存在（如实标注）。结果补进「趋势观察」的『哪些进了 mainline / 哪些在排队 / 哪些已回移植』。**仅用于盘点/头条深挖**——当日 patch 因合入滞后（review→维护者树→next→merge window）几乎必未命中，别在日报强用

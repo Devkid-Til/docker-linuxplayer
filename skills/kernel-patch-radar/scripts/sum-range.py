@@ -4,6 +4,10 @@
 #
 # 数据来源：refresh-heat.sh 每日把当天 24h 计数 upsert 进 radar-history.json（按日期累积、git 持久化）。
 #
+# 防双重求和铁律：radar-history.json 只存「每日原始 24h 值」，绝不写入周和/月和/季和等聚合值。
+# 本脚本对周期内每一天的原始值累加——周/月/季/年都从每日值求和，绝不基于已聚合结果再叠加
+#（否则年=周和的重复求和、月和里混入周和，数据失真）。
+#
 # 用法:
 #   python3 sum-range.py --period week    [history.json] [--out out.json]   # 本周周一~今天
 #   python3 sum-range.py --period month   [history.json] [--out out.json]   # 本月 1 号~今天
@@ -58,6 +62,7 @@ def main():
 
     records = json.load(open(a.history)).get("records", {})
     sums, included = {}, []
+    # 只对周期内「每天原始 24h 值」求和；history 不含聚合值（铁律见文件头），故无双重求和
     for dstr, rec in records.items():
         try:
             d = date.fromisoformat(dstr)
