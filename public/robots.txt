@@ -1,0 +1,4 @@
+# Linux内核玩家 · 爬虫策略
+# 文章页不欢迎批量抓取下载——善意爬虫请遵守；恶意爬虫由服务器 nginx 限速/UA 过滤拦截
+User-agent: *
+Disallow: /posts/
