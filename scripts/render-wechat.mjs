@@ -140,13 +140,16 @@ function listMarkdown(dir, prefix = '') {
   }
   return out;
 }
-const files = listMarkdown(POSTS_DIR).sort();
+const files = listMarkdown(POSTS_DIR);
 if (!files.length) { console.error('没有文章'); process.exit(1); }
 const base = f => path.basename(f);
+// 默认取"最新一篇"：按 basename（含 YYYY-MM-DD 日期前缀）字典序最大——不受 english/ 子目录前缀干扰
+// （r2 修复：此前按相对路径字符串排序，english/* 前缀 e 恒大于数字前缀，默认选稿被偏置）
+const newest = files.map(base).sort()[files.length - 1];
 const target = slugArg
   ? files.find(f => base(f).startsWith(slugArg + '.') || base(f).startsWith(slugArg + '-') || base(f) === slugArg + '.md')
-  : files[files.length - 1];
-if (!target) { console.error(`找不到 ${slugArg}`); process.exit(1); }
+  : files.find(f => base(f) === newest);
+if (!target) { console.error(`找不到 ${slugArg || newest}`); process.exit(1); }
 
 const data = parseFrontmatter(readFileSync(path.join(POSTS_DIR, target), 'utf8'));
 const fallbackSource = deriveSource(data.blocks ?? []);
