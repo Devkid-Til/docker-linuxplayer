@@ -307,28 +307,35 @@ blocks:
 
 **定位**：用今日解锁的内核英文资料学英语——**独立栏目**（非日报周边）。素材 = 当天 radar 抓取/分析的英文补丁标题、内核术语、LKML 邮件表达。
 
-**结构**（blocks 复用现有类型）：
+**focus 制（一篇文章一个学习重点，schema 强制）**：
+- frontmatter **必填 `focus`**（今日主维度，取学习维度词表：标题解析/术语卡/地道表达/阅读/写作/口语）
+- **tags 精简**：主维度必含 + 辅助最多 1 个（**不再多维度并列**——一篇文章聚焦一个点学透）
+- 节奏**素材自适应**：每天选当天素材最出彩的维度做 focus；一周内 6 维度覆盖均衡（产出前看最近 5 天 focus，优先补没覆盖的）
+- 文章开头 hook **点明「今日重点：{focus}」**，读者有目标感
+
+**结构**（blocks 复用现有类型，focus 决定主 section）：
 ```
-hook          → 今日英语解锁点导语（1 句，点出今天学什么）
-divider       → "🔖 今日标题"
-headline      → title=英文补丁标题 / meta=来源列表 / points=逐块拆解（子系统前缀/动词句式/名词块）/ verdict=一句话读法
-divider       → "🃏 术语卡"
-highlight     → title=术语 / meta=领域 / points=（英文定义 / 中文 / 记忆钩子）
-divider       → "💬 地道表达"
-highlight     → title=表达场景 / meta=出处 / points=（原句 / 中文 / 用法说明）
-divider       → "✍️ 今日练习"
-paragraph     → 口语复述引导 + 写作仿写引导（各一句）
+hook          → "今日重点：{focus}…"（开头点明）+ 1 句导语
+divider       → 主维度 section（按 focus 选）：
+                标题解析 → headline（补丁标题 + 逐块拆解 points）
+                术语卡   → highlight（术语英文定义/中文/记忆钩子）
+                地道表达 → highlight（原句/中文/用法）
+                阅读     → paragraph 或 quote（英文段落 + 解析）
+                写作     → paragraph（仿写引导 + 例句）
+                口语     → paragraph（复述引导）
+divider       → "✨ 辅助彩蛋"（1 条，其他维度，不喧宾夺主）
+divider       → "✍️ 今日练习"（针对 focus 的复述/仿写）
 closing       → 每日一句（英文学习收尾）
 ```
-tags 从词表取**学习维度**（标题解析/术语卡/地道表达/阅读/写作/口语），按当天内容实际覆盖选 1-4 个。
 
 ```yaml
 ---
 title: "内核英语 · M月D日｜<当日主题>"
 date: "YYYY-MM-DD"
-desc: "读今日内核补丁标题，解锁 <术语> 与 LKML 地道表达。"
+desc: "今日重点：<focus>——<一句话>。"
 column: "english"
-tags: ["标题解析", "术语卡", "地道表达"]
+focus: "标题解析"          # 必填，学习维度词表内
+tags: ["标题解析", "术语卡"]  # 主维度 + 辅助（≤1）
 blocks: [ ... 按上述结构 ... ]
 ---
 ```

@@ -1,13 +1,14 @@
 ---
 title: "内核英语 · 8月10日｜virtio 设备自有内存 DMB"
 date: "2026-08-10"
-desc: "读今日 virtio 补丁标题，解锁 VIRTIO_F_DMB 术语、补丁标题句式与 LKML 地道表达。"
+desc: "今日重点：标题解析——virtio 设备自有内存 DMB 补丁标题逐块拆解。"
 column: "english"
-tags: ["标题解析", "术语卡", "地道表达"]
+focus: "标题解析"
+tags: ["标题解析", "术语卡"]
 blocks:
   - type: hook
     text: >-
-      今天解锁 virtio 补丁时顺带学英语：一个补丁标题拆出三个知识点，一个术语记牢 <strong>device-owned buffer</strong>。
+      <strong>今日重点：🔖 标题解析</strong>——今天解锁 virtio 补丁标题：一个标题拆出三个知识点；辅助彩蛋：术语 <strong>device-owned buffer</strong>。
   - type: divider
     label: "🔖 今日标题"
   - type: headline

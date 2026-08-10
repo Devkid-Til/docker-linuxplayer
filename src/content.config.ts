@@ -29,6 +29,9 @@ const posts = defineCollection({
     /* tags 用受控词表：必须是该 post 所在栏目的词表成员，构建即报错。
        词表定义见 src/column.ts（COLUMNS[i].tags）——日报=子系统域 / 周报=机制域 / 盘点=视角域 */
     tags: z.array(z.string()),
+    /* english 栏目主维度（focus）：今日学习侧重，取学习维度词表（标题解析/术语卡/…）
+       只对 english 必填并校验在词表内——文章有明确侧重，避免大杂烩 */
+    focus: z.string().optional(),
     blocks: z.array(block).default([]),
   }).superRefine((data, ctx) => {
     const vocab = COLUMN_TAG_MAP[data.column];
@@ -40,6 +43,14 @@ const posts = defineCollection({
           path: ['tags'],
           message: `标签「${t}」不在 ${data.column} 栏目受控词表内。可用：${[...vocab].join('、')}`,
         });
+      }
+    }
+    // english 栏目强制 focus（主维度），且在词表内——侧重明确
+    if (data.column === 'english') {
+      if (typeof data.focus !== 'string' || data.focus.length === 0) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['focus'], message: 'english 文章必须有 focus（今日主维度）' });
+      } else if (!vocab.has(data.focus)) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ['focus'], message: `focus「${data.focus}」不在学习维度词表内。可用：${[...vocab].join('、')}` });
       }
     }
   }),
