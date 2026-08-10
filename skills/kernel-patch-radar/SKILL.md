@@ -1,7 +1,7 @@
 ---
 name: kernel-patch-radar
 version: 0.9.0
-description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly digest of Linux kernel mailing-list patch activity — patch series, RFCs, subsystem discussion. Five columns (五档栏目): daily (全内核 13 列表雷达: linux-media/dri-devel/mm/pci/netdev/fs/virtio/rust/security/block/arch/lkml/linux-rt-devel, 词表=13 内核板块 media/DRM/mm/PCI/net/fs/virtio/Rust/LSM/block/arch/sched/driver-core, 报纸式简报), weekly (全 13 板块 + LWN + 板块热度 + 三镜像反查, 雷达分章; 网站直接发布、公众号标题+HTML 请示), monthly/quarterly/yearly (盘点式回顾). Triggers on '今天内核有啥动态'、'补丁简报'、'看下 linux-media 的补丁'、'追踪内核邮件列表'、'patch digest'、'kernel patches today'、'每周内核雷达'、'月报'、'季报'、'年报'. Fetches via scripts/radar.sh (lore git, bypasses Anubis), analyzes by architecture layer, outputs blocks articles (blog + 公众号 same source)."
+description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly digest of Linux kernel mailing-list patch activity — patch series, RFCs, subsystem discussion. Five columns (五档栏目): daily (全内核 13 列表雷达: linux-media/dri-devel/mm/pci/netdev/fs/virtio/rust/security/block/arch/lkml/linux-rt-devel, 词表=13 内核板块 media/DRM/mm/PCI/net/fs/virtio/Rust/LSM/block/arch/sched/driver-core, 报纸式简报), weekly (全 13 板块 + LWN + 板块热度 + 三镜像反查, 雷达分章; 网站直接发布、公众号标题+HTML 请示), monthly/quarterly/yearly (盘点式回顾). Triggers on '今天内核有啥动态'、'补丁简报'、'看下 linux-media 的补丁'、'追踪内核邮件列表'、'patch digest'、'kernel patches today'、'每周内核雷达'、'月报'、'季报'、'年报'. 另有独立栏目 english 内核英语（用今日内核英文语料学英语，focus 制，触发词'内核英语'/'学英语'/'英语卡'）. Fetches via scripts/radar.sh (lore git, bypasses Anubis), analyzes by architecture layer, outputs blocks articles (blog + 公众号 same source)."
 ---
 
 # kernel-patch-radar — Linux 内核补丁/社区动态追踪
@@ -17,6 +17,7 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 | 日报 `daily` | 报纸式简报（**全内核雷达**：当日有 signal 的域才开 section） | `scripts/radar.sh daily`（13 列表：12 按最近 24h〔lkml 全内核广播源限 400 条〕+ virtio-dev 按 20 条） | `output-template.md` 日报模板 |
 | 周报 `weekly` | 雷达分章（mm/sched/pci + LWN） | weekly-radar.workflow.js + `radar.sh lwn` | `output-template.md` 每周模板 |
 | 月/季/年报 | 盘点式回顾 | **无抓取脚本**——基于当期日/周报积累内容盘点 | `output-template.md` 盘点模板 |
+| `english` 内核英语 | 语言学习（用今日内核英文语料学英语，focus 制） | **无抓取**——复用当天 radar/日报素材，引用必带 lore 链接 | `output-template.md` 内核英语模板 |
 
 > **词表铁律**：任何一档的 tags 必须取 `src/column.ts` 对应栏目词表（写词表外标签 `npm run build` 即报错）。日报/周报已有完整流程（见下）；月/季/年报为盘点式，发布前需请示董事长。
 
@@ -62,6 +63,13 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 4. **合入状态追踪（命运追踪 / 队列状态 / 修复盘点）**：对本期报道过的补丁批量反查——`bash scripts/mirror-lookup.sh query <mid> [...]`（本地三镜像：mainline 是否合入+首发版本 / linux-next 是否排队 / stable 是否回移植+到哪些版本）。本地全历史（mainline 146 万 commit）、毫秒级、无 API 限流；镜像在 `/ws/dev/kernel-mirrors/{linux,linux-next,linux-stable}`，改动镜像后先 `mirror-lookup.sh index` 重建 mid 索引（一次性 ~4 分钟）。未命中 = 未合入 / 被后续版本取代 / 该 mid 引用不存在（如实标注）。结果补进「趋势观察」的『哪些进了 mainline / 哪些在排队 / 哪些已回移植』。**仅用于盘点/头条深挖**——当日 patch 因合入滞后（review→维护者树→next→merge window）几乎必未命中，别在日报强用
 5. 按 `references/output-template.md` 的**盘点模板**成文：`<kernel-blog>/src/content/posts/YYYY-MM-DD-monthly-recap.md`（月报 `column: "monthly"` + 词表 `月度盘点/趋势观察/数据指标`；季/年报换对应 `column` 与词表，见模板表格）
 6. **发布（双轨）**：网站可直接发布（commit 自动部署）；**公众号标题 + HTML 请示董事长确认后才发布**。盘点内容倾向性强、涉及付费转化，公众号发布前必须请示，属半自治红线
+
+### 内核英语（english · 独立栏目，focus 制）
+**定位**：用今日解锁的内核英文资料学英语——独立栏目（非日报周边），产出写 `<kernel-blog>/src/content/posts/english/`（子目录，URL 不受影响）。
+1. **素材**：复用当天 radar/日报产物（真实补丁标题/术语/LKML 讨论）——**引用必带 lore 链接/Message-Id，无链接不落成文**（反编造护栏，r1 评审新增）
+2. **选 focus**：素材自适应选当天最出彩的学习维度（标题解析/术语卡/地道表达/阅读/写作/口语），一周内覆盖均衡；frontmatter 必含 `focus`
+3. **成文**：按 `output-template.md` 内核英语模板（focus 制：主维度深挖 → 辅助彩蛋 1 条 → 练习 → closing 每日一句），tags = 主维度 + ≤1 辅助
+4. **发布**：网站直接发布（commit 自动部署）；公众号如需走 render-wechat.mjs（已支持 english 子目录递归读取），上公众号需请示
 
 ## 分析规则
 - **分档**（雷达式：先全内核扫 signal，再按重要程度定篇幅）：
