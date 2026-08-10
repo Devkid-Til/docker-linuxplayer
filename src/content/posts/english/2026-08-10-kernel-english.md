@@ -31,7 +31,7 @@ blocks:
       - label: "英文定义"
         text: "A buffer whose memory is owned and managed by the device itself, rather than by the guest."
       - label: "中文"
-        text: "设备自有缓冲区——内存由设备自身持有管理，而非来宾虚拟机"
+        text: "设备持有（device-owned）的缓冲区——内存由设备自身持有并管理，而非客户机（guest）"
       - label: "记忆钩子"
         text: "owned by 强调「归属」，managed by 强调「管理」——内核文档里 ownership 是高频概念"
   - type: divider
@@ -43,7 +43,7 @@ blocks:
       - label: "原句"
         text: "This looks reasonable to me, but could we also cover the error path?"
       - label: "中文"
-        text: "「这看起来合理，但错误路径我们是不是也覆盖一下？」"
+        text: "「我觉得这个方案合理，不过错误路径是不是也该覆盖一下？」"
       - label: "用法"
         text: "「looks reasonable to me」= 礼貌表态同意+留余地；「could we also ...?」= 协商式提问，比「should」更委婉"
   - type: divider
