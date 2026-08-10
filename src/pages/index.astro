@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import PostCard from '../components/PostCard.astro';
 import { getCollection } from 'astro:content';
-import { COLUMNS, ALL_COLUMN } from '../column';
+import { COLUMNS, ALL_COLUMN, COLUMN_MAP } from '../column';
 import fs from 'node:fs';
 import path from 'node:path';
 const posts = (await getCollection('posts')).sort((a, b) => b.data.date.localeCompare(a.data.date));
@@ -18,10 +18,14 @@ posts.forEach(p => {
 // 主切换视图：内核内容流（全部栏目，不含英语）与「内核英语」独立视图——两者平级
 const kernelPosts = posts.filter(p => (p.data.column || 'daily') !== 'english');
 const englishPosts = posts.filter(p => p.data.column === 'english');
-// 英语视图标签（学习维度）统计
-const englishTags: { name: string; count: number }[] = Object.entries(
-  englishPosts.reduce((acc, p) => { p.data.tags.forEach(t => { acc[t] = (acc[t] || 0) + 1; }); return acc; }, {} as Record<string, number>)
-).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+// 英语视图维度 tab：固定词表（column.ts english.tags，稳定不随文章变动）+ emoji + 文章计数
+const ENGLISH_TAG_EMOJI: Record<string, string> = {
+  '标题解析': '🔖', '术语卡': '🃏', '地道表达': '💬', '阅读': '📖', '写作': '✍️', '口语': '🎤',
+};
+const englishCounts = englishPosts.reduce((acc, p) => { p.data.tags.forEach(t => { acc[t] = (acc[t] || 0) + 1; }); return acc; }, {} as Record<string, number>);
+const englishFilterTabs = (COLUMN_MAP['english']?.tags ?? []).map(t => ({
+  name: t, emoji: ENGLISH_TAG_EMOJI[t] || '', count: englishCounts[t] || 0,
+}));
 
 // 每栏目独立 tag 栏：只统计该栏目自己的文章 + 该栏目词表内的标签
 // （词表由 schema 强制，这里只需按栏目聚合即可）
@@ -144,7 +148,7 @@ const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio',
     <div class="main-view hidden" id="view-english">
       <div class="column-filter reveal" id="english-filter">
         <button class="filter-tag active" data-tag="all">全部 <span class="count">{englishPosts.length}</span></button>
-        {englishTags.map(t => <button class="filter-tag" data-tag={t.name}>{t.name}<span class="count"> {t.count}</span></button>)}
+        {englishFilterTabs.map(t => <button class="filter-tag" data-tag={t.name}>{t.emoji} {t.name}<span class="count"> {t.count}</span></button>)}
       </div>
       <div class="post-timeline">
         {englishPosts.map((p, i) => <PostCard latest={false} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} />)}
