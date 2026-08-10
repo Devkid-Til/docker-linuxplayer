@@ -8,3 +8,7 @@ site/
 
 # 公众号 HTML 导出（render-wechat.mjs --out 生成）
 output/
+
+# Python 缓存
+__pycache__/
+*.pyc
