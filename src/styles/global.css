@@ -417,3 +417,21 @@ html.dark .timeline-item::before{border-color:var(--bg)}
 
 /* 英语文章「今日重点」徽标（focus 主维度） */
 .focus-badge{font-size:.6875rem;font-weight:600;color:var(--brand);background:var(--brand-bg);padding:2px 8px;border-radius:10px;letter-spacing:.02em}
+
+/* ── 视图过滤 tab：按钮式统一（日报/英语/手记三视图一致，延续手记的按钮感）── */
+#journal-filter .filter-tag,
+#english-filter .filter-tag,
+.column-filter .filter-column{
+  font-size:.875rem;font-weight:600;padding:6px 16px;border-radius:20px;
+  background:var(--bg-alt);color:var(--text-secondary);border:1px solid var(--border);
+  cursor:pointer;transition:background .15s,color .15s,border-color .15s;font-family:var(--font-sans);white-space:nowrap;
+}
+#journal-filter .filter-tag:hover,
+#english-filter .filter-tag:hover,
+.column-filter .filter-column:hover{background:var(--brand-bg);color:var(--brand);border-color:var(--brand-border)}
+#journal-filter .filter-tag.active,
+#english-filter .filter-tag.active,
+.column-filter .filter-column.active{background:var(--brand);color:#fff;border-color:var(--brand)}
+#journal-filter .filter-tag .count,
+#english-filter .filter-tag .count,
+.column-filter .filter-column .count{font-size:.72em;opacity:.7;margin-left:4px}
