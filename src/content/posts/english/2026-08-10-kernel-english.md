@@ -39,8 +39,7 @@ blocks:
   - type: divider
     label: "✍️ 今日练习"
   - type: paragraph
-    text: "标题解析练习：同一系列还有一条真实标题「virtio: add a device memory buffer region allocator」——试着自己拆出子系统、动词、名词块三个格子，再用一句话英文说「这个补丁在做什么」。（来源同系列 RFC，见上文链接）"
-    link: "https://lore.kernel.org/lkml/20260809182010.32931-1-graf@amazon.com/"
+    text: "标题解析练习：同一系列还有一条真实标题「virtio: add a device memory buffer region allocator」——试着自己拆出子系统、动词、名词块三个格子，再用一句话英文说「这个补丁在做什么」。（来源同系列 RFC，见上文「原文」链接）"
   - type: closing
     tagline: "Today's kernel title: subsystem + verb + noun — read any patch headline with these three boxes."
     source: "内核英语 · 每日一篇"
