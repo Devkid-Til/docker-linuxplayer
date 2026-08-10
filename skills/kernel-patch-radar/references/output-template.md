@@ -1,6 +1,20 @@
 # 输出模板 — blocks 文章（内容结构 → 板块类型映射）
 
-**成文 = 产出 blocks 文章文件**（`<kernel-blog>/src/content/posts/YYYY-MM-DD-slug.md`）。本文件定义：每日内容结构如何映射到 11 种板块类型。YAML 硬规则（字符串加引号 / `---` 收尾 / 缩进 2 空格）与自查命令见 skill `wechat-article` 的 SKILL.md，这里不重复。
+**成文 = 产出 blocks 文章文件**（`<kernel-blog>/src/content/posts/YYYY-MM-DD-slug.md`）。本文件定义：各栏目内容结构如何映射到 11 种板块类型。YAML 硬规则（字符串加引号 / `---` 收尾 / 缩进 2 空格）与自查命令见 skill `wechat-article` 的 SKILL.md，这里不重复。
+
+## 栏目 → 内容类型 → 模板速查
+
+**五档栏目不是同一种内容换标签，而是三种内容类型**（词表已按此分域，见 `src/column.ts`）。产出前先确定 `column`，再选对应模板：
+
+| 栏目 | 内容类型 | 用什么模板 | 词表方向（tags 必须取对应栏目） |
+|---|---|---|---|
+| `daily` 日报 | 报纸式简报（**全内核雷达**） | 下方「日报模板」 | 内核板块（media、DRM、mm、PCI、net、fs、virtio、Rust、LSM、block、arch、sched、driver-core） |
+| `weekly` 周报 | 雷达分章（mm/sched/pci + LWN） | 下方「每周模板」 | 机制域（内存管理、进程调度…） |
+| `monthly` 月报 | 月度盘点（回顾式） | 下方「盘点模板」 | 盘点视角（月度盘点、趋势观察、数据指标） |
+| `quarterly` 季报 | 季度盘点（回顾式） | 下方「盘点模板」 | 盘点视角（季度盘点、趋势观察、里程碑） |
+| `yearly` 年报 | 年度盘点（回顾式） | 下方「盘点模板」 | 盘点视角（年度盘点、生态回顾、里程碑） |
+
+> `column` 是 frontmatter 必填字段（schema `z.enum(...).default('daily')`）。写词表外标签构建即报错。
 
 ## 内容结构 → block type 速查
 
@@ -17,6 +31,8 @@
 | 结尾 CTA | `closing` | `tagline, source` |
 
 板块**数量任意、顺序自由**——每天没有某栏就少一个板块，多两条头条就加两个 `headline`。
+
+> **当日 section 动态**：section 只给**当日有 signal 的域**开（对应 13 个抓取列表：linux-media / dri-devel / linux-mm / linux-pci / netdev / linux-fsdevel / virtio-dev / rust-for-linux / linux-security-module / linux-block / linux-arch / lkml / linux-rt-devel；**抓取策略：12 个持续更新列表按最近 24h（时间驱动，日报时间语义统一为昨天一整天；其中 lkml 全内核广播源按 `T24:400` 限 400 条软上限，防止 1200+ 条噪音洪水）、virtio-dev 按最近 20 条（低频兜底，只作信号提示，长期趋势归月/季/年报盘点）**；lkml 是 linux-kernel 的 lore 镜像，全内核广播源；linux-sched 无专属镜像，主线程 sched / driver core 靠 lkml + 跨帖捕获，RT 实时调度靠 linux-rt-devel）。某域当天没大事 → 不出现，别为凑数硬开。**头条从全内核选**，不固定给 media/drm。**每行 5 字段 `时间|标题|原文链接|Message-Id|In-Reply-To`**——第 4/5 字段只用于脚本内跨列表去重（Message-Id）与系列识别（In-Reply-To 空 = 系列首封/新话题，优先看），成文不展示。
 
 ## 板块字段细则
 
@@ -52,7 +68,7 @@
 
 ### `closing` 结尾（简洁，勿啰嗦）
 - `tagline`：一句收尾 CTA，**≤20 字**（例：`如果对你有用，点个赞，或留言聊聊你最关心的。`）
-- `source`：数据来源一行（例：`数据来源：linux-media / dri-devel（lore.kernel.org）· 北京时间`）
+- `source`：数据来源一行（例：`数据来源：lore.kernel.org（全内核 13 列表）· 北京时间`）
 
 ## blocks 文章骨架示例
 
@@ -63,7 +79,9 @@
 title: Linux内核玩家 · MM月DD日｜今日最大看点
 date: "YYYY-MM-DD"
 desc: 一句话摘要（≤54 字）
-tags: ["虚拟化", "Rust"]
+column: "daily"
+# 标签必须取 src/column.ts 该栏目的受控词表（schema 强制，写词表外标签构建即报错）
+tags: ["media", "DRM", "Rust"]
 blocks:
   - type: hook
     text: >-
@@ -97,7 +115,7 @@ blocks:
     verdict: 一句话点评
     link: https://lore.kernel.org/...
   - type: divider
-    label: 📰 linux-media（视频/相机）
+    label: 📰 media
     kind: section
   - type: highlight
     title: ★ 亮点标题
@@ -133,12 +151,13 @@ blocks:
         text: 一句话解释（只收本期出现过的）
   - type: closing
     tagline: 如果对你有用，点个赞，或留言聊聊你最关心的。
-    source: 数据来源：linux-media / dri-devel（lore.kernel.org）· 北京时间
+    source: 数据来源：lore.kernel.org（全内核 13 列表）· 北京时间
 ---
 ```
 
 ## 篇幅控制
-- 🏆 头条 ≤1-2 条；★ 亮点每栏目 ≤3 条；○ 常规每栏目 ≤8 行
+- 🏆 头条 ≤1-2 条（全内核选）；★ 亮点每域 ≤3 条；○ 常规**全文 ≤2 组 more、每组 ≤8 条**——它是收尾，不是主体
+- **section 开合**：某域当日无 signal 就不开——宁可 3 条讲透 > 15 条标题
 - 整份每天 ≤60 行可读文本。**宁可少而精**：看不明白的条目宁可给「背景」，不要堆标题。
 
 ## 每周模板（与每日同格式，可上博客/公众号）
@@ -151,44 +170,52 @@ blocks:
 title: Linux内核玩家 · 每周全局雷达｜<本周最大动向>
 date: "YYYY-MM-DD"
 desc: 一句话摘要
-tags: ["mm / 内存", "进程调度", "PCIe"]
+column: "weekly"
+# 周报词表（见 src/column.ts weekly.tags）：内存管理/进程调度/PCI/总线/架构动向/版本/发布/社区/生态
+tags: ["内存管理", "进程调度", "PCI/总线", "架构动向"]
 blocks:
   - type: hook
     text: >-
       本周内核全局看点：<strong>…</strong>，和 <strong>…</strong>。
+  - type: image
+    src: "<OSS 封面 URL>"
+    alt: 封面 · MM月DD日 · 每周全局雷达
   - type: divider
-    label: 📰 mm / 内存管理
+    label: 📊 板块活跃度
+    kind: section
+  - type: image
+    src: "<OSS 活跃度图 URL>"
+    alt: 板块活跃度条形图 · 近 24h
+  - type: paragraph
+    text: >-
+      近 24h 各板块热度（13 板块真实统计）：lkml … · net … · …（draw-heat.py 生成图 + stats 数字；图先传 OSS）
+  - type: divider
+    label: 📰 media 视频采集
     kind: section
   - type: toc
     items:
-      - label: mm 机制
+      - label: media 重点
         text: 一句话 why · <a href="...">原文</a>
-  - type: divider
-    label: 📰 sched / 进程调度
-    kind: section
-  - type: toc
-    items:
-      - label: sched 机制
-        text: 一句话 why · <a href="...">原文</a>
-  - type: divider
-    label: 📰 pci / PCIe
-    kind: section
-  - type: toc
-    items:
-      - label: pci 机制
-        text: 一句话 why · <a href="...">原文</a>
+  # …其余 12 板块（DRM/mm/PCI/net/fs/virtio/Rust/LSM/block/arch/rt/lkml）同上「divider + toc」结构…
   - type: divider
     label: 📰 LWN / 本周综述
     kind: section
   - type: paragraph
     text: LWN 本周综述（订阅墙文章标题可抓、正文如实处理）
   - type: divider
+    label: 🧭 合入状态
+    kind: section
+  - type: toc
+    items:
+      - label: 三镜像反查
+        text: 重点补丁 mainline / next / stable 状态（mirror-lookup.sh 反查，命中标 ✅/🔜/🩹）
+  - type: divider
     label: 📰 架构动向
     kind: section
   - type: toc
     items:
-      - label: mm / sched / pci 的机制演进
-        text: 新 API / 新抽象 / 重构
+      - label: 架构动向
+        text: 跨板块趋势归纳（新 API / 新抽象 / 重构）
   - type: divider
     label: 📰 与你方向的交叉点
     kind: section
@@ -204,9 +231,71 @@ blocks:
       - label: 术语
         text: 一句话解释（只收本期出现过的）
   - type: closing
-    tagline: 如果对你有用，点个赞，或留言聊聊你最关心的。
+    tagline: 如果对你有用，点个赞，或留言聊聊你最关心的板块。
     source: ""
 ---
 ```
 
 > 落款 `source` 留空自动推导（divider 的 📰 前缀如 mm/sched/pci/lwn 会被提取）。发布/审阅流程同每日（见 SKILL.md 工作流步骤 5-7）。
+
+## 盘点模板（月报 / 季报 / 年报共用）
+
+**盘点式 = 回顾，不是新闻。** 无抓取脚本——基于当期的日报/周报积累内容做盘点，重**趋势与指标**，轻逐条新闻。同一结构三档复用，只换 `column` 与词表。
+
+**先跑聚合脚本拿素材再成文**（文章文件即单一数据源，不维护台账）：
+```bash
+cd <kernel-blog> && node scripts/monthly-recap.mjs --month YYYY-MM   # 默认当月；--column 筛栏目；--json 出结构化
+```
+脚本输出素材稿（规模/标签频次/分节活跃度/头条/机制雷达/速查术语/交叉信号），据此填下面的 blocks：
+
+| 栏目 | `column` | tags（对应词表） | 标题前缀 |
+|---|---|---|---|
+| 月报 | `monthly` | `月度盘点` / `趋势观察` / `数据指标` | `Linux内核玩家 · MM月月报｜` |
+| 季报 | `quarterly` | `季度盘点` / `趋势观察` / `里程碑` | `Linux内核玩家 · QN季报｜` |
+| 年报 | `yearly` | `年度盘点` / `生态回顾` / `里程碑` | `Linux内核玩家 · YYYY年报｜` |
+
+```yaml
+---
+title: Linux内核玩家 · MM月月报｜本月内核最大动向
+date: "YYYY-MM-DD"
+desc: 一句话摘要（≤54 字）
+column: "monthly"
+# 盘点模板：月报用 monthly 词表，季/年报换对应词表（见 src/column.ts）
+tags: ["月度盘点", "趋势观察", "数据指标"]
+blocks:
+  - type: hook
+    text: >-
+      本月内核全局盘点，值得记住三件事：<strong>…</strong>、<strong>…</strong> 和 <strong>…</strong>。
+  - type: divider
+    label: 📈 本期盘点
+    kind: primary
+  - type: toc
+    items:
+      - label: 头条级
+        text: 本月最重要的 1-3 条跨域大改动
+  - type: divider
+    label: 📰 趋势观察
+    kind: section
+  - type: toc
+    items:
+      - label: 趋势名
+        text: 一句话 why（新 API / 新抽象 / 方向性变化）
+  - type: divider
+    label: 📰 数据指标
+    kind: section
+  - type: toc
+    items:
+      - label: 指标
+        text: 一句话（补丁数 / 子系统活跃度 / 里程碑达成）
+  - type: divider
+    label: 📰 与你方向的交叉点
+    kind: section
+  - type: toc
+    items:
+      - label: 交叉点
+        text: 无则明确说没有
+  - type: closing
+    tagline: 如果对你有用，点个赞，或留言聊聊你最关心的。
+    source: ""
+---
+```
