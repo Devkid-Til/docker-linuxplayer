@@ -79,9 +79,18 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .nav{position:sticky;top:0;z-index:900;height:var(--nav-height);background:var(--bg);border-bottom:1px solid transparent;transition:border-color .25s var(--ease-out),box-shadow .25s var(--ease-out)}
 .nav.scrolled{border-bottom-color:var(--border);box-shadow:var(--shadow-sm)}
 .nav-inner{height:var(--nav-height);display:flex;align-items:center;justify-content:space-between;max-width:var(--measure);margin:0 auto;padding:0 var(--space-lg)}
-.nav-brand{font-weight:800;font-size:1.125rem;display:flex;align-items:center;gap:var(--space-sm);color:var(--text);text-decoration:none}
+.nav-brand{font-weight:800;font-size:1.125rem;display:flex;align-items:center;gap:var(--space-sm);color:var(--text);text-decoration:none;letter-spacing:-0.01em}
 .nav-brand:hover{text-decoration:none}
-.nav-brand em{font-style:normal;color:var(--brand)}
+.nav-brand em{
+  font-style:normal;
+  /* Shimmer 流光扫过：靛→蓝→青 三色渐变 + 白色高光带循环划过（2025 科技品牌配色，GRONET #5B2FE0/#3866E8/#15C9E8） */
+  background-image: linear-gradient(100deg, #5B2FE0 25%, #3866E8 40%, #fff 48%, #15C9E8 56%, #3866E8 68%, #5B2FE0 85%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+  animation: brand-shimmer 3s linear infinite;
+}
+@keyframes brand-shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 .nav-links{display:flex;align-items:center;gap:var(--space-xs)}
 .nav-links a{font-size:.875rem;font-weight:500;color:var(--text-secondary);text-decoration:none;padding:var(--space-xs) 12px;border-radius:var(--radius-sm);transition:color .15s,background .15s}
 .nav-links a:hover,.nav-links a.active{color:var(--brand);background:var(--brand-bg)}
