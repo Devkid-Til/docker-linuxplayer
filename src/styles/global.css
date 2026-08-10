@@ -185,6 +185,14 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .tag-filter .filter-tag .count{font-size:.7em;opacity:.7;margin-left:3px}
 
 /* ── 11b. Column Filter Bar —— 导航层：下划线式 tab（区别于下方胶囊标签） ── */
+/* 主切换 tab：全部栏目 | 内核英语（同级视图切换，非上下堆叠） */
+.main-tabs{display:flex;gap:12px;margin:var(--space-md) 0 var(--space-lg);flex-wrap:wrap}
+.main-tab{padding:9px 22px;border-radius:24px;border:1px solid var(--border);background:var(--card);color:var(--text-secondary);font-size:.9375rem;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.main-tab .count{font-family:var(--font-mono);font-size:.75rem;opacity:.75;margin-left:4px}
+.main-tab:hover{border-color:var(--brand);color:var(--brand)}
+.main-tab.active{background:var(--brand);border-color:var(--brand);color:#fff}
+.main-tab.active .count{opacity:.85}
+.main-view.hidden{display:none}
 .column-filter{display:flex;flex-wrap:wrap;gap:2px 8px;margin-bottom:var(--space-lg);border-bottom:1px solid var(--border)}
 .column-filter .filter-column{font-size:.9rem;font-weight:600;padding:8px 14px 11px;background:transparent;color:var(--text-secondary);border:none;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:color .15s,border-color .15s;font-family:var(--font-sans);white-space:nowrap}
 .column-filter .filter-column:hover{color:var(--brand)}

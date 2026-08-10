@@ -223,7 +223,8 @@
      切栏目 = 换词表 = 重置 activeTag，旧标签过滤必须清零。 */
   var columnBar = document.getElementById('column-filter');
   var tagBars = document.querySelectorAll('.tag-filter');
-  var items = document.querySelectorAll('.timeline-item');
+  // 只过滤「全部栏目」视图的卡片（内核英语是独立视图，另有自己的过滤）
+  var items = document.querySelectorAll('#view-kernel .timeline-item');
   var activeColumn = 'all';
   var activeTag = 'all';
 
@@ -278,6 +279,33 @@
 
   /* 初始：无栏目选中（全部）→ 所有 tag 栏隐藏 */
   setTagBarVisible(activeColumn);
+
+  /* ── 主切换：全部栏目 | 内核英语（同级 tab 视图切换） ── */
+  var mainTabs = document.querySelectorAll('.main-tab');
+  var mainViews = document.querySelectorAll('.main-view');
+  mainTabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var v = tab.getAttribute('data-view');
+      mainTabs.forEach(function (t) { t.classList.toggle('active', t === tab); });
+      mainViews.forEach(function (vw) { vw.classList.toggle('hidden', vw.id !== 'view-' + v); });
+    });
+  });
+
+  /* ── 内核英语视图：学习维度标签过滤（独立于全部栏目） ── */
+  var englishBar = document.getElementById('english-filter');
+  if (englishBar) {
+    englishBar.addEventListener('click', function (e) {
+      var btn = e.target.closest('.filter-tag');
+      if (!btn) return;
+      var tag = btn.getAttribute('data-tag');
+      englishBar.querySelectorAll('.filter-tag').forEach(function (b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      document.querySelectorAll('#view-english .timeline-item').forEach(function (item) {
+        var match = tag === 'all' || (item.getAttribute('data-tags') || '').split(',').map(function (s) { return s.trim(); }).indexOf(tag) >= 0;
+        item.classList.toggle('hidden', !match);
+      });
+    });
+  }
 
   /* ── 终端轮播动画 ── */
   var termDeco = document.querySelector('.term-deco');
