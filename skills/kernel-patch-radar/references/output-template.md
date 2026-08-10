@@ -77,7 +77,7 @@
 
 ```yaml
 ---
-title: Linux内核玩家 · MM月DD日｜今日最大看点
+title: 今日最大看点
 date: "YYYY-MM-DD"
 desc: 一句话摘要（≤54 字）
 column: "daily"
@@ -168,7 +168,7 @@ blocks:
 
 ```yaml
 ---
-title: Linux内核玩家 · 每周全局雷达｜<本周最大动向>
+title: <本周最大动向>
 date: "YYYY-MM-DD"
 desc: 一句话摘要
 column: "weekly"
@@ -251,13 +251,13 @@ cd <kernel-blog> && node scripts/monthly-recap.mjs --month YYYY-MM   # 默认当
 
 | 栏目 | `column` | tags（对应词表） | 标题前缀 |
 |---|---|---|---|
-| 月报 | `monthly` | `月度盘点` / `趋势观察` / `数据指标` | `Linux内核玩家 · MM月月报｜` |
-| 季报 | `quarterly` | `季度盘点` / `趋势观察` / `里程碑` | `Linux内核玩家 · QN季报｜` |
-| 年报 | `yearly` | `年度盘点` / `生态回顾` / `里程碑` | `Linux内核玩家 · YYYY年报｜` |
+| 月报 | `monthly` | `月度盘点` / `趋势观察` / `数据指标` | `<本月最大动向>` |
+| 季报 | `quarterly` | `季度盘点` / `趋势观察` / `里程碑` | `<本季最大动向>` |
+| 年报 | `yearly` | `年度盘点` / `生态回顾` / `里程碑` | `<本年最大动向>` |
 
 ```yaml
 ---
-title: Linux内核玩家 · MM月月报｜本月内核最大动向
+title: 本月内核最大动向
 date: "YYYY-MM-DD"
 desc: 一句话摘要（≤54 字）
 column: "monthly"
@@ -342,7 +342,7 @@ closing       → 每日一句（英文学习收尾）
 
 ```yaml
 ---
-title: "内核英语 · M月D日｜<当日主题>"
+title: "<当日主题>"
 date: "YYYY-MM-DD"
 desc: "今日重点：<focus>——<一句话>。"
 column: "english"

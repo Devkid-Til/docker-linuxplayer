@@ -1,5 +1,5 @@
 ---
-title: "Linux内核玩家 · 8月11日｜显存归 Rust 管，机密内存免拷贝"
+title: "显存归 Rust 管，机密内存免拷贝"
 date: "2026-08-11"
 desc: "NVIDIA Rust 驱动 nova-core 加 PRAMIN 窗口；guest_memfd 支持 shared↔private 原地转换。"
 column: "daily"
