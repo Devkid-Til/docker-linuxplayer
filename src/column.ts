@@ -1,5 +1,5 @@
 /* 栏目元数据 —— 主页过滤栏、PostCard 徽标、content.config.ts enum 的单一数据源 */
-export type ColumnValue = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly';
+export type ColumnValue = 'daily' | 'weekly' | 'monthly' | 'quarterly' | 'yearly' | 'english';
 
 export interface ColumnMeta {
   value: ColumnValue;
@@ -33,6 +33,12 @@ export const COLUMNS: ColumnMeta[] = [
   {
     value: 'yearly', label: '年报', emoji: '📚', fullLabel: '年报',
     tags: ['年度盘点', '生态回顾', '里程碑'],
+  },
+  /* 内核英语：独立栏目（不是日报周边）——用内核资料学英语。
+     词表 = 学习维度（全方面：阅读+口语+写作），文章按「学什么」标记 */
+  {
+    value: 'english', label: '内核英语', emoji: '📖', fullLabel: '内核英语',
+    tags: ['标题解析', '术语卡', '地道表达', '阅读', '写作', '口语'],
   },
 ];
 
