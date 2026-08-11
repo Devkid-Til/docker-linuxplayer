@@ -67,6 +67,11 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 ### 内核英语（english · 独立栏目，focus 制）
 **定位**：用今日解锁的内核英文资料学英语——独立栏目（非日报周边），产出写 `<kernel-blog>/src/content/posts/english/`（子目录，URL 不受影响）。
 1. **素材**：复用当天 radar/日报产物（真实补丁标题/术语/LKML 讨论）——**引用必带 lore 链接/Message-Id，无链接不落成文**（反编造护栏，r1 评审新增）
+   **真实段落提取（exercise 的 source 用，2026-08-11 沉淀）**：需要原文段落时用 lore git 分片机制（绕过 Anubis）——
+   a. 探测分片：`for i in $(seq 0 60); do git ls-remote https://lore.kernel.org/<list>/$i/ | grep refs/heads/master >/dev/null && MAX=$i; done`（**连续 2 次 miss 才停**，别 1 次就停）
+   b. fetch：`git fetch --depth=450 https://lore.kernel.org/<list>/$MAX/ master`
+   c. 找补丁 commit：`git log FETCH_HEAD --format='%H %s' | grep <关键词>`（**docs 补丁优先**——正文有完整机制描述）
+   d. 提取段落：`git show <hash> | grep -A4 <关键词>` 取英文原句
 2. **选 focus（每日固定轮换，董事长定）**：6 维度循环 标题解析→术语卡→地道表达→阅读→写作→口语；今天 = 最近一篇英语文章 focus 的下一个（先看 src/content/posts/english/ 最新篇），不连续重复、不跳维；素材在轮换维度内取材；frontmatter 必含 `focus`
 3. **成文**：按 `output-template.md` 内核英语模板（focus 制：主维度深挖 → 辅助彩蛋 1 条 → 练习 → closing 每日一句），tags = 主维度 + ≤1 辅助；**练习用 exercise 板块**（题目 text + 参考答案 answer + 原文贴出 source + 原文引用 link，点击展开）
 4. **发布**：网站直接发布（commit 自动部署）；公众号如需走 render-wechat.mjs（已支持 english 子目录递归读取），上公众号需请示
