@@ -47,7 +47,7 @@ blocks:
   - type: divider
     label: "✍️ 今日练习"
   - type: paragraph
-    text: "用今天两个术语各写一句英文：① 用 PRAMIN 说一句 nova-core 怎么访问显存；② 用 guest_memfd 说一句机密 VM 内存怎么管理（可以结合 In-place conversion）。写完后读给"自己听"，卡壳处就是今天的薄弱点。"
+    text: "用今天两个术语各写一句英文：① 用 PRAMIN 说一句 nova-core 怎么访问显存；② 用 guest_memfd 说一句机密 VM 内存怎么管理（可以结合 In-place conversion）。写完后读给自己听，卡壳处就是今天的薄弱点。"
   - type: closing
     tagline: "PRAMIN: the CPU's window to VRAM. guest_memfd: a memory fd for confidential VMs."
     source: "内核英语 · 每日一篇"
