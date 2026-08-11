@@ -388,8 +388,7 @@
         var y = window.scrollY, h = heroEl.offsetHeight;
         if (y < h) {
           var p = y / h;                                   // 0 → 1
-          heroBg.style.transform = 'scale(' + (1 + p * 0.2) + ')';   // 背景放大（全屏缩放）
-          heroBg.style.opacity = String(Math.max(0.15, 1 - p * 0.7));  // 渐隐
+          heroBg.style.transform = 'translateY(' + (-y * 0.3) + 'px)';   // 视差上移（背景比内容慢，不缩放不渐隐）
         }
       });
     }
