@@ -350,3 +350,30 @@
     });
   })();
 })();
+
+  /* ── tab 栏触摸拖拽横向滚动：tab 内左滑→左滚、右滑→右滚（严格跟手，纵向交还页面滚动） ── */
+  var tabDragged = false;
+  document.querySelectorAll('.column-filter').forEach(function (bar) {
+    if (bar.scrollWidth <= bar.clientWidth + 1) return;   // 内容未溢出（桌面）不拦截，点击正常
+    var sx = 0, sy = 0, ss = 0, moved = false, d = false;
+    bar.addEventListener('touchstart', function (e) {
+      var t = e.touches[0]; if (!t) return;
+      sx = t.clientX; sy = t.clientY; ss = bar.scrollLeft; moved = false; d = true;
+    }, { passive: true });
+    bar.addEventListener('touchmove', function (e) {
+      if (!d) return;
+      var t = e.touches[0]; if (!t) return;
+      var dx = t.clientX - sx, dy = t.clientY - sy;
+      if (Math.abs(dx) > Math.abs(dy)) {   // 横向手势：跟手滚动 tab 栏
+        e.preventDefault();
+        bar.scrollLeft = ss - dx;
+        if (Math.abs(dx) > 8) { moved = true; tabDragged = true; }
+      }
+    }, { passive: false });
+    bar.addEventListener('touchend', function () { d = false; });
+    bar.addEventListener('touchcancel', function () { d = false; });
+  });
+  /* 拖拽后的一次 click 拦截（避免误触按钮切换分类） */
+  document.addEventListener('click', function (e) {
+    if (tabDragged) { e.stopPropagation(); e.preventDefault(); tabDragged = false; }
+  }, true);
