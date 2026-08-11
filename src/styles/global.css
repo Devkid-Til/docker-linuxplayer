@@ -94,9 +94,8 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 
 /* ── 7. Hero（专业分层版）─────────────────────────────────────── */
 /* hero 背景层：背景图+遮蔽渐变由 buildTokens 的 --hero-overlay/--hero-image 注入（与文章页同源），呼吸缩放载体 */
-/* hero 背景：fixed 全屏缩放（Apple 式），hero 底部由 ::after 渐变过渡到页面背景色，
-   滚动时 JS 放大渐隐，与后续内容平滑衔接 */
-.hero-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:var(--hero-overlay),var(--hero-image);background-size:auto,cover;background-position:center;background-repeat:no-repeat,no-repeat;transform-origin:center;will-change:transform,opacity}
+/* hero 背景层：背景图+遮蔽渐变由 buildTokens 注入（与文章页同源），呼吸缩放载体 */
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;background-image:var(--hero-overlay),var(--hero-image);background-size:auto,cover;background-position:center;background-repeat:no-repeat,no-repeat;transform-origin:center;animation:breathe-hero 60s ease-in-out infinite alternate}
 @keyframes breathe-hero{from{transform:scale(1)}to{transform:scale(1.05)}}
 .hero{position:relative;overflow:hidden;padding:var(--space-3xl) 0 var(--space-2xl);background-color:var(--brand-bg);border-bottom:1px solid var(--border-light);text-align:center;isolation:isolate}
 /* hero 星空：星点漂移 + 整体缓慢浮动（白星 + 主题色星交替，颜色随 --fx-particle，如 cyber 青色星云） */
@@ -116,7 +115,7 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
   animation:hero-warp 6s ease-in-out infinite alternate}
 @keyframes hero-warp{from{transform:translateY(0);opacity:.7}to{transform:translateY(-14px);opacity:1}}
 /* 背景网格 */
-.hero::after{content:"";position:absolute;inset:0;z-index:1;background-image:radial-gradient(circle at 25% 30%,color-mix(in srgb,var(--fx-glow) 18%,transparent) 0%,transparent 50%),radial-gradient(circle at 75% 60%,color-mix(in srgb,var(--fx-glow) 12%,transparent) 0%,transparent 50%),linear-gradient(180deg,transparent 72%,var(--bg) 100%);pointer-events:none}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;background-image:radial-gradient(circle at 25% 30%,color-mix(in srgb,var(--fx-glow) 18%,transparent) 0%,transparent 50%),radial-gradient(circle at 75% 60%,color-mix(in srgb,var(--fx-glow) 12%,transparent) 0%,transparent 50%);pointer-events:none}
 /* 霓虹卡片：由主题 effects.cardNeon 驱动（--fx-card-border/--fx-card-glow），violet 等禁用时回退 var(--border)/无辉光 */
 .board-heat,.timeline-card,.about-card,.post-card{border-color:var(--fx-card-border);box-shadow:0 0 22px color-mix(in srgb,var(--fx-card-glow) 16%,transparent)}
 /* 网格背景：由主题 effects.grid 驱动（--fx-grid/--fx-grid-opacity），disabled 时透明无副作用 */
@@ -445,5 +444,4 @@ html.dark .timeline-item::before{border-color:var(--bg)}
 .column-filter .filter-column[data-column="daily"]:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
 .column-filter .filter-column[data-column="daily"].active{background:var(--brand);color:#fff;border-color:var(--brand)}
 
-/* 首页 hero 后的区域不透明背景：滚动时覆盖 fixed 背景图（Apple 滚动视差效果） */
-.features, .home-main{background:var(--bg)}
+/*
