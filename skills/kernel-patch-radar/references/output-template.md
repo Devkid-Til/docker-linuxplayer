@@ -336,7 +336,8 @@ divider       → 主维度 section（按 focus 选）：
                 写作     → paragraph（仿写引导 + 例句）
                 口语     → paragraph（复述引导）
 divider       → "✨ 辅助彩蛋"（1 条，其他维度，不喧宾夺主）
-divider       → "✍️ 今日练习"（针对 focus 的复述/仿写）
+divider       → "✍️ 今日练习"
+                exercise  → text=题目 / answer=参考答案（点击展开，学习闭环）/ link=原文引用（lore 可溯源）
 closing       → 每日一句（英文学习收尾）
 ```
 

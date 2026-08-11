@@ -114,6 +114,16 @@ function renderBlock(b, fallbackSource = '') {
     case 'code':
       return `<pre style="background:#1F2430;border-radius:6px;padding:14px 16px;font-size:13px;line-height:1.7;color:#E6E6E6;overflow-x:auto;margin:16px 0"><code>${esc(b.text)}</code></pre>`;
 
+    case 'exercise':
+      return `<div style="background:#F0F3FF;border:1px solid #E2E5F0;border-radius:10px;padding:18px 20px;margin:0 0 24px">
+  <p style="font-size:15px;line-height:1.8;color:#333333;margin:0 0 12px">✍️ ${inline(b.text)}</p>
+  <details>
+    <summary style="color:#7C3AED;font-weight:600;font-size:14px;cursor:pointer">💡 显示答案</summary>
+    <p style="font-size:15px;line-height:1.8;color:#333333;background:#FFFFFF;border:1px dashed #C9B8F5;border-radius:6px;padding:14px;margin:12px 0 0">${inline(b.answer)}</p>
+    ${b.link ? `<p style="margin:10px 0 0"><a href="${esc(b.link)}" style="color:#7C3AED;font-size:13px">📎 原文引用</a></p>` : ''}
+  </details>
+</div>`;
+
     case 'image':
       return b.src
         ? `<p style="text-align:center;margin:12px 0"><img src="${esc(b.src)}" alt="${esc(b.alt)}" style="max-width:100%;border-radius:8px" /></p>`

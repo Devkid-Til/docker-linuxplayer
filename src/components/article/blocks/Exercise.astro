@@ -1,0 +1,22 @@
+---
+// 练习卡：点击「显示答案」展开答案 + 原文引用（details/summary 原生交互，无需 JS）
+interface Props { block: { text: string; answer: string; link?: string }; }
+const { block } = Astro.props;
+---
+<div class="exercise block-card">
+  <div class="exercise-q">✍️ {block.text}</div>
+  <details class="exercise-answer">
+    <summary>💡 显示答案</summary>
+    <div class="exercise-a">{block.answer}</div>
+    {block.link && <a class="exercise-link" href={block.link} target="_blank" rel="noopener">📎 原文引用</a>}
+  </details>
+</div>
+
+<style>
+  .exercise{background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-lg)}
+  .exercise-q{font-size:.9375rem;line-height:1.7;color:var(--text);margin-bottom:var(--space-sm)}
+  .exercise-answer summary{cursor:pointer;font-weight:600;color:var(--brand);font-size:.875rem;padding:4px 0}
+  .exercise-answer summary:hover{opacity:.8}
+  .exercise-a{font-size:.9375rem;line-height:1.7;color:var(--text);background:var(--card);border:1px dashed var(--border);border-radius:var(--radius-sm);padding:var(--space-md);margin-top:var(--space-sm)}
+  .exercise-link{display:inline-block;margin-top:var(--space-sm);font-size:.8125rem;color:var(--brand)}
+</style>
