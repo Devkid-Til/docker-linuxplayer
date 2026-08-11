@@ -41,6 +41,7 @@ blocks:
   - type: exercise
     text: "标题解析练习：拆解真实标题「virtio: add a device memory buffer region allocator」——找出子系统前缀、动词、名词块，再用一句话英文说这个补丁做什么。"
     answer: "参考：subsystem: virtio / verb: add a ... allocator / noun: device memory buffer region。一句话：This patch adds an allocator for device memory buffer regions, so virtio devices can manage their DMB (Device Memory Buffer) space."
+    source: "virtio: add a device memory buffer region allocator"
     link: "https://lore.kernel.org/lkml/20260809182010.32931-1-graf@amazon.com/"
   - type: closing
     tagline: "Today's kernel title: subsystem + verb + noun — read any patch headline with these three boxes."

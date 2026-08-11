@@ -41,6 +41,7 @@ export interface ExerciseBlock {
   type: 'exercise';
   text: string;          // 题目（练习引导）
   answer: string;        // 答案（点击卡片展开显示，学习闭环）
+  source?: string;       // 原文内容（英文原句，贴出供对照——不是链接，是原文本身）
   link?: string;         // 原文引用（lore 链接，可溯源）
 }
 

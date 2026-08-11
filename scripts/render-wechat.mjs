@@ -120,6 +120,7 @@ function renderBlock(b, fallbackSource = '') {
   <details>
     <summary style="color:#7C3AED;font-weight:600;font-size:14px;cursor:pointer">💡 显示答案</summary>
     <p style="font-size:15px;line-height:1.8;color:#333333;background:#FFFFFF;border:1px dashed #C9B8F5;border-radius:6px;padding:14px;margin:12px 0 0">${inline(b.answer)}</p>
+    ${b.source ? `<p style="font-size:13px;line-height:1.6;color:#5B5B7A;margin:10px 0 0">📖 原文：<span style="font-family:monospace;color:#4C1D95">${esc(b.source)}</span></p>` : ''}
     ${b.link ? `<p style="margin:10px 0 0"><a href="${esc(b.link)}" style="color:#7C3AED;font-size:13px">📎 原文引用</a></p>` : ''}
   </details>
 </div>`;

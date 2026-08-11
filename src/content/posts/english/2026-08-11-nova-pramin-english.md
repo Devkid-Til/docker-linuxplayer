@@ -49,6 +49,7 @@ blocks:
   - type: exercise
     text: "用今天两个术语各写一句英文：① 用 PRAMIN 说一句 nova-core 怎么访问显存；② 用 guest_memfd 说一句机密 VM 内存怎么管理。写完再点开答案核对。"
     answer: "参考：① nova-core accesses VRAM through the PRAMIN window, a PCI aperture the CPU can write to directly. ② guest_memfd gives the confidential VM a file descriptor to manage its private memory, supporting in-place conversion between shared and private pages."
+    source: "[PATCH v10 00/41] guest_memfd: In-place conversion support"
     link: "https://lore.kernel.org/linux-mm/<20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>/"
   - type: closing
     tagline: "PRAMIN: the CPU's window to VRAM. guest_memfd: a memory fd for confidential VMs."
