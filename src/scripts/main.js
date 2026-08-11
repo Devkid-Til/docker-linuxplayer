@@ -376,22 +376,4 @@
     if (tabDragged) { e.stopPropagation(); e.preventDefault(); tabDragged = false; }
   }, true);
 
-  /* ── hero 滚动视差：下滚时背景放大渐隐（Apple 式；fixed 背景 + scale/opacity 随 scrollY） ── */
-  var heroEl = document.querySelector('.hero');
-  var heroBg = document.querySelector('.hero .hero-bg');
-  if (heroEl && heroBg) {
-    var hTick = false;
-    function heroParallax() {
-      if (hTick) return; hTick = true;
-      requestAnimationFrame(function () {
-        hTick = false;
-        var y = window.scrollY, h = heroEl.offsetHeight;
-        if (y < h) {
-          var p = y / h;                                   // 0 → 1
-          heroBg.style.transform = 'translateY(' + (-y * 0.3) + 'px)';   // 视差上移（背景比内容慢，不缩放不渐隐）
-        }
-      });
-    }
-    window.addEventListener('scroll', heroParallax, { passive: true });
-    heroParallax();
-  }
+
