@@ -351,27 +351,26 @@
   })();
 })();
 
-  /* ── tab 栏触摸拖拽横向滚动：tab 内左滑左滚、右滑右滚（严格跟手，纵向交还页面滚动） ── */
+  /* ── tab 栏拖拽横向滚动：跟手左滑左滚/右滑右滚；严格方向+阈值，避免误判点击为拖拽 ── */
   var tabDragged = false;
   document.querySelectorAll('.column-filter').forEach(function (bar) {
     var sx = 0, sy = 0, ss = 0, d = false;
     bar.addEventListener('pointerdown', function (e) {
       d = true; sx = e.clientX; sy = e.clientY; ss = bar.scrollLeft;
-      try { bar.setPointerCapture(e.pointerId); } catch (err) {}
     });
     bar.addEventListener('pointermove', function (e) {
       if (!d) return;
       var dx = e.clientX - sx, dy = e.clientY - sy;
-      if (Math.abs(dx) > Math.abs(dy) && bar.scrollWidth > bar.clientWidth + 1) {
-        bar.scrollLeft = ss - dx;                    // 跟手：左滑左滚、右滑右滚
-        if (Math.abs(dx) > 8) tabDragged = true;
+      // 严格拖拽判定：横向位移 >12px 且明显主导（>1.5×纵向）——避免点击时手微动被误判成拖拽
+      if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.5 && bar.scrollWidth > bar.clientWidth + 1) {
+        tabDragged = true;
+        bar.scrollLeft = ss - dx;
       }
     });
     var end = function () { d = false; };
     bar.addEventListener('pointerup', end);
-    bar.addEventListener('pointercancel', end);
+    bar.addEventListener('pointercancel', function () { d = false; tabDragged = false; });  // 中断不残留
   });
-  /* 拖拽后拦截一次 click（避免误触按钮切换分类） */
   document.addEventListener('click', function (e) {
     if (tabDragged) { e.stopPropagation(); e.preventDefault(); tabDragged = false; }
   }, true);
