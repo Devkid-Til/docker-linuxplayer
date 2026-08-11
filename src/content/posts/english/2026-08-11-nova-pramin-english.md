@@ -1,46 +1,54 @@
 ---
-title: "nova-core PRAMIN 补丁标题拆解"
+title: "PRAMIN 与 guest_memfd：今天两个内核术语"
 date: "2026-08-11"
-desc: "今日重点：标题解析——拆解真实的 nova-core PRAMIN 补丁标题，学两级子系统前缀。"
+desc: "今日重点：术语卡——PRAMIN window 与 guest_memfd，两个驱动/机密计算高频术语。"
 column: "english"
-focus: "标题解析"
-tags: ["标题解析", "术语卡"]
+focus: "术语卡"
+tags: ["术语卡", "标题解析"]
 blocks:
   - type: hook
     text: >-
-      <strong>今日重点：🔖 标题解析</strong>——今天用一篇真实的 NVIDIA Rust 驱动补丁标题，学内核标题的「两级子系统前缀」；辅助彩蛋：PRAMIN 术语卡。
+      <strong>今日重点：🃏 术语卡</strong>——今天学两个今天日报里出现的内核术语：<strong>PRAMIN window</strong> 和 <strong>guest_memfd</strong>，都来自真实补丁。
   - type: divider
-    label: "🔖 今日标题"
-  - type: headline
-    title: "gpu: nova-core: add PRAMIN window support"
-    meta: "dri-devel · PATCH v2 · 2026-08-10"
-    link: "https://lore.kernel.org/dri-devel/<20260810-pramin-split-v2-0-65a00b3c7309@nvidia.com>/"
-    points:
-      - label: "两级子系统前缀"
-        text: "「gpu: nova-core:」——内核标题允许两级前缀：先总线/框架（gpu），再具体驱动（nova-core）。读标题一眼定位：这是 GPU 框架下 nova-core 驱动的改动"
-      - label: "动词句式"
-        text: "「add ... support」——新增功能的固定句式（真实补丁惯用小写 add）；RFC 系列常见 Introduce / Allow / Implement"
-      - label: "名词块"
-        text: "「PRAMIN window」——名词块点出改动对象：PRAMIN（PCI 映射窗口）是 GPU 显存访问的关键通道，术语卡见下方"
-    verdict: "真实标题 = 两级子系统 + 小写动词 + 名词块；「support」结尾常见于功能完整落地（vs 单点 fix）"
-  - type: divider
-    label: "✨ 辅助彩蛋"
+    label: "🃏 术语卡"
   - type: highlight
     title: "PRAMIN window"
-    meta: "dri-devel · nova-core"
+    meta: "dri-devel · nova-core · PATCH v2"
     link: "https://lore.kernel.org/dri-devel/<20260810-pramin-split-v2-0-65a00b3c7309@nvidia.com>/"
     points:
       - label: "真实定义"
         text: "GPU 把显存/寄存器映射到 CPU 侧的可访问窗口，CPU 经它读写显存而不走完整 DMA 路径（PCI Resource Aperture Mapping）"
       - label: "中文"
         text: "PCI 映射窗口——CPU 直接读写显存的固定通道，nova-core（NVIDIA Rust 驱动）用它上传纹理、命令缓冲"
-      - label: "为什么值得记"
-        text: "PRAMIN 是 GPU 驱动里 CPU↔显存路径的核心术语，读 NVIDIA 相关补丁（nouveau/nova）都会见到"
+      - label: "记忆钩子"
+        text: "PRAMIN = PCI + aperture mapping：显存访问不走 DMA，走固定映射窗口——GPU 驱动的核心通道术语"
+  - type: highlight
+    title: "guest_memfd"
+    meta: "linux-mm · 机密计算 · PATCH v10"
+    link: "https://lore.kernel.org/linux-mm/<20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>/"
+    points:
+      - label: "真实定义"
+        text: "管理机密虚拟机 private 内存的 fd 抽象：private 页归 guest 私有、被 TEE 加密保护，shared 页与宿主机共享"
+      - label: "中文"
+        text: "机密 VM 内存文件描述符——TDX/SNP 机密虚拟机里管理 private/shared 内存的抽象"
+      - label: "记忆钩子"
+        text: "guest + mem + fd：给机密 VM 的「guest 内存」一个 fd——把内存当文件管理（如 In-place conversion 原地切换 shared↔private）"
+  - type: divider
+    label: "✨ 辅助彩蛋"
+  - type: highlight
+    title: "一条真实标题：In-place conversion"
+    meta: "linux-mm · 机密计算"
+    link: "https://lore.kernel.org/linux-mm/<20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>/"
+    points:
+      - label: "原句"
+        text: "[PATCH v10 00/41] guest_memfd: In-place conversion support"
+      - label: "拆解"
+        text: "子系统（guest_memfd:）+ 动词短语（In-place conversion support）——in-place = 原地（不搬内存）、conversion = shared↔private 切换、support = 功能落地"
   - type: divider
     label: "✍️ 今日练习"
   - type: paragraph
-    text: "标题解析练习：同一天还有一条真实标题「guest_memfd: In-place conversion support」（机密 VM 内存切换免拷贝）——试着自己拆出子系统前缀、动词、名词块三个格子，再用一句话英文说「这个补丁在做什么」。（来源见 https://lore.kernel.org/linux-mm/<20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>/）"
+    text: "用今天两个术语各写一句英文：① 用 PRAMIN 说一句 nova-core 怎么访问显存；② 用 guest_memfd 说一句机密 VM 内存怎么管理（可以结合 In-place conversion）。写完后读给"自己听"，卡壳处就是今天的薄弱点。"
   - type: closing
-    tagline: "A kernel patch title: [framework:][driver:] verb + noun — two-level prefixes tell you where it lands."
+    tagline: "PRAMIN: the CPU's window to VRAM. guest_memfd: a memory fd for confidential VMs."
     source: "内核英语 · 每日一篇"
 ---
