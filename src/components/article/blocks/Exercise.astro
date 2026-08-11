@@ -1,6 +1,6 @@
 ---
-// 练习卡：点击「显示答案」展开答案 + 原文引用（details/summary 原生交互，无需 JS）
-interface Props { block: { text: string; answer: string; link?: string }; }
+// 练习卡：点击「显示答案」展开答案 + 原文贴出 + 原文引用链接（details/summary 原生交互，无需 JS）
+interface Props { block: { text: string; answer: string; source?: string; link?: string }; }
 const { block } = Astro.props;
 ---
 <div class="exercise block-card">
@@ -8,6 +8,7 @@ const { block } = Astro.props;
   <details class="exercise-answer">
     <summary>💡 显示答案</summary>
     <div class="exercise-a">{block.answer}</div>
+    {block.source && <div class="exercise-source">📖 原文：<span class="exercise-source-en">{block.source}</span></div>}
     {block.link && <a class="exercise-link" href={block.link} target="_blank" rel="noopener">📎 原文引用</a>}
   </details>
 </div>
@@ -18,5 +19,7 @@ const { block } = Astro.props;
   .exercise-answer summary{cursor:pointer;font-weight:600;color:var(--brand);font-size:.875rem;padding:4px 0}
   .exercise-answer summary:hover{opacity:.8}
   .exercise-a{font-size:.9375rem;line-height:1.7;color:var(--text);background:var(--card);border:1px dashed var(--border);border-radius:var(--radius-sm);padding:var(--space-md);margin-top:var(--space-sm)}
+  .exercise-source{margin-top:var(--space-sm);font-size:.8125rem;line-height:1.6;color:var(--text-secondary)}
+  .exercise-source-en{font-family:var(--font-mono);color:var(--brand-dark)}
   .exercise-link{display:inline-block;margin-top:var(--space-sm);font-size:.8125rem;color:var(--brand)}
 </style>
