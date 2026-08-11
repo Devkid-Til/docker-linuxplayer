@@ -66,7 +66,7 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 
 ### 内核英语（english · 独立栏目，focus 制）
 **定位**：用今日解锁的内核英文资料学英语——独立栏目（非日报周边），产出写 `<kernel-blog>/src/content/posts/english/`（子目录，URL 不受影响）。
-1. **素材**：复用当天 radar/日报产物（真实补丁标题/术语/LKML 讨论）——**引用必带 lore 链接/Message-Id，无链接不落成文**（反编造护栏，r1 评审新增）
+1. **素材**：复用当天 radar/日报产物（真实补丁标题/术语/LKML 讨论）——**引用必带 lore 链接/Message-Id，无链接不落成文**（反编造护栏，r1 评审新增）；**source 段落的 link 必须指向该段落所在的具体邮件（如 docs 补丁本身），非系列封面/其他补丁**——读者点开要能直接看到这段原文
    **真实段落提取（exercise 的 source 用，2026-08-11 沉淀）**：需要原文段落时用 lore git 分片机制（绕过 Anubis）——
    a. 探测分片：`for i in $(seq 0 60); do git ls-remote https://lore.kernel.org/<list>/$i/ | grep refs/heads/master >/dev/null && MAX=$i; done`（**连续 2 次 miss 才停**，别 1 次就停）
    b. fetch：`git fetch --depth=450 https://lore.kernel.org/<list>/$MAX/ master`

@@ -14,7 +14,7 @@ blocks:
   - type: highlight
     title: "PRAMIN window"
     meta: "dri-devel · nova-core · PATCH v2"
-    link: "https://lore.kernel.org/dri-devel/<20260810-pramin-split-v2-0-65a00b3c7309@nvidia.com>/"
+    link: "https://lore.kernel.org/dri-devel/<20260810-pramin-split-v2-9-65a00b3c7309@nvidia.com>/"
     points:
       - label: "真实定义"
         text: "GPU 把显存/寄存器映射到 CPU 侧的可访问窗口，CPU 经它读写显存而不走完整 DMA 路径（PCI Resource Aperture Mapping）"
@@ -50,7 +50,7 @@ blocks:
     text: "用今天两个术语各写一句英文：① 用 PRAMIN 说一句 nova-core 怎么访问显存；② 用 guest_memfd 说一句机密 VM 内存怎么管理。写完再点开答案核对。"
     answer: "参考：① nova-core accesses VRAM through the PRAMIN window, a PCI aperture the CPU can write to directly. ② guest_memfd gives the confidential VM a file descriptor to manage its private memory, supporting in-place conversion between shared and private pages."
     source: "PRAMIN is a hardware aperture mechanism that provides CPU access to GPU Video RAM (VRAM) before the GPU's Memory Management Unit (MMU) and page tables are initialized. This 1 MiB sliding window, located at a fixed offset within BAR0, is essential for setting up page tables and other critical GPU data structures without relying on the GPU's MMU."
-    link: "https://lore.kernel.org/linux-mm/<20260807-gmem-inplace-conversion-v10-0-2fc18ee6d3ba@google.com>/"
+    link: "https://lore.kernel.org/dri-devel/<20260810-pramin-split-v2-9-65a00b3c7309@nvidia.com>/"
   - type: closing
     tagline: "PRAMIN: the CPU's window to VRAM. guest_memfd: a memory fd for confidential VMs."
     source: "内核英语 · 每日一篇"
