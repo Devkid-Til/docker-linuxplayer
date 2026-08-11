@@ -38,8 +38,10 @@ blocks:
         text: "该系列的真实讨论是<b>批判式</b>的，比如维护者 Tsirkin 回复：「What is missing is actually validating that the region is cache coherent」——学真实语用，别学『looks reasonable to me』的教科书客气"
   - type: divider
     label: "✍️ 今日练习"
-  - type: paragraph
-    text: "标题解析练习：同一系列还有一条真实标题「virtio: add a device memory buffer region allocator」——试着自己拆出子系统、动词、名词块三个格子，再用一句话英文说「这个补丁在做什么」。（来源同系列 RFC，见上文「原文」链接）"
+  - type: exercise
+    text: "标题解析练习：拆解真实标题「virtio: add a device memory buffer region allocator」——找出子系统前缀、动词、名词块，再用一句话英文说这个补丁做什么。"
+    answer: "参考：subsystem: virtio / verb: add a ... allocator / noun: device memory buffer region。一句话：This patch adds an allocator for device memory buffer regions, so virtio devices can manage their DMB (Device Memory Buffer) space."
+    link: "https://lore.kernel.org/lkml/20260809182010.32931-1-graf@amazon.com/"
   - type: closing
     tagline: "Today's kernel title: subsystem + verb + noun — read any patch headline with these three boxes."
     source: "内核英语 · 每日一篇"

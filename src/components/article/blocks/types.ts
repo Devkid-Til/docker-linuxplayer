@@ -3,7 +3,7 @@
 
 export const BLOCK_TYPES = [
   'hook', 'divider', 'toc', 'headline', 'highlight',
-  'more', 'paragraph', 'quote', 'code', 'image', 'closing',
+  'more', 'paragraph', 'quote', 'code', 'image', 'closing', 'exercise',
 ] as const;
 
 export type BlockType = (typeof BLOCK_TYPES)[number];
@@ -37,7 +37,13 @@ export interface QuoteBlock { type: 'quote'; text: string; }
 export interface CodeBlock { type: 'code'; text: string; lang?: string; }
 export interface ImageBlock { type: 'image'; alt: string; src?: string; }
 export interface ClosingBlock { type: 'closing'; tagline: string; source: string; }
+export interface ExerciseBlock {
+  type: 'exercise';
+  text: string;          // 题目（练习引导）
+  answer: string;        // 答案（点击卡片展开显示，学习闭环）
+  link?: string;         // 原文引用（lore 链接，可溯源）
+}
 
 export type Block =
   | HookBlock | DividerBlock | TocBlock | HeadlineBlock | HighlightBlock
-  | MoreBlock | ParagraphBlock | QuoteBlock | CodeBlock | ImageBlock | ClosingBlock;
+  | MoreBlock | ParagraphBlock | QuoteBlock | CodeBlock | ImageBlock | ClosingBlock | ExerciseBlock;

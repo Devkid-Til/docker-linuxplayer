@@ -17,6 +17,8 @@ const block = z.object({
   if (['hook', 'paragraph', 'quote', 'code'].includes(b.type) && typeof b.text !== 'string') issue('text', `「${b.type}」板块缺 text`);
   if (b.type === 'closing' && typeof b.tagline !== 'string') issue('tagline', '「closing」板块缺 tagline');
   if (b.type === 'image' && typeof b.alt !== 'string') issue('alt', '「image」板块缺 alt');
+  if (b.type === 'exercise' && typeof b.text !== 'string') issue('text', '「exercise」板块缺 text');
+  if (b.type === 'exercise' && typeof b.answer !== 'string') issue('answer', '「exercise」板块缺 answer');
 });
 
 const posts = defineCollection({
