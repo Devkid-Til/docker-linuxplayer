@@ -445,3 +445,6 @@ html.dark .timeline-item::before{border-color:var(--bg)}
 .column-filter .filter-column[data-column="daily"]{background:var(--brand-bg);color:var(--brand);border-color:var(--brand-border);font-weight:700}
 .column-filter .filter-column[data-column="daily"]:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
 .column-filter .filter-column[data-column="daily"].active{background:var(--brand);color:#fff;border-color:var(--brand)}
+
+/* 首页 hero 后的区域不透明背景：滚动时覆盖 fixed 背景图（Apple 滚动视差效果） */
+.features, .home-main{background:var(--bg)}
