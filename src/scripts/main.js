@@ -227,6 +227,7 @@
 
   if (columnBar && items.length) {
     columnBar.addEventListener('click', function (e) {
+      if (columnBar.getAttribute('data-dragging')) { columnBar.removeAttribute('data-dragging'); return; }
       var btn = e.target.closest('.filter-column');
       if (!btn) return;
       var col = btn.getAttribute('data-column');
@@ -271,6 +272,7 @@
   var englishBar = document.getElementById('english-filter');
   if (englishBar) {
     englishBar.addEventListener('click', function (e) {
+      if (englishBar.getAttribute('data-dragging')) { englishBar.removeAttribute('data-dragging'); return; }
       var btn = e.target.closest('.filter-tag');
       if (!btn) return;
       var tag = btn.getAttribute('data-tag');
@@ -287,6 +289,7 @@
   var journalBar = document.getElementById('journal-filter');
   if (journalBar) {
     journalBar.addEventListener('click', function (e) {
+      if (journalBar.getAttribute('data-dragging')) { journalBar.removeAttribute('data-dragging'); return; }
       var btn = e.target.closest('.filter-tag');
       if (!btn) return;
       var tag = btn.getAttribute('data-tag');
@@ -355,28 +358,24 @@
   })();
 })();
 
-  /* ── tab 栏拖拽横向滚动：跟手左滑左滚/右滑右滚；严格方向+阈值，避免误判点击为拖拽 ── */
-  var tabDragged = false;
+  /* ── tab 栏拖拽横向滚动：跟手左滑左滚/右滑右滚；严格方向+阈值 ── */
   document.querySelectorAll('.column-filter').forEach(function (bar) {
     var sx = 0, sy = 0, ss = 0, d = false;
-    bar.addEventListener('pointerdown', function (e) {
-      d = true; sx = e.clientX; sy = e.clientY; ss = bar.scrollLeft;
-    });
+    bar.addEventListener('pointerdown', function (e) { d = true; sx = e.clientX; sy = e.clientY; ss = bar.scrollLeft; });
     bar.addEventListener('pointermove', function (e) {
       if (!d) return;
       var dx = e.clientX - sx, dy = e.clientY - sy;
-      // 严格拖拽判定：横向位移 >12px 且明显主导（>1.5×纵向）——避免点击时手微动被误判成拖拽
+      // 严格拖拽判定：横向位移 >12px 且明显主导（>1.5×纵向）——避免点击时手微动被误判
       if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.5 && bar.scrollWidth > bar.clientWidth + 1) {
-        tabDragged = true;
         bar.scrollLeft = ss - dx;
+        // 拖拽滚动：60ms 内忽略一次该栏 click（防拖拽后误触按钮）；超时自动清除，防残留导致下次点击失效
+        bar.setAttribute('data-dragging', '1');
+        setTimeout(function () { if (bar.getAttribute('data-dragging')) bar.removeAttribute('data-dragging'); }, 60);
       }
     });
     var end = function () { d = false; };
     bar.addEventListener('pointerup', end);
-    bar.addEventListener('pointercancel', function () { d = false; tabDragged = false; });  // 中断不残留
+    bar.addEventListener('pointercancel', end);
   });
-  document.addEventListener('click', function (e) {
-    if (tabDragged) { e.stopPropagation(); e.preventDefault(); tabDragged = false; }
-  }, true);
 
 
