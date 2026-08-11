@@ -435,3 +435,8 @@ html.dark .timeline-item::before{border-color:var(--bg)}
 #journal-filter .filter-tag .count,
 #english-filter .filter-tag .count,
 .column-filter .filter-column .count{font-size:.72em;opacity:.7;margin-left:4px}
+
+/* 日报主力栏目：品牌紫强调（区别于周报/月报/季报/年报普通胶囊） */
+.column-filter .filter-column[data-column="daily"]{background:var(--brand-bg);color:var(--brand);border-color:var(--brand-border);font-weight:700}
+.column-filter .filter-column[data-column="daily"]:hover{background:var(--brand);color:#fff;border-color:var(--brand)}
+.column-filter .filter-column[data-column="daily"].active{background:var(--brand);color:#fff;border-color:var(--brand)}
