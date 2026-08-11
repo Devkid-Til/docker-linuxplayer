@@ -67,7 +67,7 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 ### 内核英语（english · 独立栏目，focus 制）
 **定位**：用今日解锁的内核英文资料学英语——独立栏目（非日报周边），产出写 `<kernel-blog>/src/content/posts/english/`（子目录，URL 不受影响）。
 1. **素材**：复用当天 radar/日报产物（真实补丁标题/术语/LKML 讨论）——**引用必带 lore 链接/Message-Id，无链接不落成文**（反编造护栏，r1 评审新增）
-2. **选 focus**：素材自适应选当天最出彩的学习维度（标题解析/术语卡/地道表达/阅读/写作/口语），一周内覆盖均衡；frontmatter 必含 `focus`
+2. **选 focus（每日固定轮换，董事长定）**：6 维度循环 标题解析→术语卡→地道表达→阅读→写作→口语；今天 = 最近一篇英语文章 focus 的下一个（先看 src/content/posts/english/ 最新篇），不连续重复、不跳维；素材在轮换维度内取材；frontmatter 必含 `focus`
 3. **成文**：按 `output-template.md` 内核英语模板（focus 制：主维度深挖 → 辅助彩蛋 1 条 → 练习 → closing 每日一句），tags = 主维度 + ≤1 辅助
 4. **发布**：网站直接发布（commit 自动部署）；公众号如需走 render-wechat.mjs（已支持 english 子目录递归读取），上公众号需请示
 
