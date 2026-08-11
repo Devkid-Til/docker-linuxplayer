@@ -94,10 +94,8 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 
 /* ── 7. Hero（专业分层版）─────────────────────────────────────── */
 /* hero 背景层：背景图+遮蔽渐变由 buildTokens 的 --hero-overlay/--hero-image 注入（与文章页同源），呼吸缩放载体 */
-/* hero 背景：fixed 视口固定 + 滚动时 JS 放大渐隐（Apple 式滚动视差）。
-   在 hero 的 stacking context（isolation:isolate）内 z0：背景色之上、星点(z1)/内容(z2)之下；
-   hero 滚出后由后续内容覆盖（不越界盖外部） */
-.hero-bg{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:var(--hero-overlay),var(--hero-image);background-size:auto,cover;background-position:center;background-repeat:no-repeat,no-repeat;transform-origin:center;will-change:transform,opacity}
+/* hero 背景：absolute 固定在 hero 区域内（不做 fixed，避免全屏/分层丢失）；滚动时 JS 放大 */
+.hero-bg{position:absolute;inset:0;z-index:0;pointer-events:none;background-image:var(--hero-overlay),var(--hero-image);background-size:auto,cover;background-position:center;background-repeat:no-repeat,no-repeat;transform-origin:center;will-change:transform}
 @keyframes breathe-hero{from{transform:scale(1)}to{transform:scale(1.05)}}
 .hero{position:relative;overflow:hidden;padding:var(--space-3xl) 0 var(--space-2xl);background-color:var(--brand-bg);border-bottom:1px solid var(--border-light);text-align:center;isolation:isolate}
 /* hero 星空：星点漂移 + 整体缓慢浮动（白星 + 主题色星交替，颜色随 --fx-particle，如 cyber 青色星云） */
