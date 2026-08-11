@@ -69,18 +69,22 @@
     var mx = 0, my = 0;
     var pointerDown = false;   // 触摸：手指按下才发射
     var pointerKind = 'mouse'; // 当前指针类型（mouse|touch|pen）
+    var scrollGesture = false;  // 触摸垂直主导滑动=浏览滚动：不给尾迹（避免滑屏就拖一堆粒子）
 
     /* 指针位置（Pointer Events 统一鼠标/触摸——触屏笔记本的鼠标也能驱动） */
     if ('PointerEvent' in window) {
       document.addEventListener('pointermove', function (e) {
+        var dx = e.clientX - mx, dy = e.clientY - my;
         mx = e.clientX; my = e.clientY; pointerKind = e.pointerType;
+        // 触摸且垂直主导移动（上下滑浏览页面）→ 视为滚动，不产生尾迹
+        if (e.pointerType === 'touch' && Math.abs(dy) > Math.abs(dx) * 2 && Math.abs(dy) > 6) scrollGesture = true;
       }, { passive: true });
       document.addEventListener('pointerdown', function (e) {
         mx = e.clientX; my = e.clientY; pointerKind = e.pointerType;
         if (e.pointerType === 'touch') pointerDown = true;
       }, { passive: true });
-      document.addEventListener('pointerup', function (e) { if (e.pointerType === 'touch') pointerDown = false; });
-      document.addEventListener('pointercancel', function () { pointerDown = false; });
+      document.addEventListener('pointerup', function (e) { if (e.pointerType === 'touch') { pointerDown = false; scrollGesture = false; } });
+      document.addEventListener('pointercancel', function () { pointerDown = false; scrollGesture = false; });
     } else {
       document.addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; pointerKind = 'mouse'; }, { passive: true });
       document.addEventListener('touchstart', function (e) { var t = e.touches[0]; if (t) { mx = t.clientX; my = t.clientY; } pointerDown = true; }, { passive: true });
@@ -110,7 +114,7 @@
       }
 
       /* ── 尾迹：缓慢跟随曲线（任何指针移动都记录，鼠标/触摸/滚动拖动都跟随）── */
-      if (mx > 0) {
+      if (mx > 0 && !scrollGesture) {
         var last = path[path.length - 1];
         /* 移动了才加新点（静止不堆叠）——不依赖 pointerDown，触摸滚动拖动也持续跟随 */
         if (!last || Math.abs(last.x - mx) > .5 || Math.abs(last.y - my) > .5) {
