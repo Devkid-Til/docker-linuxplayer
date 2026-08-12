@@ -2,18 +2,18 @@
   "date": "2026-08-12",
   "window": "24h",
   "lists": {
-    "media": 80,
-    "DRM": 316,
-    "mm": 368,
-    "PCI": 91,
-    "net": 588,
-    "fs": 130,
+    "media": 78,
+    "DRM": 319,
+    "mm": 354,
+    "PCI": 98,
+    "net": 562,
+    "fs": 127,
     "virtio": 0,
-    "Rust": 99,
-    "LSM": 51,
-    "block": 76,
+    "Rust": 96,
+    "LSM": 50,
+    "block": 75,
     "arch": 39,
-    "rt": 32,
+    "rt": 35,
     "lkml": 1200
   }
 }
