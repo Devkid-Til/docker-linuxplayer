@@ -8,7 +8,10 @@ import { COLUMN_VALUES, COLUMN_TAG_MAP } from './column';
    src（image 板块的图片地址）必须是绝对 http(s) URL：杜绝本地/相对路径残留进公众号产物 */
 const block = z.object({
   type: z.enum(BLOCK_TYPES),
-  src: z.string().url().optional(),
+  src: z.string().url().optional().refine(
+    v => v === undefined || new URL(v).host === 'kernelplayer.oss-cn-beijing.aliyuncs.com',
+    'image src 必须指向 OSS 公网地址（kernelplayer.oss-cn-beijing.aliyuncs.com）'
+  ),
 }).passthrough().superRefine((b, ctx) => {
   // 必填字段构建期校验，报「哪篇文章哪个板块」可读错误（避免运行时 TypeError 晦涩炸掉整次构建）
   const issue = (path: string, msg: string) => ctx.addIssue({ code: z.ZodIssueCode.custom, path: [path], message: msg });
