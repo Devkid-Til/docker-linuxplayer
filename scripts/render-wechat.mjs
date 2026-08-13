@@ -8,6 +8,8 @@ import { readdirSync, readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import yaml from 'js-yaml';
+// 代码块语法高亮(与博客共用)——Shiki 服务端输出内联 color span,公众号粘贴可直接用
+import { highlightCode } from '../src/components/article/blocks/highlight.js';
 // 数据来源逻辑与博客端共享（src/components/article/blocks/derive-source.js，防双份漂移）
 import { deriveSource } from '../src/components/article/blocks/derive-source.js';
 
@@ -44,7 +46,7 @@ function pointP(label, text, last) {
   return `<p style="font-size:15px;line-height:1.8;color:#333333;margin-bottom:${last ? '0' : '8px'}"><span style="color:#7C3AED">•</span> <span style="color:#7C3AED;font-weight:bold">${esc(label)}</span>：${inline(text)}</p>`;
 }
 
-function renderBlock(b, fallbackSource = '') {
+async function renderBlock(b, fallbackSource = '') {
   switch (b.type) {
     case 'hook':
       return `<p style="background:#EDE9FE;border-left:3px solid #7C3AED;border-radius:4px;padding:14px 18px;font-size:14px;line-height:1.8;color:#333333;text-align:left;margin:0 0 24px">${inline(b.text)}</p>`;
@@ -111,8 +113,18 @@ function renderBlock(b, fallbackSource = '') {
     case 'quote':
       return `<blockquote style="background:#EDE9FE;border:1px solid #C4B5FD;border-left:3px solid #7C3AED;border-radius:4px;padding:12px 16px;font-size:14px;line-height:1.7;color:#333333;margin:16px 0">${inline(b.text)}</blockquote>`;
 
-    case 'code':
-      return `<pre style="background:#1F2430;border-radius:6px;padding:14px 16px;font-size:13px;line-height:1.7;color:#E6E6E6;overflow-x:auto;margin:16px 0"><code>${esc(b.text)}</code></pre>`;
+    case 'code': {
+      // GitHub 风格深色卡片:语言标签栏 + Shiki 内联高亮(公众号只认 inline style)
+      const hl = await highlightCode(b.text, b.lang);
+      const langLabel = b.lang || 'text';
+      const codeHtml = hl
+        ? hl.match(/<code[^>]*>([\s\S]*?)<\/code>/)?.[1] ?? esc(b.text)
+        : esc(b.text);
+      return `<div style="background:#0D1117;border-radius:8px;overflow:hidden;margin:16px 0;border:1px solid #30363D">
+  <div style="background:#161B22;border-bottom:1px solid #30363D;padding:7px 14px;font-family:Menlo,Consolas,monospace;font-size:11px;color:#8B949E;letter-spacing:.05em">${esc(langLabel)}</div>
+  <pre style="background:#0D1117;color:#E6EDF3;margin:0;padding:14px 16px;font-family:Menlo,Consolas,monospace;font-size:12.5px;line-height:1.7;overflow-x:auto;white-space:pre-wrap;word-break:break-all">${codeHtml}</pre>
+</div>`;
+    }
 
     case 'exercise':
       return `<div style="background:#F0F3FF;border:1px solid #E2E5F0;border-radius:10px;padding:18px 20px;margin:0 0 24px">
@@ -164,7 +176,7 @@ if (!target) { console.error(`找不到 ${slugArg || newest}`); process.exit(1);
 
 const data = parseFrontmatter(readFileSync(path.join(POSTS_DIR, target), 'utf8'));
 const fallbackSource = deriveSource(data.blocks ?? []);
-const body = (data.blocks ?? []).map(b => renderBlock(b, fallbackSource)).join('\n\n');
+const body = (await Promise.all((data.blocks ?? []).map(b => renderBlock(b, fallbackSource)))).join('\n\n');
 
 const html = `<!-- 公众号粘贴用 · ${data.title} -->
 ${body}
