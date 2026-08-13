@@ -30,7 +30,7 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 1. `bash scripts/radar.sh daily` → 分节输出 13 列表（**12 个持续更新列表按最近 24h〔lkml 全内核广播源 T24:400 限 400 条〕、virtio-dev 按最近 20 条**；每行 5 字段 `ISO时间|标题|原文链接|Message-Id|In-Reply-To`，第 4/5 字段支撑跨列表去重与系列识别，成文不用展示；**跨列表已按 Message-Id 去重**，板块专属优先、lkml 广播源只补无专属列表的板块，stderr 会标 `去重跳过`）；**先整体扫一遍挑当日 signal（哪几域今天有大事、哪条跨域机制最重），再逐条展开**——别按列表逐条流式过，雷达是探测不是流水账
 2. 标注前**先翻 `references/architecture-map.md`** 给每条亮点补丁做架构定位
 3. 按「分析规则」标注、按 `references/output-template.md` 的 blocks 映射组织内容结构
-4. **成文为 blocks 文章文件**：产出**完整的博客文章文件** `<kernel-blog>/src/content/posts/YYYY-MM-DD-slug.md`（frontmatter 含 `title`/`date`/`desc`/`tags`/`blocks`）。**YAML 硬规则**（所有字符串值加双引号、`---` 收尾、缩进 2 空格）与自查命令见 skill `wechat-article` 的 SKILL.md——写完后必须跑自查确认 js-yaml 可解析。核心简报 = 该文件的 blocks 内容
+4. **成文为 blocks 文章文件**：产出**完整的博客文章文件** `<kernel-blog>/src/content/posts/YYYY-MM-DD-slug.md`（frontmatter 含 `title`/`date`/`desc`/`tags`/`blocks`）。**YAML 硬规则**（所有字符串值加双引号、`---` 收尾、缩进 2 空格）与自查命令见 skill `wechat-article` 的 SKILL.md——写完后必须跑自查确认 js-yaml 可解析。**YAML 引号铁律**：所有字符串值加双引号包裹，但**字符串内部的中文引号必须用「」或“”，绝不能用半角 "**（半角会截断字符串导致 YAML 解析错误——08-11/08-13 各犯一次）。核心简报 = 该文件的 blocks 内容
 5. **封面 + 活跃度图 + OSS 上传**（**固定步骤，不可省**）：
    - **封面**：`bash <wechat-article skill>/scripts/generate-cover.sh --date "MM-DD" --topic "<头条钩子>" --out cover.png`（紫色报刊风，规格按 `references/wechat-template.md`）
    - **活跃度图**：`python3 <本 skill>/scripts/draw-heat.py <kernel-blog>/src/data/radar-stats.json board-heat.png --title "板块活跃度 · 近 24h"` 生成 13 板块热度条形图（周报必用；日报可选）

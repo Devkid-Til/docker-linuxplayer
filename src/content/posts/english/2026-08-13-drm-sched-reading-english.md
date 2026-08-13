@@ -30,7 +30,7 @@ blocks:
     link: "https://lore.kernel.org/dri-devel/<bbe573b2-cee8-4647-bb75-662ced57b2d3@igalia.com>/"
     points:
       - label: "debugged in peace"
-        text: "「安安静静地调试」——in peace 表"不受打扰"；revert so it can be debugged in peace = 回滚是为了能专心调试"
+        text: "「安安静静地调试」——in peace 表「不受打扰」；revert so it can be debugged in peace = 回滚是为了能专心调试"
       - label: "I have not been able to ... yet"
         text: "「我还没能……」——yet 结尾表"到目前还没"，维护者说明复现困难的礼貌说法"
   - type: divider
