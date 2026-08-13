@@ -10,7 +10,7 @@ blocks:
       今天 Linux 内核圈，值得花 3 分钟看两件事：<strong>RISC-V 把 rva23u64 基础行为写进了 hwprobe</strong>，和 <strong>nouveau 修通道终止事件顺序</strong>。
   - type: image
     src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-13/cover.png"
-    alt: "封面 · 8月13日 · RISC-V hwprobe rva23u64 + nouveau 通道事件"
+    alt: "封面 · 8月13日 · RISC-V 用户态能查能力了"
   - type: divider
     label: "🎬 今日导读"
     kind: primary
