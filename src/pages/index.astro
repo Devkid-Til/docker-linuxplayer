@@ -147,8 +147,16 @@ const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio',
           {columnTags[c.value].map(t => <button class="filter-tag" data-tag={t.name}>{t.name}<span class="count"> {t.count}</span></button>)}
         </div>
       ))}
-      <div class="post-timeline">
+      <div class="list-toolbar reveal">
+        <input type="search" class="list-search" data-search="kernel" placeholder="🔍 搜索标题 / 描述 / 标签" />
+      </div>
+      <div class="post-timeline" data-list="kernel">
         {kernelPosts.map((p, i) => <PostCard latest={slugOf(p) === latestSlug} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} />)}
+      </div>
+      <div class="pagination reveal" data-pager="kernel">
+        <button class="pg-btn" data-pager-prev>← 上一页</button>
+        <span class="pg-info" data-pager-info>第 1 / 1 页</span>
+        <button class="pg-btn" data-pager-next>下一页 →</button>
       </div>
     </div>
 
@@ -158,8 +166,16 @@ const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio',
         <button class="filter-tag active" data-tag="all">全部 <span class="count">{englishPosts.length}</span></button>
         {englishFilterTabs.map(t => <button class="filter-tag" data-tag={t.name}>{t.emoji} {t.name}<span class="count"> {t.count}</span></button>)}
       </div>
-      <div class="post-timeline">
+      <div class="list-toolbar reveal">
+        <input type="search" class="list-search" data-search="english" placeholder="🔍 搜索标题 / 描述 / 标签" />
+      </div>
+      <div class="post-timeline" data-list="english">
         {englishPosts.map((p, i) => <PostCard latest={false} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} focus={p.data.focus} />)}
+      </div>
+      <div class="pagination reveal" data-pager="english">
+        <button class="pg-btn" data-pager-prev>← 上一页</button>
+        <span class="pg-info" data-pager-info>第 1 / 1 页</span>
+        <button class="pg-btn" data-pager-next>下一页 →</button>
       </div>
     </div>
 
@@ -169,8 +185,16 @@ const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio',
         <button class="filter-tag active" data-tag="all">全部 <span class="count">{journalPosts.length}</span></button>
         {journalFilterTabs.map(t => <button class="filter-tag" data-tag={t.name}>{t.emoji} {t.name}<span class="count"> {t.count}</span></button>)}
       </div>
-      <div class="post-timeline">
+      <div class="list-toolbar reveal">
+        <input type="search" class="list-search" data-search="journal" placeholder="🔍 搜索标题 / 描述 / 标签" />
+      </div>
+      <div class="post-timeline" data-list="journal">
         {journalPosts.map((p, i) => <PostCard latest={false} column={p.data.column || 'daily'} slug={slugOf(p)} date={p.data.date} title={p.data.title} desc={p.data.desc} tags={p.data.tags} />)}
+      </div>
+      <div class="pagination reveal" data-pager="journal">
+        <button class="pg-btn" data-pager-prev>← 上一页</button>
+        <span class="pg-info" data-pager-info>第 1 / 1 页</span>
+        <button class="pg-btn" data-pager-next>下一页 →</button>
       </div>
     </div>
 

@@ -194,17 +194,17 @@
 
   onScroll();
 
-  /* ── 栏目 + 标签 双重过滤（交集）
-     tag 栏按栏目作用域：每个栏目有自己的 .tag-filter（词表不同），
-     切栏目 = 换词表 = 重置 activeTag，旧标签过滤必须清零。 */
+  /* ── 栏目/标签/搜索 过滤 + 分页（三个视图统一，每页 10 篇） ── */
+  var PER_PAGE = 10;
+  var viewState = {
+    kernel: { page: 1, search: '', column: 'all', tag: 'all' },
+    english: { page: 1, search: '', tag: 'all' },
+    journal: { page: 1, search: '', tag: 'all' },
+  };
   var columnBar = document.getElementById('column-filter');
   var tagBars = document.querySelectorAll('.tag-filter');
-  // 只过滤「全部栏目」视图的卡片（内核英语是独立视图，另有自己的过滤）
-  var items = document.querySelectorAll('#view-kernel .timeline-item');
-  var activeColumn = 'all';
-  var activeTag = 'all';
 
-  /* 切栏目：显示该栏目的 tag 栏（若无则全隐藏），并把该栏 active 态重置到"全部" */
+  /* 切栏目：显示该栏目的 tag 栏（若无则全隐藏），active 重置到"全部" */
   function setTagBarVisible(col) {
     tagBars.forEach(function (bar) {
       var show = bar.getAttribute('data-column') === col;
@@ -217,47 +217,67 @@
     });
   }
 
-  function applyFilters() {
+  /* 核心：渲染某视图——过滤(column/tag/搜索) → 分页 → 更新分页控件 */
+  function renderView(v) {
+    var st = viewState[v];
+    var list = document.querySelector('#view-' + v + ' .post-timeline');
+    if (!list) return;
+    var items = Array.prototype.slice.call(list.querySelectorAll('.timeline-item'));
+    var kw = st.search.trim().toLowerCase();
+    var filtered = items.filter(function (item) {
+      if (st.column && st.column !== 'all' && item.getAttribute('data-column') !== st.column) return false;
+      if (st.tag && st.tag !== 'all') {
+        var tags = (item.getAttribute('data-tags') || '').split(',').map(function (s) { return s.trim(); });
+        if (tags.indexOf(st.tag) < 0) return false;
+      }
+      if (kw && (item.textContent || '').toLowerCase().indexOf(kw) < 0) return false;   // 标题+描述+标签全文搜
+      return true;
+    });
+    var pages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+    if (st.page > pages) st.page = pages;
+    if (st.page < 1) st.page = 1;
+    var start = (st.page - 1) * PER_PAGE;
+    // 遍历全部 items：被过滤掉的隐藏，过滤后的按分页显示（此前只处理 filtered 导致被过滤项未隐藏）
+    var fi = 0;
     items.forEach(function (item) {
-      var colMatch = activeColumn === 'all' || item.getAttribute('data-column') === activeColumn;
-      var tagMatch = activeTag === 'all' || (item.getAttribute('data-tags') || '').split(',').map(function(s){return s.trim();}).indexOf(activeTag) >= 0;
-      item.classList.toggle('hidden', !(colMatch && tagMatch));
+      if (filtered.indexOf(item) >= 0) {
+        item.classList.toggle('hidden', !(fi >= start && fi < start + PER_PAGE));
+        fi++;
+      } else {
+        item.classList.toggle('hidden', true);
+      }
     });
+    var pager = document.querySelector('[data-pager="' + v + '"]');
+    if (pager) {
+      var info = pager.querySelector('[data-pager-info]');
+      var prev = pager.querySelector('[data-pager-prev]');
+      var next = pager.querySelector('[data-pager-next]');
+      if (info) info.textContent = '第 ' + st.page + ' / ' + pages + ' 页';
+      if (prev) prev.disabled = st.page <= 1;
+      if (next) next.disabled = st.page >= pages;
+    }
   }
 
-  if (columnBar && items.length) {
-    columnBar.addEventListener('click', function (e) {
-      if (columnBar.getAttribute('data-dragging')) { columnBar.removeAttribute('data-dragging'); return; }
-      var btn = e.target.closest('.filter-column');
-      if (!btn) return;
-      var col = btn.getAttribute('data-column');
-      activeColumn = col;
-      activeTag = 'all';
-      columnBar.querySelectorAll('.filter-column').forEach(function (b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      setTagBarVisible(col);
-      applyFilters();
+  /* 搜索框：实时过滤（输入即搜，回第 1 页） */
+  document.querySelectorAll('.list-search').forEach(function (inp) {
+    var v = inp.getAttribute('data-search');
+    inp.addEventListener('input', function () {
+      viewState[v].search = inp.value;
+      viewState[v].page = 1;
+      renderView(v);
     });
-  }
+  });
 
-  if (tagBars.length && items.length) {
-    tagBars.forEach(function (bar) {
-      bar.addEventListener('click', function (e) {
-        var btn = e.target.closest('.filter-tag');
-        if (!btn) return;
-        var tag = btn.getAttribute('data-tag');
-        activeTag = tag;
-        bar.querySelectorAll('.filter-tag').forEach(function (b) { b.classList.remove('active'); });
-        btn.classList.add('active');
-        applyFilters();
-      });
-    });
-  }
+  /* 分页按钮 */
+  document.querySelectorAll('.pagination').forEach(function (pager) {
+    var v = pager.getAttribute('data-pager');
+    var prev = pager.querySelector('[data-pager-prev]');
+    var next = pager.querySelector('[data-pager-next]');
+    if (prev) prev.addEventListener('click', function () { if (viewState[v].page > 1) { viewState[v].page--; renderView(v); } });
+    if (next) next.addEventListener('click', function () { viewState[v].page++; renderView(v); });
+  });
 
-  /* 初始：无栏目选中（全部）→ 所有 tag 栏隐藏 */
-  setTagBarVisible(activeColumn);
-
-  /* ── 主切换：全部栏目 | 内核英语（同级 tab 视图切换） ── */
+  /* 主切换：内核内容 | 内核英语 | 站长手记 */
   var mainTabs = document.querySelectorAll('.main-tab');
   var mainViews = document.querySelectorAll('.main-view');
   mainTabs.forEach(function (tab) {
@@ -268,39 +288,59 @@
     });
   });
 
-  /* ── 内核英语视图：学习维度标签过滤（独立于全部栏目） ── */
-  var englishBar = document.getElementById('english-filter');
-  if (englishBar) {
-    englishBar.addEventListener('click', function (e) {
-      if (englishBar.getAttribute('data-dragging')) { englishBar.removeAttribute('data-dragging'); return; }
-      var btn = e.target.closest('.filter-tag');
+  /* 内核内容视图：栏目过滤 */
+  if (columnBar) {
+    columnBar.addEventListener('click', function (e) {
+      if (columnBar.getAttribute('data-dragging')) { columnBar.removeAttribute('data-dragging'); return; }
+      var btn = e.target.closest('.filter-column');
       if (!btn) return;
-      var tag = btn.getAttribute('data-tag');
-      englishBar.querySelectorAll('.filter-tag').forEach(function (b) { b.classList.remove('active'); });
+      var col = btn.getAttribute('data-column');
+      viewState.kernel.column = col;
+      viewState.kernel.tag = 'all';
+      viewState.kernel.page = 1;
+      columnBar.querySelectorAll('.filter-column').forEach(function (b) { b.classList.remove('active'); });
       btn.classList.add('active');
-      document.querySelectorAll('#view-english .timeline-item').forEach(function (item) {
-        var match = tag === 'all' || (item.getAttribute('data-tags') || '').split(',').map(function (s) { return s.trim(); }).indexOf(tag) >= 0;
-        item.classList.toggle('hidden', !match);
+      setTagBarVisible(col);
+      renderView('kernel');
+    });
+  }
+
+  /* 内核内容视图：栏目内标签过滤 */
+  if (tagBars.length) {
+    tagBars.forEach(function (bar) {
+      bar.addEventListener('click', function (e) {
+        var btn = e.target.closest('.filter-tag');
+        if (!btn) return;
+        var tag = btn.getAttribute('data-tag');
+        viewState.kernel.tag = tag;
+        viewState.kernel.page = 1;
+        bar.querySelectorAll('.filter-tag').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        renderView('kernel');
       });
     });
   }
 
-  /* ── 站长手记视图：笔记/感谢/随想 标签过滤（独立视图） ── */
-  var journalBar = document.getElementById('journal-filter');
-  if (journalBar) {
-    journalBar.addEventListener('click', function (e) {
-      if (journalBar.getAttribute('data-dragging')) { journalBar.removeAttribute('data-dragging'); return; }
-      var btn = e.target.closest('.filter-tag');
-      if (!btn) return;
-      var tag = btn.getAttribute('data-tag');
-      journalBar.querySelectorAll('.filter-tag').forEach(function (b) { b.classList.remove('active'); });
-      btn.classList.add('active');
-      document.querySelectorAll('#view-journal .timeline-item').forEach(function (item) {
-        var match = tag === 'all' || (item.getAttribute('data-tags') || '').split(',').map(function (s) { return s.trim(); }).indexOf(tag) >= 0;
-        item.classList.toggle('hidden', !match);
+  /* 内核英语 / 站长手记：维度标签过滤 */
+  ['english', 'journal'].forEach(function (v) {
+    var bar = document.getElementById(v + '-filter');
+    if (bar) {
+      bar.addEventListener('click', function (e) {
+        if (bar.getAttribute('data-dragging')) { bar.removeAttribute('data-dragging'); return; }
+        var btn = e.target.closest('.filter-tag');
+        if (!btn) return;
+        var tag = btn.getAttribute('data-tag');
+        viewState[v].tag = tag;
+        viewState[v].page = 1;
+        bar.querySelectorAll('.filter-tag').forEach(function (b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        renderView(v);
       });
-    });
-  }
+    }
+  });
+
+  setTagBarVisible(viewState.kernel.column);
+  ['kernel', 'english', 'journal'].forEach(renderView);
 
   /* ── 终端轮播动画 ── */
   var termDeco = document.querySelector('.term-deco');
