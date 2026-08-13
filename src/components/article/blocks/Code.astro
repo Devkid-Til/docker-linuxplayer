@@ -1,7 +1,17 @@
 ---
-// 代码块：深底卡片
+// 代码块：GitHub 风格深色卡片 —— 语言标签栏 + Shiki 语法高亮
+import { highlightCode } from './highlight.js';
 import type { CodeBlock } from './types';
 interface Props { block: CodeBlock; }
 const { block } = Astro.props;
+const highlighted = await highlightCode(block.text, block.lang);
+const langLabel = block.lang || 'text';
 ---
-<pre class="block-card block-code"><code>{block.text}</code></pre>
+<div class="block-code-card">
+  <div class="block-code-bar">
+    <span class="code-lang">{langLabel}</span>
+  </div>
+  {highlighted
+    ? <Fragment set:html={highlighted} />
+    : <pre class="block-code"><code>{block.text}</code></pre>}
+</div>

@@ -318,6 +318,12 @@ html.dark .article-hero{background:color-mix(in srgb,var(--card) 88%,transparent
 .block-code{background:var(--code-bg);border-color:var(--border);font-size:.8125rem;line-height:1.7;color:var(--code-text);overflow-x:auto;padding:var(--space-md) var(--space-lg)}
 .block-code:hover{border-color:var(--border)}
 .block-code code{font-family:var(--font-mono);background:none;padding:0;color:inherit}
+/* 代码块卡片(GitHub 风格):语言标签栏 + Shiki 高亮,深浅主题固定深色保持一致 */
+.block-code-card{position:relative;border-radius:var(--radius-md);overflow:hidden;border:1px solid #30363D;margin:var(--space-lg) 0;background:#0D1117}
+.block-code-bar{display:flex;align-items:center;gap:8px;background:#161B22;border-bottom:1px solid #30363D;padding:8px 14px}
+.block-code-card .code-lang{font-family:var(--font-mono);font-size:.72rem;color:#8B949E;letter-spacing:.05em;text-transform:lowercase}
+.block-code-card pre{background:#0D1117;color:#E6EDF3;margin:0;border-radius:0;border:none;padding:14px 16px;font-size:.8125rem;line-height:1.7;overflow-x:auto}
+.block-code-card code{font-family:var(--font-mono);background:none;padding:0;color:inherit}
 .block-image{text-align:center;padding:var(--space-md)}
 .block-image img{max-width:100%;border-radius:var(--radius-md)}
 .img-ph{color:var(--text-tertiary);font-size:.8125rem;text-align:center;margin:0}
