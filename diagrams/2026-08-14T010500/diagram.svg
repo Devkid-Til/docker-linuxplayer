@@ -1,0 +1,156 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1080" font-family="Noto Sans SC">
+  <defs>
+    <linearGradient id="bgL" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F6F3FF"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.18" cy="0.18" r="0.9">
+      <stop offset="0" stop-color="#7C3AED" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#7C3AED" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="loopbg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBF7FF"/>
+      <stop offset="1" stop-color="#F1EBFF"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1800" height="1080" fill="url(#bgL)"/>
+  <rect width="1800" height="1080" fill="url(#glow)"/>
+
+  <!-- 面板分隔线 -->
+  <line x1="960" y1="110" x2="960" y2="960" stroke="#E5E1F5" stroke-width="1.5" stroke-dasharray="6 8"/>
+
+  <!-- ① 左侧标题 -->
+  <text x="80" y="58" font-size="30" font-weight="bold" fill="#1E1B4B">① 架构层次 · 宏观</text>
+  <text x="80" y="88" font-size="16" fill="#8B7EC8">入口 → 宿主 → 运行时 → 工具 → 模型 → 持久化 · 基于 @deepseek-ai/dsh 0.1.0-rc.6 源码</text>
+
+  <!-- ② 右侧标题 -->
+  <text x="1000" y="58" font-size="30" font-weight="bold" fill="#1E1B4B">② 拓扑路径 · 微观</text>
+  <text x="1000" y="88" font-size="16" fill="#8B7EC8">一个任务如何穿过七层 · 实测 session 事件流</text>
+
+  <!-- ═══ 左侧：七层架构栈 ═══ -->
+  <!-- L1 入口层 -->
+  <g>
+    <rect x="60" y="110" width="880" height="104" rx="14" fill="#EFF6FF" stroke="#BFDBFE" stroke-width="1"/>
+    <rect x="60" y="110" width="9" height="104" rx="4.5" fill="#3B82F6"/>
+    <text x="86" y="145" font-size="24" font-weight="bold" fill="#1E40AF">L1 · 入口层 — dsh CLI</text>
+    <text x="86" y="180" font-size="16" fill="#3B5B8F">--profile headless / web · --dump-config 查看组合配置 · 未知 flag 透传给应用</text>
+    <text x="912" y="145" text-anchor="end" font-size="15" fill="#60A5FA" font-weight="bold">bin.js</text>
+  </g>
+  <!-- L2 Profile 层 -->
+  <g>
+    <rect x="60" y="226" width="880" height="104" rx="14" fill="#F0FDFA" stroke="#99F6E4" stroke-width="1"/>
+    <rect x="60" y="226" width="9" height="104" rx="4.5" fill="#14B8A6"/>
+    <text x="86" y="261" font-size="24" font-weight="bold" fill="#0F766E">L2 · Profile 层 — 插件组合包</text>
+    <text x="86" y="296" font-size="16" fill="#3D7A72">headless = dsh-base + dsh-headless · web = dsh-base + dsh-web-app · patch 层叠覆盖</text>
+    <text x="912" y="261" text-anchor="end" font-size="15" fill="#2DD4BF" font-weight="bold">bundles</text>
+  </g>
+  <!-- L3 插件宿主 Cordis -->
+  <g>
+    <rect x="60" y="342" width="880" height="104" rx="14" fill="#EEF2FF" stroke="#C7D2FE" stroke-width="1"/>
+    <rect x="60" y="342" width="9" height="104" rx="4.5" fill="#6366F1"/>
+    <text x="86" y="377" font-size="24" font-weight="bold" fill="#3730A3">L3 · 插件宿主 — Cordis</text>
+    <text x="86" y="412" font-size="16" fill="#4C4F92">service 依赖注入 · 插件生命周期 · bundles patch → 用户覆盖 → --patch 逐层叠加</text>
+    <text x="912" y="377" text-anchor="end" font-size="15" fill="#818CF8" font-weight="bold">host</text>
+  </g>
+  <!-- L4 核心运行时 (高亮) -->
+  <g>
+    <rect x="60" y="458" width="880" height="104" rx="14" fill="#F5F3FF" stroke="#DDD6FE" stroke-width="1.6"/>
+    <rect x="60" y="458" width="9" height="104" rx="4.5" fill="#7C3AED"/>
+    <text x="86" y="493" font-size="24" font-weight="bold" fill="#5B21B6">L4 · 核心运行时 — dsh-base</text>
+    <text x="86" y="528" font-size="16" fill="#5B4A8F">Agent Loop · Session 事件溯源 · LLM 服务 · 工具注册 · 沙箱/权限 · 子 Agent · Skill</text>
+    <text x="912" y="493" text-anchor="end" font-size="15" fill="#8B5CF6" font-weight="bold">77 插件</text>
+  </g>
+  <!-- L5 工具面 -->
+  <g>
+    <rect x="60" y="574" width="880" height="104" rx="14" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1"/>
+    <rect x="60" y="574" width="9" height="104" rx="4.5" fill="#F59E0B"/>
+    <text x="86" y="609" font-size="24" font-weight="bold" fill="#92400E">L5 · 工具面 — 真实环境抓手</text>
+    <text x="86" y="644" font-size="16" fill="#9A6B2F">fs · bash · web 搜索 · subagent · skill · todo / workflow · ask-user</text>
+    <text x="912" y="609" text-anchor="end" font-size="15" fill="#FBBF24" font-weight="bold">tool-*</text>
+  </g>
+  <!-- L6 模型适配 -->
+  <g>
+    <rect x="60" y="690" width="880" height="104" rx="14" fill="#FDF2F8" stroke="#FBCFE8" stroke-width="1"/>
+    <rect x="60" y="690" width="9" height="104" rx="4.5" fill="#EC4899"/>
+    <text x="86" y="725" font-size="24" font-weight="bold" fill="#9D174D">L6 · 模型适配 — dsh-llm-deepseek</text>
+    <text x="86" y="760" font-size="16" fill="#9E4A72">provider = deepseek-official · 默认模型 deepseek-v4-flash · OpenAI 兼容 chat-completions</text>
+    <text x="912" y="725" text-anchor="end" font-size="15" fill="#F472B6" font-weight="bold">llm</text>
+  </g>
+  <!-- L7 持久化 -->
+  <g>
+    <rect x="60" y="806" width="880" height="104" rx="14" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+    <rect x="60" y="806" width="9" height="104" rx="4.5" fill="#64748B"/>
+    <text x="86" y="841" font-size="24" font-weight="bold" fill="#334155">L7 · 持久化 — 全量可重建</text>
+    <text x="86" y="876" font-size="16" fill="#5B6B80">session.jsonl.zstd · credentials.yaml(0600) · telemetry 默认关闭</text>
+    <text x="912" y="841" text-anchor="end" font-size="15" fill="#94A3B8" font-weight="bold">store</text>
+  </g>
+
+  <!-- ═══ 右侧：拓扑路径 ═══ -->
+  <!-- 节点1 用户任务 -->
+  <g>
+    <rect x="1260" y="130" width="220" height="72" rx="36" fill="#FFFFFF" stroke="#7C3AED" stroke-width="1.6"/>
+    <text x="1370" y="162" text-anchor="middle" font-size="20" font-weight="bold" fill="#1E1B4B">用户任务</text>
+    <text x="1370" y="186" text-anchor="middle" font-size="14" fill="#8B7EC8">一次请求</text>
+  </g>
+  <!-- 连线 用户任务→收件箱 -->
+  <polyline points="1370,202 1370,238" fill="none" stroke="#7C3AED" stroke-width="2.4"/>
+  <polygon points="1362,244 1370,258 1378,244" fill="#7C3AED"/>
+  <!-- 节点2 收件箱 -->
+  <g>
+    <rect x="1260" y="258" width="220" height="66" rx="12" fill="#FFFFFF" stroke="#C4B5FD" stroke-width="1.4"/>
+    <text x="1370" y="289" text-anchor="middle" font-size="18" font-weight="bold" fill="#5B21B6">收件箱 · inbox</text>
+    <text x="1370" y="311" text-anchor="middle" font-size="13" fill="#8B7EC8">spliced 事件</text>
+  </g>
+  <!-- 连线 收件箱→Agent Loop -->
+  <polyline points="1370,324 1370,352 1180,352 1180,414" fill="none" stroke="#7C3AED" stroke-width="2.4"/>
+  <polygon points="1172,414 1180,426 1188,414" fill="#7C3AED"/>
+  <!-- Agent Loop 大框 -->
+  <g>
+    <rect x="1010" y="380" width="720" height="300" rx="18" fill="url(#loopbg)" stroke="#A78BFA" stroke-width="1.8" stroke-dasharray="8 6"/>
+    <text x="1370" y="408" text-anchor="middle" font-size="18" font-weight="bold" fill="#5B21B6">Agent Loop · turn / step</text>
+    <!-- 模型调用 -->
+    <g>
+      <rect x="1040" y="426" width="300" height="96" rx="12" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.4"/>
+      <text x="1190" y="458" text-anchor="middle" font-size="19" font-weight="bold" fill="#5B21B6">模型调用</text>
+      <text x="1190" y="484" text-anchor="middle" font-size="14" fill="#8B7EC8">生成 tool_calls / 文本</text>
+      <text x="1190" y="506" text-anchor="middle" font-size="13" fill="#C4B5FD">context 压缩 · 重试策略</text>
+    </g>
+    <!-- 工具执行 -->
+    <g>
+      <rect x="1390" y="426" width="310" height="96" rx="12" fill="#FFFFFF" stroke="#DDD6FE" stroke-width="1.4"/>
+      <text x="1545" y="458" text-anchor="middle" font-size="19" font-weight="bold" fill="#5B21B6">工具执行</text>
+      <text x="1545" y="484" text-anchor="middle" font-size="14" fill="#8B7EC8">串行 / 并行组调度</text>
+      <text x="1545" y="506" text-anchor="middle" font-size="13" fill="#C4B5FD">沙箱门禁 · 审批策略</text>
+    </g>
+    <!-- 模型→工具 -->
+    <polyline points="1340,474 1386,474" fill="none" stroke="#7C3AED" stroke-width="2.4"/>
+    <polygon points="1392,468 1406,474 1392,480" fill="#7C3AED"/>
+    <!-- 循环回填 工具→模型 -->
+    <path d="M 1545 426 L 1545 398 L 1190 398 L 1190 422" fill="none" stroke="#7C3AED" stroke-width="2.2" stroke-dasharray="6 5"/>
+    <polygon points="1184,426 1190,414 1196,426" fill="#7C3AED"/>
+    <text x="1370" y="394" text-anchor="middle" font-size="13" fill="#8B7EC8" font-weight="bold">结果回填 → 下一步</text>
+    <!-- 循环底注 -->
+    <text x="1370" y="656" text-anchor="middle" font-size="14" fill="#6D28D9">循环直至 finish · 每次工具结果回到模型上下文</text>
+  </g>
+  <!-- 连线 Loop→真实环境 -->
+  <polyline points="1370,680 1370,712" fill="none" stroke="#7C3AED" stroke-width="2.4"/>
+  <polygon points="1362,718 1370,732 1378,718" fill="#7C3AED"/>
+  <!-- 真实环境 -->
+  <g>
+    <rect x="1220" y="732" width="300" height="66" rx="12" fill="#FFFFFF" stroke="#FCD34D" stroke-width="1.4"/>
+    <text x="1370" y="763" text-anchor="middle" font-size="18" font-weight="bold" fill="#92400E">真实环境</text>
+    <text x="1370" y="785" text-anchor="middle" font-size="13" fill="#A16207">文件 · 终端 · 网页</text>
+  </g>
+  <!-- 连线 真实环境→落盘 -->
+  <polyline points="1370,798 1370,824" fill="none" stroke="#7C3AED" stroke-width="2.4"/>
+  <polygon points="1362,830 1370,844 1378,830" fill="#7C3AED"/>
+  <!-- Session 落盘 -->
+  <g>
+    <rect x="1220" y="844" width="300" height="66" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.4"/>
+    <text x="1370" y="875" text-anchor="middle" font-size="18" font-weight="bold" fill="#334155">Session 落盘</text>
+    <text x="1370" y="897" text-anchor="middle" font-size="13" fill="#64748B">jsonl.zstd · 全量可重建</text>
+  </g>
+  <!-- 右下注 -->
+  <text x="1000" y="952" font-size="13" fill="#8B7EC8">实测事件流：permission → sandbox → approval → turn → tool/call → tool/result → turn/end</text>
+</svg>
