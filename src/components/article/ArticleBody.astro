@@ -12,6 +12,7 @@ import Quote from './blocks/Quote.astro';
 import Code from './blocks/Code.astro';
 import Closing from './blocks/Closing.astro';
 import Exercise from './blocks/Exercise.astro';
+import Image from './blocks/Image.astro';
 import { deriveSource } from './blocks/source';
 
 interface Props { blocks: Block[]; }
@@ -30,7 +31,7 @@ const fallbackSource = deriveSource(blocks);
       case 'paragraph':  return <Paragraph block={b} />;
       case 'quote':      return <Quote block={b} />;
       case 'code':       return <Code block={b} />;
-      case 'image':      return null;   // 博客不插入封面/图片（公众号端由 render-wechat.mjs 保留）
+      case 'image':      return <Image block={b} />;   // 博客渲染图片块（封面/架构图等）
       case 'closing':    return <Closing block={b} fallbackSource={fallbackSource} />;
       case 'exercise':   return <Exercise block={b} />;
       default:           return <p class="block-unknown">⚠ 未知板块类型：{(b as { type: string }).type}</p>;
