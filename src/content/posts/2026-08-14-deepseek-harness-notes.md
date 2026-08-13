@@ -32,7 +32,7 @@ blocks:
         text: "官方默认 provider 是 deepseek-official、模型 deepseek-v4-flash——我实测跑的也是它。"
   - type: code
     lang: bash
-    text: >-
+    text: |-
       npx @deepseek-ai/dsh web                                  # 启动浏览器 Web UI
       npx @deepseek-ai/dsh --profile headless "跑一下测试"        # 一次性任务,答完即退
       npx @deepseek-ai/dsh --profile headless --dump-config      # 查看组合后的配置树(不启动)
@@ -44,7 +44,7 @@ blocks:
       我准备了一个带 bug 的小脚本 <code>sum.py</code>:一个「求偶数和」的函数在返回值上多加了 1(<code>return total + 1</code>),期望输出 6、实际输出 7。然后用 headless 模式直接丢给 DSH 让它自己处理。
   - type: code
     lang: text
-    text: >-
+    text: |-
       # DSH 实际执行(从 Session Log 提取)
       1. read   → 读取 sum.py,定位问题
       2. edit   → 把 "return total + 1" 改为 "return total"
