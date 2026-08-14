@@ -15,7 +15,10 @@
       "Bash(npm run wechat:*)",
       "Bash(npm run oss:*)",
       "Bash(npm run recap:*)",
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(bash scripts/*:*)",
+      "Bash(bash /home/jiaqi/.claude/skills/wechat-article/scripts/generate-cover.sh:*)",
+      "Bash(cc-connect send:*)"
     ]
   }
 }
