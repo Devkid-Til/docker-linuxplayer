@@ -1,6 +1,6 @@
 ---
 title: "ext4 十年换新轨，mm 地基双落地，BPF 有了自己的嘴"
-date: "2026-08-17"
+date: "2026-08-16"
 desc: "本周内核全局：ext4 buffered I/O 32 篇换装 iomap（1MB 写+35%）；per-VMA 锁放开全配置 + scalable COW 地基；BPF 出网双响（bpf_ksock 合入 bpf-next + skb_ext 元数据）；X32 ABI 移除启动。"
 column: "weekly"
 tags: ["内存管理", "进程调度", "PCI/总线", "架构动向"]
@@ -9,13 +9,13 @@ blocks:
     text: >-
       本周内核全局，三件事最值得记：<strong>ext4 把 buffered I/O 的最后一块 buffer_head 阵地交给了 iomap</strong>（32 篇，1MB 写 +35%）；<strong>mm 的 per-VMA 锁放开全配置、scalable COW 地基落定</strong>；<strong>BPF 第一次有了「自己的嘴」</strong>——bpf_ksock 合入 bpf-next、skb_ext 给 BPF 元数据安家。此外 X32 ABI 移除启动、negative dentry 软锁死被摁住。
   - type: image
-    src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-17/cover.png"
+    src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-16/cover.png"
     alt: "封面 · 8月17日 · 每周内核雷达"
   - type: divider
     label: "📊 板块活跃度"
     kind: section
   - type: image
-    src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-17/board-heat-week.png"
+    src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-16/board-heat-week.png"
     alt: "板块活跃度条形图 · 本周（周一~周日）"
   - type: paragraph
     text: >-
