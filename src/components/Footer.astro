@@ -1,10 +1,20 @@
 ---
 // 页脚（组件化）
+// 备案占位：备案通过后把号填进下面两个常量即可，留空则不显示。
+// ICP = 工信部 ICP 备案号（纯文本号，自动加官方链接）；GONGAN_HTML = 公安备案编号 HTML 代码（从 beian.mps.gov.cn 复制，含图标）
+const ICP = "";             // 例：京ICP备2026000000号
+const GONGAN_HTML = "";     // 例：<a href="https://beian.mps.gov.cn/#/query/webSearch?code=XXXXXX02000000" target="_blank" rel="noopener">京公网安备XXXXXX02000000号</a>
 ---
 <footer class="site-footer">
   <div class="container">
     <div class="brand-line">内核是主业，玩家是态度</div>
     <p class="source">数据来源 lore.kernel.org · 北京时间</p>
     <div class="links"><a href="/">首页</a><a href="/subscribe/">RSS</a></div>
+    {(ICP || GONGAN_HTML) && (
+      <div class="beian">
+        {ICP && <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">{ICP}</a>}
+        {GONGAN_HTML && <span set:html={GONGAN_HTML} />}
+      </div>
+    )}
   </div>
 </footer>
