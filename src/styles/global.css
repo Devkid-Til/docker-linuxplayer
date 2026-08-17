@@ -380,6 +380,9 @@ html.dark .article-hero{background:color-mix(in srgb,var(--card) 88%,transparent
 .site-footer .source{color:var(--text-tertiary);font-size:.8125rem}
 .site-footer .links{margin-top:var(--space-md);display:flex;justify-content:center;gap:var(--space-lg)}
 .site-footer .links a{font-size:.8125rem;color:var(--text-secondary)}
+.site-footer .beian{margin-top:var(--space-lg);font-size:.75rem;color:var(--text-tertiary);display:flex;justify-content:center;gap:var(--space-md);flex-wrap:wrap}
+.site-footer .beian a{color:inherit;text-decoration:none}
+.site-footer .beian a:hover{text-decoration:underline}
 .site-footer .links a:hover{color:var(--brand)}
 
 /* ── 15. Back-to-top ──────────────────────────────────────────── */
