@@ -1,0 +1,43 @@
+<slide xmlns="https://www.larkoffice.com/sml/2.0">
+  <style>
+    <fill>
+      <fillColor color="rgb(248,245,240)"/>
+    </fill>
+  </style>
+  <data>
+    <shape type="text" topLeftX="48" topLeftY="36" width="864" height="52">
+      <content textType="headline" fontSize="30" bold="true" color="rgba(62,84,163,1)">
+        <p>场景 → 模型：选型矩阵</p>
+      </content>
+    </shape>
+    <table topLeftX="48" topLeftY="104" width="864" height="400">
+      <colgroup>
+        <col width="228"/>
+        <col width="330"/>
+        <col/>
+      </colgroup>
+      <tr height="32">
+        <td>
+          <fill><fillColor color="rgba(62,84,163,1)"/></fill>
+          <content textType="body" fontSize="14" bold="true" color="rgba(255,255,255,1)" textAlign="center"><p>场景</p></content>
+        </td>
+        <td>
+          <fill><fillColor color="rgba(62,84,163,1)"/></fill>
+          <content textType="body" fontSize="14" bold="true" color="rgba(255,255,255,1)" textAlign="center"><p>首选</p></content>
+        </td>
+        <td>
+          <fill><fillColor color="rgba(62,84,163,1)"/></fill>
+          <content textType="body" fontSize="14" bold="true" color="rgba(255,255,255,1)" textAlign="center"><p>备选</p></content>
+        </td>
+      </tr>
+      <tr height="46"><td><content textType="body" fontSize="13" bold="true" color="rgba(43,47,54,1)"><p>代码生成 / Agent 编排</p></content></td><td><content textType="body" fontSize="13" color="rgba(43,47,54,1)" textAlign="left"><p>Claude · DeepSeek · Qwen-Coder</p></content></td><td><content textType="body" fontSize="13" color="rgba(120,120,120,1)" textAlign="left"><p>豆包 · GLM</p></content></td></tr>
+      <tr height="46"><td><content textType="body" fontSize="13" bold="true" color="rgba(43,47,54,1)"><p>高性价比大批量</p></content></td><td><content textType="body" fontSize="13" color="rgba(43,47,54,1)" textAlign="left"><p>DeepSeek · 豆包</p></content></td><td><content textType="body" fontSize="13" color="rgba(120,120,120,1)" textAlign="left"><p>Qwen</p></content></td></tr>
+      <tr height="46"><td><content textType="body" fontSize="13" bold="true" color="rgba(43,47,54,1)"><p>长文档 / 深度研究</p></content></td><td><content textType="body" fontSize="13" color="rgba(43,47,54,1)" textAlign="left"><p>Kimi · Gemini（1M）</p></content></td><td><content textType="body" fontSize="13" color="rgba(120,120,120,1)" textAlign="left"><p>Claude</p></content></td></tr>
+      <tr height="46"><td><content textType="body" fontSize="13" bold="true" color="rgba(43,47,54,1)"><p>多模态（图/视频/音频）</p></content></td><td><content textType="body" fontSize="13" color="rgba(43,47,54,1)" textAlign="left"><p>Gemini · Qwen</p></content></td><td><content textType="body" fontSize="13" color="rgba(120,120,120,1)" textAlign="left"><p>GPT · 豆包</p></content></td></tr>
+      <tr height="46"><td><content textType="body" fontSize="13" bold="true" color="rgba(43,47,54,1)"><p>中文 / 国内合规</p></content></td><td><content textType="body" fontSize="13" color="rgba(43,47,54,1)" textAlign="left"><p>文心 · Qwen · GLM</p></content></td><td><content textType="body" fontSize="13" color="rgba(120,120,120,1)" textAlign="left"><p>DeepSeek</p></content></td></tr>
+      <tr height="46"><td><content textType="body" fontSize="13" bold="true" color="rgba(43,47,54,1)"><p>自托管 / 开源</p></content></td><td><content textType="body" fontSize="13" color="rgba(43,47,54,1)" textAlign="left"><p>Llama · Qwen · DeepSeek</p></content></td><td><content textType="body" fontSize="13" color="rgba(120,120,120,1)" textAlign="left"><p>GLM · Mistral</p></content></td></tr>
+      <tr height="46"><td><content textType="body" fontSize="13" bold="true" color="rgba(43,47,54,1)"><p>实时信息</p></content></td><td><content textType="body" fontSize="13" color="rgba(43,47,54,1)" textAlign="left"><p>Grok</p></content></td><td><content textType="body" fontSize="13" color="rgba(120,120,120,1)" textAlign="left"><p>Gemini（结合搜索）</p></content></td></tr>
+      <tr height="46"><td><content textType="body" fontSize="13" bold="true" color="rgba(43,47,54,1)"><p>语音交互</p></content></td><td><content textType="body" fontSize="13" color="rgba(43,47,54,1)" textAlign="left"><p>豆包 · 讯飞星火</p></content></td><td><content textType="body" fontSize="13" color="rgba(120,120,120,1)" textAlign="left"><p>GPT</p></content></td></tr>
+    </table>
+  </data>
+</slide>
