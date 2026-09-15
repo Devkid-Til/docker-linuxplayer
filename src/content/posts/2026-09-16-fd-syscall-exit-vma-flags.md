@@ -250,7 +250,7 @@ blocks:
           v5 给 BPF 调度器补上惰性抢占：fair 调度类早就能把调度边界推迟到返回用户态或下一个 tick，sched_ext 此前只有立即抢占。新增 SCX_OPS_LAZY_SLICE_EXPIRY 与逐任务的 scx_bpf_task_set_slice_expiry()，并在 NO_HZ_FULL 的无限时间片场景下主动恢复 tick 保证前进。 · <a href="https://lore.kernel.org/lkml/<20260915194611.2674127-1-arighi@nvidia.com>/">原文</a>
       - label: "LSM 边界之争"
         text: >-
-          bpf_lsm_policy_release kfunc 引发的讨论转向了根本问题：BPF LSM 能做什么、LSM 之间的边界在哪。参与方包括 Paul Moore 与 Christian Brauner，属于「先定边界再谈实现」的那类讨论。 · <a href="https://lore.kernel.org/linux-security-module/<20260915-laken-ferngeblieben-verflachen-bafe1f296b02@brauner>/">原文</a>
+          bpf_lsm_policy_release kfunc 引发的讨论转向了根本问题：BPF LSM 能做什么、LSM 之间的边界在哪。参与方包括 Paul Moore、Christian Brauner、Alexei Starovoitov 与 Dr. Greg，属于「先定边界再谈实现」的那类讨论，当日来回至少 5 封。 · <a href="https://lore.kernel.org/linux-security-module/<20260915-laken-ferngeblieben-verflachen-bafe1f296b02@brauner>/">原文</a>
       - label: "Rust block 健全性"
         text: >-
           rust: block 的 Operations::queue_rq 健全性修复仍在多轮讨论中（当日至少 5 封回帖，含内核机器人构建报告）——safe trait 与真实硬件队列语义之间的缝隙还没合上。 · <a href="https://lore.kernel.org/rust-for-linux/<CAPPBnEYRjm80r2v=jBnRS8xGf4WS1g0vo1=xagu+xPxixxb9wA@mail.gmail.com>/">原文</a>
@@ -308,5 +308,5 @@ blocks:
         text: "内核里让父设备在运行时创建子设备的机制，用于子设备不在固件描述中的场景（如 M.2 模块的蓝牙口）。"
   - type: closing
     tagline: "如果对你有用，点个赞，或留言聊聊你最关心的板块。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 13 列表）· 数据截至 09-16 06:50 北京 · 时区均为北京时间"
 ---
