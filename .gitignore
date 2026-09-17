@@ -13,3 +13,6 @@ output/
 __pycache__/
 *.pyc
 .lark-slides/
+
+# SSL 证书私钥（本地签发后推送到服务器，绝不入库）
+docker/ssl/
