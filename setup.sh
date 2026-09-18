@@ -67,10 +67,30 @@ echo "[2/5] 安装 npm 依赖..."
 npm install --no-fund --no-audit
 
 echo ""
-echo "[3/5] 安装 AI skills 到 ~/.claude/skills/..."
+echo "[3/5] 安装 AI skills 到 ~/.claude/skills/（软链，不复制）..."
+# 软链而非复制：本仓库是这两个 skill 的唯一真源，改仓库即刻生效，避免副本漂移
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 mkdir -p ~/.claude/skills
-cp -r skills/* ~/.claude/skills/
-echo "✓ skills 已安装（wechat-article / kernel-patch-radar）"
+shopt -s nullglob
+_installed=0
+for src in "$REPO_ROOT"/skills/*/; do
+  src="${src%/}"
+  name="$(basename "$src")"
+  dest="$HOME/.claude/skills/$name"
+  if [ -L "$dest" ]; then
+    rm -f "$dest"                       # 已有软链：直接重建
+  elif [ -e "$dest" ]; then
+    bak="$dest.bak-$(date +%Y%m%d%H%M%S)"
+    mv "$dest" "$bak"                   # 实体目录（旧版 cp 装的或本地改过）：先备份，不静默删
+    echo "   ⚠ $dest 是实体目录，已备份为 $bak —— 确认无误后自行删除"
+  fi
+  ln -s "$src" "$dest"
+  echo "   ✓ $name -> $src"
+  _installed=$((_installed + 1))
+done
+shopt -u nullglob
+[ "$_installed" -gt 0 ] || { echo "✗ $REPO_ROOT/skills/ 下没有 skill"; exit 1; }
+echo "✓ skills 已安装（$_installed 个，软链到仓库，改仓库即生效）"
 
 echo ""
 echo "[4/5] 安装部署 hook（git commit 自动部署到服务器）？[y/N]"
