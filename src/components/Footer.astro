@@ -1,9 +1,37 @@
 ---
 // 页脚（组件化）
-// 备案占位：备案通过后把号填进下面两个常量即可，留空则不显示。
-// ICP = 工信部 ICP 备案号（纯文本号，自动加官方链接）；GONGAN_HTML = 公安备案编号 HTML 代码（从 beian.mps.gov.cn 复制，含图标）
-const ICP = "";             // 例：京ICP备2026000000号
-const GONGAN_HTML = "";     // 例：<a href="https://beian.mps.gov.cn/#/query/webSearch?code=XXXXXX02000000" target="_blank" rel="noopener">京公网安备XXXXXX02000000号</a>
+//
+// ── 备案信息（合规必填，勿留空上线）────────────────────────────────────
+// 依据：已备案网站须在「主页底部中央」标明备案编号，并将编号链接到工信部备案管理系统
+//       （https://beian.miit.gov.cn/）供公众查询核对；未悬挂可被责令改正并处 5000~10000 元罚款。
+//       公安备案通过后，须在 30 日内把编号（图标在前 16×17px、编号在右）挂到网页底部。
+//
+// ICP —— 工信部 ICP 备案号
+//   ⚠️ 非广东地区挂【网站备案号】（带 -1 后缀）；广东地区挂主体备案号。别挂错。
+//   何处获取：阿里云控制台 → ICP 备案 → 我的备案
+//   格式示例：浙ICP备2026000000号-1
+//   （本机 /srv 侧同理：工信部 beian.miit.gov.cn 用域名也可反查）
+//
+// GONGAN_HTML —— 公安备案编号 HTML 代码
+//   何处获取：全国互联网安全管理服务平台 https://beian.mps.gov.cn
+//             → 已备案网站详情 → 复制备案编号 HTML 代码 + 下载图标。勿手写。
+//   格式示例：<a href="https://beian.mps.gov.cn/#/query/webSearch?code=33010002000000"
+//              target="_blank" rel="noopener"><img src="/gongan.png"
+//              style="width:16px;height:17px;vertical-align:-3px"> 浙公网安备33010002000000号</a>
+//
+// 网站名称须与备案信息一致 —— 首页 <title> 现为「Linux 内核玩家 · 每日内核雷达」，勿随意改名。
+const ICP = "";
+const GONGAN_HTML = "";
+
+// 构建期提醒：ICP 已通过却未悬挂 = 违规状态。别静默上线。
+// 用 globalThis 打标——astro build 会逐页渲染，否则 52 个页面各报一次刷爆日志。
+if (!ICP && !(globalThis as any).__beianWarned) {
+  (globalThis as any).__beianWarned = true;
+  console.warn(
+    '[footer] ⚠ ICP 备案号为空：已备案网站必须在主页底部标明备案编号并链接工信部，' +
+    '未悬挂可被责令改正并处 5000~10000 元罚款。请填 src/components/Footer.astro 的 ICP 常量。'
+  );
+}
 ---
 <footer class="site-footer">
   <div class="container">
@@ -16,5 +44,6 @@ const GONGAN_HTML = "";     // 例：<a href="https://beian.mps.gov.cn/#/query/w
         {GONGAN_HTML && <span set:html={GONGAN_HTML} />}
       </div>
     )}
+    <p class="copyright">© {new Date().getFullYear()} Linux 内核玩家</p>
   </div>
 </footer>
