@@ -36,10 +36,6 @@ ask() { # 变量名 提示 默认值
   eval "$_v=\"$_val\""
 }
 
-ask GISCUS_REPO       "Giscus 评论仓库"          "Devkid-Til/kernelplayer-comments"
-ask GISCUS_REPO_ID    "Giscus repo-id（giscus.app 获取）" ""
-ask GISCUS_CATEGORY   "Giscus 分类"              "Announcements"
-ask GISCUS_CATEGORY_ID "Giscus category-id"      ""
 ask OSS_AK_ID         "OSS AccessKey ID"         ""
 ask OSS_AK_SECRET     "OSS AccessKey Secret"     ""
 ask OSS_BUCKET        "OSS Bucket"               "kernelplayer"
@@ -47,12 +43,6 @@ ask OSS_REGION        "OSS Region"               "oss-cn-beijing"
 
 # 写入 .env
 cat > .env <<EOF
-# Giscus 评论配置（.env 不入库）
-PUBLIC_GISCUS_REPO=$GISCUS_REPO
-PUBLIC_GISCUS_REPO_ID=$GISCUS_REPO_ID
-PUBLIC_GISCUS_CATEGORY=$GISCUS_CATEGORY
-PUBLIC_GISCUS_CATEGORY_ID=$GISCUS_CATEGORY_ID
-
 # 阿里云 OSS（封面/插图上传，RAM 子用户 AK；注意：OSS 键不带 PUBLIC_ 前缀，纯 Node 脚本用，
 # 避免误入 Astro 客户端暴露命名空间）
 OSS_AK_ID=$OSS_AK_ID

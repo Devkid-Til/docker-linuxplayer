@@ -36,9 +36,9 @@ bash setup.sh      # 交互式配置 .env → 装依赖 → 装 skills → 配 h
 ```
 
 `setup.sh` 自动完成：
-1. 交互式询问 Giscus + OSS 凭据（有默认值，回车即用），写入 `.env`
+1. 交互式询问 OSS 凭据（有默认值，回车即用），写入 `.env`
 2. `npm install` 装依赖
-3. 拷贝 `skills/*` 到 `~/.claude/skills/`（AI 排版/封面/日报能力）
+3. 软链 `skills/*` 到 `~/.claude/skills/`（AI 排版/封面/日报能力；软链而非拷贝，仓库是唯一真源）
 4. 可选安装部署 hook（commit 自动发布）
 5. `npm run build` 验证
 
