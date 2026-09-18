@@ -52,11 +52,29 @@ const boldFontPath = path.join(base, '../assets/fonts/NotoSansSC-Bold.otf');
 if (!fs.existsSync(tplPath)) throw new Error('模板不存在: ' + tplPath);
 if (!fs.existsSync(fontPath)) throw new Error('字体不存在: ' + fontPath);
 
+// 品牌配色单一数据源：SVG 模板默认色 → brand.json 当前主题的 cover 渠道（改品牌色只改 brand.json，勿改下方映射 key）
+const brandJson = process.env.BRAND_JSON || '/ws/dev/kernel-blog/src/brand.json';
+const bj = JSON.parse(fs.readFileSync(brandJson, 'utf8'));
+const _t = bj.themes[bj.current];
+const cv = (_t.variants ? _t.variants.light : _t).channels.cover;
+const COLOR_MAP = {
+  '#7C3AED': cv.gradientFrom,
+  '#5B21B6': cv.gradientTo,
+  '#A78BFA': cv.accent,
+  '#DDD6FE': cv.border,
+  '#F5F3FF': cv.bg,
+  '#EDE9FE': cv.bgLight,
+  '#FFFFFF': cv.text,
+  '#1E1B4B': cv.textDark,
+  '#8B7EC8': cv.muted,
+};
+
 const tpl = fs.readFileSync(tplPath, 'utf8');
-const svg = tpl
+let svg = tpl
   .replace(/\{\{DATE\}\}/g, () => esc(date))
   .replace(/\{\{TOPIC\}\}/g, () => esc(topic))
   .replace(/\{\{SLOGAN\}\}/g, () => esc(slogan));
+for (const [k, v] of Object.entries(COLOR_MAP)) svg = svg.split(k).join(v);
 
 const resvg = new Resvg(svg, { font: { fontFiles: [fontPath, boldFontPath] }, fitTo: { mode: 'width', value: width } });
 fs.writeFileSync(out, resvg.render().asPng());

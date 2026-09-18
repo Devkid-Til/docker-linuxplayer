@@ -38,6 +38,8 @@ description: "Use when the user wants to write or format a WeChat 公众号 / mp
 
 ### 典型版式骨架（对应 blocks 顺序）
 
+> **骨架归属**：以下是**日报骨架**（报纸式，linux-media + dri-devel 综合简报）。周/月/季/年各档走 `kernel-patch-radar` 的 `output-template.md` 对应模板（每周模板 / 盘点模板）——板块组合不同，但 blocks 类型与 YAML 规则完全一致。**产出时先确定 `column`，再选骨架与标签词表**（词表见 `src/column.ts`）。
+
 1. `hook` 导语金句（只放钩子，不放工具性信息）
 2. `divider` primary「🎬 今日导读」→ `toc` 导读列表
 3. `divider` primary「💡 今日头条」→ `headline`×1~2（每个：现状/痛点/方案/为什么/效益/下一步 + 一句话点评）
@@ -76,7 +78,7 @@ description: "Use when the user wants to write or format a WeChat 公众号 / mp
 
 1. **澄清需求**：主题、板块组合（今日有哪些头条/亮点/机制）、篇幅。内容已有就直接进 2。
 2. **组织板块**：按版式骨架决定 blocks 数组——先想「今天有哪几个板块、每个板块几项」，再逐块填内容。用 `<mark>/<strong>/<small>` 标出打算强调的词。
-3. **产出文件**：写成完整 markdown，frontmatter 含 `title`/`date`/`desc`/`tags`/`blocks`。遵守 YAML 硬规则。
+3. **产出文件**：写成完整 markdown，frontmatter 含 `title`/`date`/`desc`/`column`/`tags`/`blocks`。遵守 YAML 硬规则。**tags 必须取 `src/column.ts` 中该栏目（column 字段对应栏目）的受控词表**——schema 强制校验，写词表外标签 `npm run build` 即报错。
 4. **交付**：给出文章文件路径 + 标题建议（≤40 字）+ 摘要建议（≤54 字，内核日报规格）+ 封面建议。告知双端命令：
    ```bash
    npm run build                                    # 博客发布
