@@ -40,7 +40,7 @@ def main():
     BRAND, BRAND_LT, INK, GREY = brand["primary"], brand["primaryBg"], brand["text"], brand["textTertiary"]
 
     stats = json.load(open(data_path))
-    lists = stats["lists"]
+    lists = {k: v for k, v in stats["lists"].items() if k != "lkml"}
     items = sorted(lists.items(), key=lambda kv: -kv[1])
     date = stats.get("date", "")
 

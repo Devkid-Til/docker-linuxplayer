@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # refresh-heat.sh — 每日自动刷新首页「板块活跃度」热度条
 #
-# 链路：radar.sh stats（13 列表 T24 计数）→ 写 src/data/radar-stats.json → git commit
+# 链路：radar.sh stats（12 列表 T24 计数）→ 写 src/data/radar-stats.json → git commit
 #       → kernel-blog 的 [deploy] commit hook 自动 build + 部署 → 首页排序/条长/数字随当日数据变化
 #
 # 防假 0 铁律：radar.sh stats 在网络失败时会写出全 0 JSON 且返回 0（每列表 ERR 计 0），
@@ -31,6 +31,7 @@ if [ "$net_ok" -eq 0 ]; then
 fi
 
 # 1. 抓取当日各板块近 24h 计数（网络失败 → radar.sh 会全 0，靠第 2 步拦截）
+#    不含 lkml：混进来会顶格失真，radar.sh stats 已剔除
 if ! bash "$SKILL/scripts/radar.sh" stats "$tmp" >/tmp/refresh-heat.log 2>&1; then
   echo "refresh-heat: stats 命令失败（见 /tmp/refresh-heat.log），跳过本次刷新"
   exit 0
