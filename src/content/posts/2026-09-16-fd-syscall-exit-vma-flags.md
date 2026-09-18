@@ -307,6 +307,6 @@ blocks:
       - label: "auxiliary bus"
         text: "内核里让父设备在运行时创建子设备的机制，用于子设备不在固件描述中的场景（如 M.2 模块的蓝牙口）。"
   - type: closing
-    tagline: "如果对你有用，点个赞，或留言聊聊你最关心的板块。"
+    tagline: "如果对你有用，点个赞。"
     source: "数据来源：lore.kernel.org（全内核 13 列表）· 数据截至 09-16 06:50 北京 · 时区均为北京时间"
 ---

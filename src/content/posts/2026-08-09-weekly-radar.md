@@ -150,6 +150,6 @@ blocks:
       - label: 动态内存管理成趋势
         text: PAMT 按需、memcg tier-aware、zoned depopulation——「静态预留→按需分配」在多个子系统同时出现
   - type: closing
-    tagline: 如果对你有用，点个赞，或留言聊聊你最关心的板块。
+    tagline: 如果对你有用，点个赞。
     source: ""
 ---

@@ -288,6 +288,6 @@ blocks:
       - label: "NVKV"
         text: "NVIDIA 私有的 key-value 二进制编码格式（GSP 固件通信用）"
   - type: closing
-    tagline: "内核热路径的效率账会持续算下去——点个赞，或留言聊聊你最想追的机制。"
+    tagline: "内核热路径的效率账会持续算下去——点个赞。"
     source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
 ---

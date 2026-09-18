@@ -339,6 +339,6 @@ blocks:
       - label: "safe trait（Rust）"
         text: "Rust 里可以由安全代码实现的 trait。safe 只保证实现者不必写 unsafe，并不保证实现者写不出内存不安全——API 契约仍要靠文档与设计来兜。"
   - type: closing
-    tagline: "如果对你有用，点个赞，或留言聊聊你最关心的。"
+    tagline: "如果对你有用，点个赞。"
     source: "数据来源：lore.kernel.org（全内核 13 列表）· 数据截至 09-15 06:50 北京 · 北京时间"
 ---

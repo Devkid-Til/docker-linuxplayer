@@ -403,6 +403,6 @@ blocks:
       - label: "SCOPE_SIGNAL / TIOCSIG"
         text: "SCOPE_SIGNAL 是 Landlock 对信号投递范围的限制；TIOCSIG 是 TTY 的 ioctl，能让 PTY master 向 slave 的前台进程组发信号——因为走的是特权 TTY 路径，不经过 LSM 的 task_kill 钩子。"
   - type: closing
-    tagline: "如果对你有用，点个赞，或留言聊聊你最关心的。"
+    tagline: "如果对你有用，点个赞。"
     source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
 ---

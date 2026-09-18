@@ -375,6 +375,6 @@ blocks:
       - label: "PG_idle"
         text: "页标志位，表示页已被标记为回收候选；DAMON 的 pgidle_unset 探针靠它把「访问」变成可监控属性。"
   - type: closing
-    tagline: "如果觉得有用，点个赞，或留言聊聊你最关心的内核话题。"
+    tagline: "如果觉得有用，点个赞。"
     source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
 ---
