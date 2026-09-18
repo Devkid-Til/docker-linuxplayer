@@ -44,7 +44,7 @@ if (!ICP && !(globalThis as any).__beianWarned) {
     {(ICP || GONGAN_HTML) && (
       <div class="beian">
         {ICP && <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener">{ICP}</a>}
-        {GONGAN_HTML && <span set:html={GONGAN_HTML} />}
+        {GONGAN_HTML && <Fragment set:html={GONGAN_HTML} />}
       </div>
     )}
     <p class="copyright">© {new Date().getFullYear()} Linux 内核玩家</p>
