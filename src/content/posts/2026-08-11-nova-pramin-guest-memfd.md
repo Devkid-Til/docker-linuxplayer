@@ -319,5 +319,5 @@ blocks:
         text: "TLP Processing Hints——PCIe 报文携带的处理提示，让对端按负载类型优化缓存/路由。"
   - type: closing
     tagline: "如果对你有用，点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---

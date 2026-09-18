@@ -287,5 +287,5 @@ blocks:
         text: "由 zswap 压缩存储支撑的「虚拟可扩展 swap 设备」，容量可在线增长"
   - type: closing
     tagline: "一把锁放开全配置，一张索引重绘加速 COW——今天的地基比楼房多。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---

@@ -71,7 +71,7 @@ blocks:
     alt: "板块活跃度条形图 · 近 24h"
   - type: paragraph
     text: >-
-      近 24h 各板块热度（13 列表统一 T24 计数）：lkml 1200 · net 407 · DRM 349 · mm 158 · fs 149 · PCI 142 领跑；rt / LSM / virtio 低频，留待月 / 季报盘点。
+      近 24h 各板块热度（12 列表统一 T24 计数）：net 407 · DRM 349 · mm 158 · fs 149 · PCI 142 领跑；rt / LSM / virtio 低频，留待月 / 季报盘点。
   - type: divider
     label: "📰 fs"
     kind: section
@@ -316,5 +316,5 @@ blocks:
         text: "进程地址空间 VMA 粒度的读锁，昨天刚放开全配置可用，页错误热路径加锁更细"
   - type: closing
     tagline: "ext4 把最后一块 buffer_head 阵地交了出去——今天的地基比楼房多。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---

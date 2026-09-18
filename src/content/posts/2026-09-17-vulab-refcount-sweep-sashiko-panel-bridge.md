@@ -42,10 +42,10 @@ blocks:
     kind: section
   - type: image
     src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-09-17/board-heat.png"
-    alt: "板块活跃度条形图 · 近 24h · 全 13 列表"
+    alt: "板块活跃度条形图 · 近 24h · 全 12 列表"
   - type: paragraph
     text: >-
-      近 24h 各板块真实计数：lkml 1200（全内核广播源，已限流）· net 636 · DRM 450 · mm 358 ·
+      近 24h 各板块真实计数：net 636 · DRM 450 · mm 358 ·
       media 141 · PCI 141 · arch 74 · fs 69 · block 45 · Rust 42 · LSM 23 · rt 20 ·
       virtio 0（低频列表，本窗口无新帖）。今天 net 与 DRM 两个板块的量，一大半来自批量提交。
   - type: divider
@@ -383,5 +383,5 @@ blocks:
         text: "V4L2 的 memory-to-memory 任务队列框架，编解码器与图像处理器建在它上面。本期它第一次支持一次派发多个并行 job。"
   - type: closing
     tagline: "如果对你有用，点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 数据截至 09-17 06:50 北京 · 时区均为北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 数据截至 09-17 06:50 北京 · 时区均为北京时间"
 ---

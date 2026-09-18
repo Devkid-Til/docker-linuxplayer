@@ -309,11 +309,11 @@ blocks:
     kind: section
   - type: image
     src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-30/board-heat.png"
-    alt: "板块活跃度条形图 · 近 24h（lkml 804 · mm 115 · net 100 居前）"
+    alt: "板块活跃度条形图 · 近 24h（mm 115 · net 100 居前）"
   - type: toc
     items:
       - label: "Top3"
-        text: "lkml 804 · mm 115 · net 100（refresh-heat 06:23 自动刷新）"
+        text: "mm 115 · net 100（refresh-heat 06:23 自动刷新）"
       - label: "观察"
         text: "mm 是今日机制最密集的域（swap 队列 RFC / 内核复制 / folio 收尾）；net 持续活跃；dri-devel 今日静默、DRM 信号靠跨帖。"
   - type: divider
@@ -356,5 +356,5 @@ blocks:
         text: "PCIe 设备完全断电的电源状态；掉电后设备需重新初始化，iwlwifi 今天的补丁就是处理这个。"
   - type: closing
     tagline: "如果对你有用，点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间 · 数据截至 08-30 07:00"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间 · 数据截至 08-30 07:00"
 ---

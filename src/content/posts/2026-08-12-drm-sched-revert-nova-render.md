@@ -241,5 +241,5 @@ blocks:
         text: "调度器代理执行：用伙伴线程代跑持锁线程，解决优先级反转；已推进到 v31。"
   - type: closing
     tagline: "如果对你有用，点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---

@@ -331,11 +331,11 @@ blocks:
     kind: section
   - type: image
     src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-09-02/board-heat.png"
-    alt: "板块活跃度条形图 · 近 24h（lkml 1200 · net 593 · mm 437 居前）"
+    alt: "板块活跃度条形图 · 近 24h（net 593 · mm 437 居前）"
   - type: toc
     items:
       - label: "Top3"
-        text: "lkml 1200 · net 593 · mm 437（radar.sh stats 全 13 列表 T24 计数）"
+        text: "net 593 · mm 437（radar.sh stats 全 12 列表 T24 计数）"
       - label: "观察"
         text: "net 最活跃（593），mm（437）紧咬；DRM（363）、PCI（271）与 Rust（134）跟随；virtio-dev 窗口内 0 条，virtio 板块信号靠跨帖捕获（今日 virtio-blk 内联加密讨论来自 block / crypto 侧）。"
   - type: divider
@@ -376,5 +376,5 @@ blocks:
         text: "页标志位，表示页已被标记为回收候选；DAMON 的 pgidle_unset 探针靠它把「访问」变成可监控属性。"
   - type: closing
     tagline: "如果觉得有用，点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---

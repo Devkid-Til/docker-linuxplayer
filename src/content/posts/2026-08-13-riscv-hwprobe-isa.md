@@ -119,5 +119,5 @@ blocks:
         text: "函数入口追踪点，ftrace 基础设施的一部分"
   - type: closing
     tagline: "RISC-V 能力检测聚合基准，nouveau 事件顺序修复下放门槛——今天有架构也有细节。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---

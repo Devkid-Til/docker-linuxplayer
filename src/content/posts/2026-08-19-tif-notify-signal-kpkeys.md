@@ -352,11 +352,11 @@ blocks:
     kind: section
   - type: image
     src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-19/board-heat.png"
-    alt: "板块活跃度条形图 · 近 24h（lkml 1200 · net 442 · mm 348 居前）"
+    alt: "板块活跃度条形图 · 近 24h（net 442 · mm 348 居前）"
   - type: toc
     items:
       - label: "Top3"
-        text: "lkml 1200 · net 442 · mm 348（refresh-heat 06:23 自动刷新）"
+        text: "net 442 · mm 348（refresh-heat 06:23 自动刷新）"
       - label: "观察"
         text: "net 本日仍最活跃（442），mm 次之（348）；virtio-dev 低频窗口内仅 1 条，virtio 板块信号主要靠跨帖捕获（本日 DMB 即来自 dri-devel）。"
   - type: divider
@@ -385,5 +385,5 @@ blocks:
         text: "GUP 的强制映射标志，允许绕过 VMA 权限读写。SELinux 补丁对 /proc/self/mem 的 FOLL_FORCE 引入 LSM 把关。"
   - type: closing
     tagline: "如果觉得有用，点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---

@@ -19,7 +19,7 @@ blocks:
     alt: "板块活跃度条形图 · 本周（周一~今日 · 2天累计）"
   - type: paragraph
     text: >-
-      本周（08-24~08-30，2 天累计，历史热度部分缺失）各板块热度：<strong>lkml 1475</strong> · <strong>net 205</strong> · <strong>mm 174</strong> · <strong>DRM 103</strong> · fs 86 · PCI 36 · block 32 · media 30 · Rust 18 · rt 14 · LSM 9 · arch 2 · virtio 0。net 与 mm 领跑（net-next 关窗前的修复密集期 + mm 机制大系列）；virtio 规范讨论分散到 lkml/netdev，列表热度极低。
+      本周（08-24~08-30，2 天累计，历史热度部分缺失）各板块热度：<strong>net 205</strong> · <strong>mm 174</strong> · <strong>DRM 103</strong> · fs 86 · PCI 36 · block 32 · media 30 · Rust 18 · rt 14 · LSM 9 · arch 2 · virtio 0。net 与 mm 领跑（net-next 关窗前的修复密集期 + mm 机制大系列）；virtio 规范讨论分散到 lkml/netdev，列表热度极低。
   - type: divider
     label: "💡 本周头条"
     kind: primary
@@ -253,5 +253,5 @@ blocks:
         text: "Device Memory Buffer：virtio 设备自有内存支撑 virtqueue，面向机密计算"
   - type: closing
     tagline: "Rust 驱动批量落地、vmemmap 换轨、7.3 窗口开启——这一周的地基比楼多。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· LWN · 三镜像反查"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· LWN · 三镜像反查"
 ---

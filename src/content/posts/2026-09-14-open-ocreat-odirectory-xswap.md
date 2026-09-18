@@ -305,7 +305,7 @@ blocks:
     alt: "板块活跃度条形图 · 近 24h"
   - type: paragraph
     text: >-
-      近 24h 各板块真实热度（13 列表统一按最近 24h 计数）：lkml 1034 · DRM 193 · net 143 · mm 90 · fs 63 · media 56 · Rust 40 · PCI 32 · block 28 · arch 11 · LSM 8 · virtio 3 · rt 0。DRM 今天异常活跃，主要来自面板驱动与 amdxdna / nova-core 的密集修补；rt 列表静默。
+      近 24h 各板块真实热度（12 列表统一按最近 24h 计数）：DRM 193 · net 143 · mm 90 · fs 63 · media 56 · Rust 40 · PCI 32 · block 28 · arch 11 · LSM 8 · virtio 3 · rt 0。DRM 今天异常活跃，主要来自面板驱动与 amdxdna / nova-core 的密集修补；rt 列表静默。
   - type: divider
     label: "⚙️ 机制雷达：5 条跨域大改动"
     kind: primary
@@ -404,5 +404,5 @@ blocks:
         text: "SCOPE_SIGNAL 是 Landlock 对信号投递范围的限制；TIOCSIG 是 TTY 的 ioctl，能让 PTY master 向 slave 的前台进程组发信号——因为走的是特权 TTY 路径，不经过 LSM 的 task_kill 钩子。"
   - type: closing
     tagline: "如果对你有用，点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---

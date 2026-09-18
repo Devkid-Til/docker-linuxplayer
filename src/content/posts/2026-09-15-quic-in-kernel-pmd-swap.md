@@ -250,10 +250,10 @@ blocks:
     kind: section
   - type: image
     src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-09-15/board-heat.png"
-    alt: "板块活跃度条形图 · 近 24h · 13 板块"
+    alt: "板块活跃度条形图 · 近 24h · 12 板块"
   - type: paragraph
     text: >-
-      近 24h 各板块真实统计：lkml 1200（限流上限）· net 449 · DRM 421 · mm 369 · media 179 · fs 145 · arch 95 · PCI 88 · Rust 79 · block 30 · LSM 19 · rt 10 · virtio 0。net 与 mm 今天既量大有质——两个头条都出自这里；virtio 为 0 是因为 virtio-dev 按最近 20 条抓取，窗口内没有新帖（virtio-blk inline encryption 的最新版落在 linux-block 与 virtio-dev 的 09-13 时段）。
+      近 24h 各板块真实统计：net 449 · DRM 421 · mm 369 · media 179 · fs 145 · arch 95 · PCI 88 · Rust 79 · block 30 · LSM 19 · rt 10 · virtio 0。net 与 mm 今天既量大有质——两个头条都出自这里；virtio 为 0 是因为 virtio-dev 按最近 20 条抓取，窗口内没有新帖（virtio-blk inline encryption 的最新版落在 linux-block 与 virtio-dev 的 09-13 时段）。
   - type: more
     title: "更多动态"
     items:
@@ -340,5 +340,5 @@ blocks:
         text: "Rust 里可以由安全代码实现的 trait。safe 只保证实现者不必写 unsafe，并不保证实现者写不出内存不安全——API 契约仍要靠文档与设计来兜。"
   - type: closing
     tagline: "如果对你有用，点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 数据截至 09-15 06:50 北京 · 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 数据截至 09-15 06:50 北京 · 北京时间"
 ---

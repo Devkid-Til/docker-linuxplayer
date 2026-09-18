@@ -211,7 +211,7 @@ blocks:
     alt: "板块活跃度条形图 · 近 24h"
   - type: paragraph
     text: >-
-      近 24h 各板块补丁量（13 板块统一统计）：lkml 729 领跑（今天被 57 帖 collapse RFC + 17 帖 proxy exec 系列灌满），net 122、mm 109、DRM 91 紧随，block 27、media 22、PCI 18、arch 10、Rust 8、fs 7、LSM 3；virtio 与 rt 静默。合并窗口开启的第一天，各子系统都在往 mainline 赶货。
+      近 24h 各板块补丁量（12 板块统一统计）：net 122 领跑，mm 109、DRM 91 紧随，block 27、media 22、PCI 18、arch 10、Rust 8、fs 7、LSM 3；virtio 与 rt 静默。合并窗口开启的第一天，各子系统都在往 mainline 赶货。
   - type: divider
     label: "📌 机制雷达：6 条跨域大改动"
     kind: primary
@@ -250,5 +250,5 @@ blocks:
         text: "通过 ethtool 配置硬件流量分流规则，把特定流量导向特定队列。"
   - type: closing
     tagline: "如果对你有用，点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---

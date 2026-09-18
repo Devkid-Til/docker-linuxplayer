@@ -246,11 +246,11 @@ blocks:
     kind: section
   - type: image
     src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-09-04/board-heat.png"
-    alt: "板块活跃度条形图 · 近 24h（lkml 1200 · net 622 · DRM 354 居前）"
+    alt: "板块活跃度条形图 · 近 24h（net 622 · DRM 354 居前）"
   - type: toc
     items:
       - label: "Top3"
-        text: "lkml 1200 · net 622 · DRM 354（radar.sh stats 全 13 列表 T24 计数）"
+        text: "net 622 · DRM 354（radar.sh stats 全 12 列表 T24 计数）"
       - label: "观察"
         text: "net 稳居非广播源第一（622）——v7.3 rc 阶段 pull / fix 密集；DRM（354）与 mm（346）咬得很紧，fs（145）被 ext4 31 帖撑起；PCI（266）· media（86）· Rust（59）正常水位；virtio-dev 近 24h 0 条，板块今日暂无强主题。"
   - type: divider
@@ -291,5 +291,5 @@ blocks:
         text: "内核网络全局大锁（rtnl_mutex），几乎所有 netlink 配置 / 转储先拿它。「去 RTNL 化」是把读路径迁到 RCU、缩小全局串行范围。"
   - type: closing
     tagline: "如果对你有用，点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---
