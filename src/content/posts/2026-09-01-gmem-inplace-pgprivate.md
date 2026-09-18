@@ -312,11 +312,11 @@ blocks:
     kind: section
   - type: image
     src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-09-01/board-heat.png"
-    alt: "板块活跃度条形图 · 近 24h（lkml 1200 · net 682 · DRM 513 居前）"
+    alt: "板块活跃度条形图 · 近 24h（net 682 · DRM 513 居前）"
   - type: toc
     items:
       - label: "Top3"
-        text: "lkml 1200 · net 682 · DRM 513（radar.sh stats 全 13 列表 T24 计数）"
+        text: "net 682 · DRM 513（radar.sh stats 全 12 列表 T24 计数）"
       - label: "观察"
         text: "net 继续最活跃（682），mm（377）次之；virtio-dev 低频窗口内仅 1 条，virtio 板块信号主要靠跨帖捕获（本日 FBE 内联加密讨论即来自 block 侧）。"
   - type: divider
@@ -353,5 +353,5 @@ blocks:
         text: "无特权进程沙箱 LSM；本日两条 signal 都是它——BPF 规则集与 MPTCP 访问权。"
   - type: closing
     tagline: "如果觉得有用，点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---

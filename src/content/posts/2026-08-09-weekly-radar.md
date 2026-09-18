@@ -19,7 +19,7 @@ blocks:
     alt: 板块活跃度条形图 · 近 24h
   - type: paragraph
     text: >-
-      近 24h 各板块热度（13 板块真实统计）：lkml 868 · net 212 · DRM 94 · mm 57 · PCI 23 · media 21 · Rust 23 · rt 16 · fs 15 · block 6 · arch 2 · LSM 0 · virtio 0。lkml 全内核广播源一骑绝尘；网络/显示/内存是持续高热板块；virtio/LSM 邮件本周沉寂，但机制级动作（见对应章节）不缺席。
+      近 24h 各板块热度（12 板块真实统计）：net 212 · DRM 94 · mm 57 · PCI 23 · media 21 · Rust 23 · rt 16 · fs 15 · block 6 · arch 2 · LSM 0 · virtio 0。lkml 全内核广播源一骑绝尘；网络/显示/内存是持续高热板块；virtio/LSM 邮件本周沉寂，但机制级动作（见对应章节）不缺席。
   - type: divider
     label: 📰 media 视频采集
     kind: section

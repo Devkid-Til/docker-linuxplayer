@@ -283,10 +283,10 @@ blocks:
     kind: section
   - type: image
     src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-09-16/board-heat.png"
-    alt: "板块活跃度条形图 · 近 24h · 全 13 列表"
+    alt: "板块活跃度条形图 · 近 24h · 全 12 列表"
   - type: paragraph
     text: >-
-      近 24h 各板块真实计数：lkml 1200（全内核广播源，已限流）· net 753 · DRM 550 · mm 429 · media 247 · fs 227 · PCI 97 · Rust 74 · rt 65 · block 37 · arch 29 · LSM 14 · virtio 0（低频列表，本窗口无新帖）。
+      近 24h 各板块真实计数：net 753 · DRM 550 · mm 429 · media 247 · fs 227 · PCI 97 · Rust 74 · rt 65 · block 37 · arch 29 · LSM 14 · virtio 0（低频列表，本窗口无新帖）。
   - type: divider
     label: "📖 本期概念速查"
     kind: primary
@@ -308,5 +308,5 @@ blocks:
         text: "内核里让父设备在运行时创建子设备的机制，用于子设备不在固件描述中的场景（如 M.2 模块的蓝牙口）。"
   - type: closing
     tagline: "如果对你有用，点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 数据截至 09-16 06:50 北京 · 时区均为北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 数据截至 09-16 06:50 北京 · 时区均为北京时间"
 ---

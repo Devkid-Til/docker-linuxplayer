@@ -261,11 +261,11 @@ blocks:
     kind: section
   - type: image
     src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-08-18/board-heat.png"
-    alt: "板块活跃度条形图 · 近 24h（lkml 1200 · net 385 · mm 339 居前）"
+    alt: "板块活跃度条形图 · 近 24h（net 385 · mm 339 居前）"
   - type: toc
     items:
       - label: "Top3"
-        text: "lkml 1200 · net 385 · mm 339（refresh-heat 06:23 自动刷新）"
+        text: "net 385 · mm 339（refresh-heat 06:23 自动刷新）"
   - type: divider
     label: "📖 本期概念速查"
     kind: primary
@@ -289,5 +289,5 @@ blocks:
         text: "NVIDIA 私有的 key-value 二进制编码格式（GSP 固件通信用）"
   - type: closing
     tagline: "内核热路径的效率账会持续算下去——点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---

@@ -19,7 +19,7 @@ blocks:
     alt: "板块活跃度条形图 · 本周（周一~周日）"
   - type: paragraph
     text: >-
-      本周（08-10~08-16，7 天累计）各板块热度：<strong>lkml 7540</strong> · <strong>net 2558</strong> · <strong>DRM 1784</strong> · <strong>mm 1541</strong> · fs 603 · PCI 592 · Rust 423 · media 366 · block 336 · LSM 121 · rt 105 · arch 102 · virtio 1。net 超越 DRM 成为次热板块，BPF/skb 系列贡献显著；virtio 列表极低（规范讨论分散到 lkml/netdev）。
+      本周（08-10~08-16，7 天累计）各板块热度：<strong>net 2558</strong> · <strong>DRM 1784</strong> · <strong>mm 1541</strong> · fs 603 · PCI 592 · Rust 423 · media 366 · block 336 · LSM 121 · rt 105 · arch 102 · virtio 1。net 超越 DRM 成为次热板块，BPF/skb 系列贡献显著；virtio 列表极低（规范讨论分散到 lkml/netdev）。
   - type: divider
     label: "💡 本周头条"
     kind: primary
@@ -285,5 +285,5 @@ blocks:
         text: "x86 上以 64 位内核跑 32 位 ABI 的兼容模式，本次开始移除"
   - type: closing
     tagline: "ext4 十年换轨、mm 地基双落地、BPF 有了自己的嘴——这一周的地基比楼房多。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· LWN · 三镜像反查"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· LWN · 三镜像反查"
 ---

@@ -41,10 +41,10 @@ blocks:
     kind: section
   - type: image
     src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-09-18/board-heat.png"
-    alt: "板块活跃度条形图 · 近 24h · 全 13 列表"
+    alt: "板块活跃度条形图 · 近 24h · 全 12 列表"
   - type: paragraph
     text: >-
-      数据截至 09-18 06:23 北京，近 24h 各板块真实计数：lkml 1200（全内核广播源，已限流）· net 802 ·
+      数据截至 09-18 06:23 北京，近 24h 各板块真实计数：net 802 ·
       mm 330 · DRM 312 · media 210 · fs 167 · PCI 115 · arch 102 · Rust 77 · block 43 ·
       rt 24 · LSM 14 · virtio 0（低频列表，本窗口无新帖）。net 里很大一部分是同一批引用计数/资源泄漏修复；
       mm 与 DRM 的高位则来自下面两个大系列。
@@ -383,5 +383,5 @@ blocks:
         text: "半虚拟化设备框架：客户机与宿主机通过 virtqueue（描述符链）通信，本期 media 与 GPU 两条线都在用它。"
   - type: closing
     tagline: "如果对你有用，点个赞。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---

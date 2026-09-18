@@ -71,7 +71,7 @@ blocks:
     alt: "板块活跃度条形图 · 近 24h"
   - type: paragraph
     text: >-
-      近 24h 各板块热度（13 列表统一 T24 计数）：lkml 827 · net 113 · mm 108 · DRM 67 · fs 37 领跑；Rust 28 · PCI 20 · media 18 · block 12 · LSM 5 中位；rt / virtio / arch 近 24h 静默，留待月报盘点。
+      近 24h 各板块热度（12 列表统一 T24 计数）：net 113 · mm 108 · DRM 67 · fs 37 领跑；Rust 28 · PCI 20 · media 18 · block 12 · LSM 5 中位；rt / virtio / arch 近 24h 静默，留待月报盘点。
   - type: divider
     label: "📰 fs"
     kind: section
@@ -322,5 +322,5 @@ blocks:
         text: "Force Unit Access，强制写穿设备缓存写回介质的写请求语义，省掉独立 flush 指令"
   - type: closing
     tagline: "VFS 先把最疼的两个症状摁住，BPF 学会了自己对外说话——今天的地基又厚了一层。"
-    source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
+    source: "数据来源：lore.kernel.org（全内核 12 列表）· 北京时间"
 ---
