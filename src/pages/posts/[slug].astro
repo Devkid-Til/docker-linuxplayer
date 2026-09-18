@@ -1,6 +1,5 @@
 ---
 import Base from '../../layouts/Base.astro';
-import Comment from '../../components/Comment.astro';
 import ArticleBody from '../../components/article/ArticleBody.astro';
 import type { Block } from '../../components/article/blocks/types';
 import { getCollection } from 'astro:content';
@@ -58,8 +57,7 @@ const displayDate = post.data.date.slice(5);
       <ArticleBody blocks={post.data.blocks as Block[]} />
     </div>
 
-    <!-- ⑪ 评论区（紧跟落款 CTA，顺势留言） -->
-    <Comment />
+    <!-- 评论区已下线（个人备案站点不提供交互式栏目，见 git 历史中的 Comment.astro） -->
 
     <!-- 标签 + 分享（小卡） -->
     <div class="article-tools reveal">
