@@ -81,3 +81,38 @@
 **根因**：**stable 分支天然包含 mainline 全部祖先历史——"commit 存在于 stable 仓库"≈恒真，祖先关系≠回移植**；tag --contains 全量遍历 tag 图慢；被杀的 bash 不清理子进程。
 **修复**：回移植判定改为「回移植提交 message 的 `[ Upstream commit <sha> ]` 标记 / mid 索引命中 + `git name-rev` 落到 `tags/vX.Y.Z`」；版本定位用 name-rev（0.05-0.24s）；清残留用 `kill -9` 具体 PID。
 **元教训**：**"包含"（祖先）不能当"回移植"——内核 git 里 stable 分支包含 mainline 全史，必须看版本标签或 Upstream commit 标记。性能对比永远是先量化的：name-rev ≫ tag --contains。**
+
+---
+
+## 2026-08-16 — radar.sh daily 尾部报 `SEEN: bad array subscript`，lkml/linux-rt-devel 节缺失
+**上下文**：`bash scripts/radar.sh daily` 正常输出前 11 节（linux-media…linux-arch），但处理到 lkml 前中断：`scripts/radar.sh: line 137: SEEN: bad array subscript`，exit=1；lkml（T24:400，全内核广播源）与 linux-rt-devel 两节没产出，sched/driver-core 信号差点漏掉。
+**根因**：daily 函数第 137 行 `SEEN[$mid]=1` 用关联数组去重——`while read <<< "$out"` 的 here-string 总在末尾追加一个空行，空行产生的空 mid 使 `SEEN[""]` 在 `set -u` 下抛 bad array subscript 并整体中断（中断点在 lkml 之前，sched/driver-core 信号差点漏掉）。
+**修复**：**2026-08-17 已从根上修脚本**——while 循环开头加 `[ -z "$line" ] && continue` 跳过空行（radar.sh 内联注释已标注）。此前 08-16 的临时绕法（fetch 单独补抓缺失列表）仍可作兜底。
+**元教训**：**`while read <<<` 的 here-string 必带尾随空行 → 空 mid → 关联数组下标 set -u 即爆。任何「解析行字段后查关联数组」的 bash 循环，第一行先跳空行。daily 中断时先看 stderr 尾部是否 bad array subscript，若是可 fetch 单独补抓，别重跑 daily 白等。**
+
+---
+
+## 2026-09-14 — 成文时凭印象拼 lore 链接 → 31 条里混进 13 条编造的 message-id
+**上下文**：日报成文写 `link:` 与 `<a href>` 时，一部分条目我只扫了雷达的「时间|标题」就让正文先行，链接按补丁名/日期「照着格式编」了一个（如 `<20260913223023.3b0b2b4b@fedora>`），另一部分正确取自雷达第 3 字段。
+**表现**：文件写完、YAML 可解析、build 通过——**排版类校验全线绿灯，但 13 条链接指向不存在的邮件**。其中 amdxdna 那条编造的 mid 在后续手工替换时因「href 里用的是 `&lt;` 实体、`link:` 里用的是字面 `<`」而漏改，第二轮校验才揪出来。
+**根因**：**lore 链接的 message-id 无法从标题反推**（时间戳、随机后缀、作者邮箱域名都是噪音）。扫数据阶段我用了 `awk -F'|' '{print NR": "$1" "$2}'` 的裁剪视图，第 3 字段（链接）根本没进上下文——写文时手上没有真值，就顺手编了一个。**裁剪视图提高了扫读效率，却把成文必需的字段裁掉了**。
+**修复/护栏**：成文后强制跑一次反编造校验——把文中所有 `https://lore.kernel.org/...` 抽出来，逐条在当日雷达原始输出里做子串匹配，不命中即报错：
+```bash
+python3 - <<'PY'
+import io,re
+post=io.open('<文章>.md',encoding='utf-8').read()
+radar=io.open('/tmp/radar-daily-<日期>.txt',encoding='utf-8').read()
+bad=[u for u in set(re.findall(r'https://lore\.kernel\.org/[^\s")\\]*',post)) if u.rstrip('/') not in radar]
+print("❌ 疑似编造:",bad if bad else "无 ✅")
+PY
+```
+**元教训**：**扫数据可以裁剪字段，成文前必须把链接字段捞回上下文；「YAML 通得过 + build 通过」完全不能证明链接是真的——排版校验从来不检查事实。凡是「ID/哈希/URL 这类无法从标题反推的字段」，只允许从数据里复制，禁止照着格式生成。**
+
+---
+
+## 2026-09-15 — 同一坑二次踩：14 条编造链接写进初稿（同属「更多动态」区），靠 09-14 的校验脚本拦住
+**上下文**：本次成文时，头条与 ★ 亮点的 `link:` 都老老实实取自雷达第 3 字段；但最后写两组 `more`（13 条常规动态）时又凭印象编了 14 条 message-id（如 `<20260914195858.160299-1-benjamin@...>`、`<20260914021006.2245698-1-mattc@...>`），其中几条的 `@` 后域名直接写了 `...`。
+**表现**：初稿写完即跑 09-14 沉淀的反编造校验，**14 条全部 MISS**，成文后当场替换为真实 cover-letter 链接（26 条链接最终 0 未命中），未出仓库。
+**根因**：**「更多动态」是全文最后写的一块，而此时上下文里只剩裁剪后的扫读视图——精确复现了 09-14 的成因**。另外雷达本次对个别条目（`RE: [PATCH v17 20/22] media: i2c: maxim-serdes…`）输出的第 3 字段是 `<none-7b9f0272…>`（无有效 message-id），这类条目**根本无法引用链接**，只能剔除或改选有 cover letter 的条目。
+**修复/护栏**：（1）**扫读阶段就把第 3 字段带上上下文**——用 `awk -F'|' '{print $1" | "$2" | "$3}'` 而非只打 `$1 $2`，写 `more` 时直接复制真值，从「先编后验」变成「全程不编」；（2）**链接选中一律取系列的 cover（`00/N` 或 `0/N`）**，不要取系列中间帖（`-2-`、`-4-`）——读者点进去要能看到设计意图；（3）雷达第 3 字段为 `<none-…>` 的条目视为「无链接」，不得成文；（4）反编造校验**必须覆盖 `more` 区**（本次正是它拦住的），成文后、commit 前各跑一次。
+**元教训**：**同一个坑的成因往往不是「记性差」，而是「那一块内容的输入视图缺字段」。修校验脚本只能拦住错误外泄，真正省事的是把字段在扫读时就带全——校验是安全网，不是工作流。**

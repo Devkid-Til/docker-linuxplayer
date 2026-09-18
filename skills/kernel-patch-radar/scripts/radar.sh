@@ -133,6 +133,7 @@ _do_daily() {
     if out="$(_do_fetch "$list" "$spec")"; then
       ok=$((ok+1))
       while IFS= read -r line; do
+        [ -z "$line" ] && continue  # here-string 末尾空行 → 空 mid → SEEN[""] 在 set -u 下 unbound 中止（08-17 修复，曾丢 lkml 段）
         parent="${line##*|}"; tmp="${line%|*}"; mid="${tmp##*|}"
         if [ -n "${SEEN[$mid]:-}" ]; then
           echo "NOTE: $list 去重跳过（Message-Id 已见于其他列表）: $mid" >&2
@@ -161,25 +162,29 @@ _do_shard() {
 }
 
 _do_stats() {
-  # 板块热度统计：全 13 列表统一「最近 24h」计数（窗口统一才能横向比热度）。
+  # 板块热度统计：12 个板块源统一「最近 24h」计数（窗口统一才能横向比热度）。
   # 输出 JSON（社区短名为 key）→ 首页雷达仪表盘「板块活跃度」热度条读入；失败列表记 0 并在 stderr 报错（如实，不编造）。
   # 用法: radar.sh stats [OUT_FILE]   给 OUT 写文件（如 <kernel-blog>/src/data/radar-stats.json），否则 stdout
+  #
+  # 不含 lkml：它是全内核广播源（几乎所有补丁都 CC 一份到这里），量与板块列表不是一个量级，
+  #   混进「板块活跃度」榜会失真（且必然顶格）。需要在 LKML 找 sched/driver-core 等无专属列表的动态，
+  #   走 `daily`（那里仍抓 lkml），本函数只服务板块热度榜。
   local OUT="${1:-}" today count first=1 ok=0 list
-  local -a LISTS=(linux-media dri-devel linux-mm linux-pci netdev linux-fsdevel virtio-dev rust-for-linux linux-security-module linux-block linux-arch linux-rt-devel lkml)
+  local -a LISTS=(linux-media dri-devel linux-mm linux-pci netdev linux-fsdevel virtio-dev rust-for-linux linux-security-module linux-block linux-arch linux-rt-devel)
   local -A SHORT=(
     [linux-media]=media [dri-devel]=DRM [linux-mm]=mm [linux-pci]=PCI
     [netdev]=net [linux-fsdevel]=fs [virtio-dev]=virtio [rust-for-linux]=Rust
     [linux-security-module]=LSM [linux-block]=block [linux-arch]=arch
-    [linux-rt-devel]=rt [lkml]=lkml
+    [linux-rt-devel]=rt
   )
   local -A COUNTS=()
   today="$(date +%F)"
   # 并行抓取：每源子 shell 独立 fetch 写临时文件，父 shell wait 汇总。
   # 原因：lore fetch 慢（秒级~分钟级，带宽被源码拉取等占用时更慢），串行 13 源总时间=各源之和，
   #       实测曾 9 分钟未跑完被超时掐死；并行后总时间 ≈ 最慢单源，显著缩短。
-  # 深度用 T24:400 而非 T24：T24 的 depth=1200 传输量大，实测 netdev 最新分片 >120s 超时；
-  #       T24:400 的 depth≈400-450（传输量 1/3），实测 66s 成功。对 24h<400 的列表计数准确，
-  #       lkml（24h 1200+）封顶在 400 内但保持榜首——榜单相对热度保留，绝对值如实偏低。
+  # 抓取深度用 T24（depth=1200）：24h 内消息量 <1200 的板块计数准确。
+  #   现状核对（2026-09-18）：12 个板块里最高是 netdev ~800，未触顶；lkml 已剔除（它必顶格）。
+  #   若某板块 24h 逼近 1200，需提高 depth —— 但传输量随之增大，注意 lore fetch 超时风险。
   local PDIR; PDIR="$(mktemp -d)"
   local -a PIDS=()
   for list in "${LISTS[@]}"; do
