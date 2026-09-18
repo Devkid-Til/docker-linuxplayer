@@ -55,9 +55,9 @@ for (const c of COLUMNS) {
 const latestSlug = posts.length > 0 ? slugOf(posts[0]) : '';
 // 板块活跃度（雷达社区情报）：radar.sh stats 产出的 JSON，构建时读入；缺文件/坏 JSON 静默降级（不编造数据）
 // 模拟数据（预览）：真数据（radar.sh stats）就绪前，先用模拟数字展示条形+数字效果。
-// 取值按真实热度形态（lkml 广播源最大、net 次之、virtio-dev 极低频最冷），UI 显式标注"模拟预览"。
+// 取值按真实热度形态（net 最大、media/mm 次之、virtio-dev 极低频最冷），UI 显式标注"模拟预览"。
 // 真数据接入后 isMock 自动为 false、标注消失，模拟值不残留。
-const MOCK_STATS = { date: '2026-08-08', window: '24h', lists: { lkml: 986, net: 168, media: 121, mm: 94, fs: 82, DRM: 67, arch: 54, block: 46, LSM: 38, PCI: 30, Rust: 21, rt: 12, virtio: 6 } };
+const MOCK_STATS = { date: '2026-08-08', window: '24h', lists: { net: 168, media: 121, mm: 94, fs: 82, DRM: 67, arch: 54, block: 46, LSM: 38, PCI: 30, Rust: 21, rt: 12, virtio: 6 } };
 let radarStats: { date?: string; window?: string; lists?: Record<string, number> } | null = null;
 let isMock = false;
 {
@@ -75,11 +75,10 @@ const boardHeat: { name: string; count: number }[] = radarStats?.lists
   ? Object.entries(radarStats.lists).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count)
   : [];
 const heatMax = boardHeat.length > 0 ? Math.max(...boardHeat.map(h => h.count)) : 1;
-// 数据槽位：13 板块固定榜单（与 radar.sh stats 的 SHORT 短名一致）。
-// lkml（linux-kernel 全内核广播源）置顶——跨板块补丁都抄送这里，先看全局再看子板块；
-// 其余按 radar.sh 源顺序排布。无数据时渲染为"榜单轮廓"占位（板块名 + 空条 + "—"，不编造消息数），
-// 数据就绪后替换为真实热度条（届时按真实消息量降序，lkml 通常仍居首）。
-const BOARD_SLOTS = ['lkml', 'media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio', 'Rust', 'LSM', 'block', 'arch', 'rt'];
+// 数据槽位：12 板块固定榜单（与 radar.sh stats 的 SHORT 短名一致）。
+// 不含 lkml——它是全内核广播源（所有补丁都 CC 一份），量与板块不是一个量级，
+// 混进来会必然顶格、失真；需要 sched/driver-core 等无专属列表的动态，看 daily（那边仍抓 lkml）。
+const BOARD_SLOTS = ['media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio', 'Rust', 'LSM', 'block', 'arch', 'rt'];
 ---
 <Base title="Linux 内核玩家 · 每日内核雷达">
   <header class="hero">
