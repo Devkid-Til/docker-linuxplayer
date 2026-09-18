@@ -72,7 +72,10 @@ let isMock = false;
 }
 // 热度条：按消息量降序 + 最大归一化宽度
 const boardHeat: { name: string; count: number }[] = radarStats?.lists
-  ? Object.entries(radarStats.lists).map(([name, count]) => ({ name, count })).sort((a, b) => b.count - a.count)
+  ? Object.entries(radarStats.lists)
+      .filter(([name]) => name !== 'lkml')
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count)
   : [];
 const heatMax = boardHeat.length > 0 ? Math.max(...boardHeat.map(h => h.count)) : 1;
 // 数据槽位：12 板块固定榜单（与 radar.sh stats 的 SHORT 短名一致）。

@@ -33,7 +33,7 @@
 
 板块**数量任意、顺序自由**——每天没有某栏就少一个板块，多两条头条就加两个 `headline`。
 
-> **当日 section 动态**：section 只给**当日有 signal 的域**开（对应 13 个抓取列表：linux-media / dri-devel / linux-mm / linux-pci / netdev / linux-fsdevel / virtio-dev / rust-for-linux / linux-security-module / linux-block / linux-arch / lkml / linux-rt-devel；**抓取策略：12 个持续更新列表按最近 24h（时间驱动，日报时间语义统一为昨天一整天；其中 lkml 全内核广播源按 `T24:400` 限 400 条软上限，防止 1200+ 条噪音洪水）、virtio-dev 按最近 20 条（低频兜底，只作信号提示，长期趋势归月/季/年报盘点）**；lkml 是 linux-kernel 的 lore 镜像，全内核广播源；linux-sched 无专属镜像，主线程 sched / driver core 靠 lkml + 跨帖捕获，RT 实时调度靠 linux-rt-devel）。某域当天没大事 → 不出现，别为凑数硬开。**头条从全内核选**，不固定给 media/drm。**每行 5 字段 `时间|标题|原文链接|Message-Id|In-Reply-To`**——第 4/5 字段只用于脚本内跨列表去重（Message-Id）与系列识别（In-Reply-To 空 = 系列首封/新话题，优先看），成文不展示。
+> **当日 section 动态**：section 只给**当日有 signal 的域**开（对应 12 个抓取列表：linux-media / dri-devel / linux-mm / linux-pci / netdev / linux-fsdevel / virtio-dev / rust-for-linux / linux-security-module / linux-block / linux-arch / linux-rt-devel；**抓取策略：11 个持续更新列表按最近 24h（时间驱动，日报时间语义统一为昨天一整天）、virtio-dev 按最近 20 条（低频兜底，只作信号提示，长期趋势归月/季/年报盘点）**；linux-sched 无专属镜像，主线程 sched / driver core 靠跨帖捕获，RT 实时调度靠 linux-rt-devel）。某域当天没大事 → 不出现，别为凑数硬开。**头条从全内核选**，不固定给 media/drm。**每行 5 字段 `时间|标题|原文链接|Message-Id|In-Reply-To`**——第 4/5 字段只用于脚本内跨列表去重（Message-Id）与系列识别（In-Reply-To 空 = 系列首封/新话题，优先看），成文不展示。
 
 ## 板块字段细则
 
@@ -152,7 +152,7 @@ blocks:
         text: 一句话解释（只收本期出现过的）
   - type: closing
     tagline: 如果对你有用，点个赞，或留言聊聊你最关心的。
-    source: 数据来源：lore.kernel.org（全内核 13 列表）· 北京时间
+    source: 数据来源：lore.kernel.org（全内核 12 列表）· 北京时间
 ---
 ```
 
@@ -189,7 +189,7 @@ blocks:
     alt: 板块活跃度条形图 · 近 24h
   - type: paragraph
     text: >-
-      近 24h 各板块热度（13 板块真实统计）：lkml … · net … · …（draw-heat.py 生成图 + stats 数字；图先传 OSS）
+      近 24h 各板块热度（12 板块真实统计）：net … · mm … · …（draw-heat.py 生成图 + stats 数字；图先传 OSS）
   - type: divider
     label: 📰 media 视频采集
     kind: section
@@ -197,7 +197,7 @@ blocks:
     items:
       - label: media 重点
         text: 一句话 why · <a href="...">原文</a>
-  # …其余 12 板块（DRM/mm/PCI/net/fs/virtio/Rust/LSM/block/arch/rt/lkml）同上「divider + toc」结构…
+  # …其余 11 板块（DRM/mm/PCI/net/fs/virtio/Rust/LSM/block/arch/rt）同上「divider + toc」结构…
   - type: divider
     label: 📰 LWN / 本周综述
     kind: section

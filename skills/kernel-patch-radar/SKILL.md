@@ -27,16 +27,16 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 ## 工作流
 
 ### 每日简报（全内核雷达 · 13 列表）
-1. `bash scripts/radar.sh daily` → 分节输出 13 列表（**12 个持续更新列表按最近 24h〔lkml 全内核广播源 T24:400 限 400 条〕、virtio-dev 按最近 20 条**；每行 5 字段 `ISO时间|标题|原文链接|Message-Id|In-Reply-To`，第 4/5 字段支撑跨列表去重与系列识别，成文不用展示；**跨列表已按 Message-Id 去重**，板块专属优先、lkml 广播源只补无专属列表的板块，stderr 会标 `去重跳过`）；**先整体扫一遍挑当日 signal（哪几域今天有大事、哪条跨域机制最重），再逐条展开**——别按列表逐条流式过，雷达是探测不是流水账
+1. `bash scripts/radar.sh daily` → 分节输出 12 列表（**11 个持续更新列表按最近 24h、virtio-dev 按最近 20 条**；每行 5 字段 `ISO时间|标题|原文链接|Message-Id|In-Reply-To`，第 4/5 字段支撑跨列表去重与系列识别，成文不用展示；**跨列表已按 Message-Id 去重**）；**先整体扫一遍挑当日 signal（哪几域今天有大事、哪条跨域机制最重），再逐条展开**——别按列表逐条流式过，雷达是探测不是流水账
 2. 标注前**先翻 `references/architecture-map.md`** 给每条亮点补丁做架构定位
 3. 按「分析规则」标注、按 `references/output-template.md` 的 blocks 映射组织内容结构
 4. **成文为 blocks 文章文件**：产出**完整的博客文章文件** `<kernel-blog>/src/content/posts/YYYY-MM-DD-slug.md`（frontmatter 含 `title`/`date`/`desc`/`tags`/`blocks`）。**YAML 硬规则**（所有字符串值加双引号、`---` 收尾、缩进 2 空格）与自查命令见 skill `wechat-article` 的 SKILL.md——写完后必须跑自查确认 js-yaml 可解析。**YAML 引号铁律**：所有字符串值加双引号包裹，但**字符串内部的中文引号必须用「」或“”，绝不能用半角 "**（半角会截断字符串导致 YAML 解析错误——08-11/08-13 各犯一次）。核心简报 = 该文件的 blocks 内容
 5. **封面 + 活跃度图 + OSS 上传**（**固定步骤，不可省**）：
    - **封面**：`bash <wechat-article skill>/scripts/generate-cover.sh --date "MM-DD" --topic "<头条钩子>" --out cover.png`（紫色报刊风，规格按 `references/wechat-template.md`）
-   - **活跃度图**：`python3 <本 skill>/scripts/draw-heat.py <kernel-blog>/src/data/radar-stats.json board-heat.png --title "板块活跃度 · 近 24h"` 生成 13 板块热度条形图（周报必用；日报可选）
+   - **活跃度图**：`python3 <本 skill>/scripts/draw-heat.py <kernel-blog>/src/data/radar-stats.json board-heat.png --title "板块活跃度 · 近 24h"` 生成 12 板块热度条形图（周报必用；日报可选）
    - **上传 OSS**：`cd <kernel-blog> && node scripts/upload-oss.mjs cover.png kernel-blog/YYYY-MM-DD/cover.png` + `node scripts/upload-oss.mjs board-heat.png kernel-blog/YYYY-MM-DD/board-heat.png`（.env 已配 PUBLIC_OSS_*，上传得公网 URL）
    - **成文引用**：`type: image` block——封面放 hook 后、活跃度图放「板块活跃度」章节；`alt` 写说明
-6. **板块热度数据**：`bash scripts/radar.sh stats <kernel-blog>/src/data/radar-stats.json` → 更新首页「雷达仪表盘 · 板块活跃度」热度条（全 13 列表统一 T24 计数、社区短名 key；**数据写进仓库随文章一起提交**）。**已自动化**：`scripts/refresh-heat.sh` 每日 06:23 由 cc-connect cron（id 2254d74c）自动执行全链路——网络探测→stats→防全 0→git commit 触发部署；网络不可达/数据无变化/全 0 都安全跳过。手动刷新直接跑 `bash scripts/refresh-heat.sh`
+6. **板块热度数据**：`bash scripts/radar.sh stats <kernel-blog>/src/data/radar-stats.json` → 更新首页「雷达仪表盘 · 板块活跃度」热度条（全 12 列表统一 T24 计数、社区短名 key；**数据写进仓库随文章一起提交**）。**已自动化**：`scripts/refresh-heat.sh` 每日 06:23 由 cc-connect cron（id 2254d74c）自动执行全链路——网络探测→stats→防全 0→git commit 触发部署；网络不可达/数据无变化/全 0 都安全跳过。手动刷新直接跑 `bash scripts/refresh-heat.sh`
 7. **网站直接发布（自主）**：`git add -A && git commit -m "..." && git push`（post-commit hook 自动 build+rsync 上线）——**网站是自有技术阵地、内容可随时改，commit 即上线，不额外审**。若属重大/敏感内容想先给董事长看效果：本地 `python3 -m http.server <port> --directory site` + `cloudflared tunnel --url http://localhost:<port>` 发临时预览链接，看完再决定上线
 8. **公众号标题 + HTML 请示（发布权在董事长）**：`cd <kernel-blog> && npm run build && node scripts/render-wechat.mjs YYYY-MM-DD --out` 生成内联 HTML → **cc-connect 发「标题 + HTML 文件」给董事长**，确认后才发布公众号——公众号是品牌对外窗口、发布权在董事长，必须过目：
    ```bash
@@ -46,11 +46,11 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 
 ### 每周雷达（mm/sched/pci + LWN + 板块热度 + 三镜像反查）
 1. **板块活跃度数据（本周热度之和）**：`python3 <本 skill>/scripts/sum-range.py --period week <kernel-blog>/src/data/radar-history.json --out /tmp/week-heat.json` → 读每日落盘历史（refresh-heat.sh 每天 upsert），求**本周（周一~今天）各板块计数之和**，作为周报「板块热度」数据源。历史不足 7 天时用已有天数求和（标题如实标注如"本周 3 天累计"）；无历史则跳过活跃度图
-2. 用 Workflow 工具**以 `scriptPath`** 运行 `<本 skill 目录>/scripts/weekly-radar.workflow.js`（并行 13 板块 agent 搜全内核近期重点——media/DRM/mm/PCI/net/fs/virtio/Rust/LSM/block/arch/rt/lkml，返回含子层/机制标注/来源链接/mid 的结构化摘要；低频板块搜不到如实报「暂无重点」）——**不要用 `name:`**，该文件未注册到 `~/.claude/workflows/`
+2. 用 Workflow 工具**以 `scriptPath`** 运行 `<本 skill 目录>/scripts/weekly-radar.workflow.js`（并行 12 板块 agent 搜全内核近期重点——media/DRM/mm/PCI/net/fs/virtio/Rust/LSM/block/arch/rt，返回含子层/机制标注/来源链接/mid 的结构化摘要；低频板块搜不到如实报「暂无重点」）——**不要用 `name:`**，该文件未注册到 `~/.claude/workflows/`
 3. `bash scripts/radar.sh lwn 10` → 本周 LWN 标题（⚠️ LWN 部分文章有订阅墙，标题可抓、正文可能需订阅，成文时如实处理）
 4. **三镜像合入状态反查**：对周报报道的重点补丁批量 `bash scripts/mirror-lookup.sh query <mid> [...]`（本地三镜像：mainline 是否合入 / next 是否排队 / stable 是否回移植）——结果补进各补丁条目与「合入状态」节
 5. **活跃度图 + 封面 + OSS 上传**（同每日步骤 5）：`draw-heat.py /tmp/week-heat.json board-heat-week.png --title "板块热度 · 本周（周一~今日）"` 生成**本周累计**活跃度图（用步骤 1 的周和 JSON）+ `generate-cover.sh` 生成封面 + `upload-oss.mjs` 上传 OSS——成文时活跃度图放「📊 板块热度」节、封面放 hook 后，均以 `type: image` block 引用 OSS URL
-6. **成文为 blocks 文章**（与每日同格式，可上博客/公众号）：`<kernel-blog>/src/content/posts/YYYY-MM-DD-weekly-radar.md`（frontmatter 含 title/date/desc/tags/blocks，结构见 `output-template.md` 每周模板；YAML 硬规则同每日）。周报除模板原有章节外，补两节：**📊 板块热度**（板块活跃度图 + 13 板块活跃度分布）与 **🧭 合入状态**（重点补丁的三镜像反查结果）
+6. **成文为 blocks 文章**（与每日同格式，可上博客/公众号）：`<kernel-blog>/src/content/posts/YYYY-MM-DD-weekly-radar.md`（frontmatter 含 title/date/desc/tags/blocks，结构见 `output-template.md` 每周模板；YAML 硬规则同每日）。周报除模板原有章节外，补两节：**📊 板块热度**（板块活跃度图 + 12 板块活跃度分布）与 **🧭 合入状态**（重点补丁的三镜像反查结果）
 7. **发布（双轨，同每日步骤 7/8）**：网站直接发布（`git commit/push` → commit hook 自动部署；重大内容可选隧道预览）；公众号 `render-wechat.mjs` 出 HTML 后 **cc-connect 发「标题 + HTML 文件」给董事长**，确认后才发布
 
 ### 月/季/年报（盘点式回顾）
