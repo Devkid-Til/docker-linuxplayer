@@ -249,6 +249,6 @@ blocks:
       - label: "ethtool flow rules"
         text: "通过 ethtool 配置硬件流量分流规则，把特定流量导向特定队列。"
   - type: closing
-    tagline: "如果对你有用，点个赞，或留言聊聊你最关心的板块。"
+    tagline: "如果对你有用，点个赞。"
     source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
 ---

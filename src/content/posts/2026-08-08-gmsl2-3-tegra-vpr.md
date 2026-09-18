@@ -165,7 +165,7 @@ blocks:
       - label: FRL
         text: HDMI 2.1 的固定速率链路，Type-C 转 HDMI 时由 PCON 转换并报告带宽
   - type: closing
-    tagline: "如果对你有用，点个赞，或留言聊聊你最关心的。"
+    tagline: "如果对你有用，点个赞。"
     source: ""
 
 ---

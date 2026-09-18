@@ -352,6 +352,6 @@ blocks:
       - label: "Landlock"
         text: "无特权进程沙箱 LSM；本日两条 signal 都是它——BPF 规则集与 MPTCP 访问权。"
   - type: closing
-    tagline: "如果觉得有用，点个赞，或留言聊聊你最关心的内核话题。"
+    tagline: "如果觉得有用，点个赞。"
     source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
 ---

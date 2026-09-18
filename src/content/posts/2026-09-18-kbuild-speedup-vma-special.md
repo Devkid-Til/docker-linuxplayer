@@ -382,6 +382,6 @@ blocks:
       - label: "virtio / virtqueue"
         text: "半虚拟化设备框架：客户机与宿主机通过 virtqueue（描述符链）通信，本期 media 与 GPU 两条线都在用它。"
   - type: closing
-    tagline: "如果对你有用，点个赞，或留言聊聊你最关心的。"
+    tagline: "如果对你有用，点个赞。"
     source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
 ---

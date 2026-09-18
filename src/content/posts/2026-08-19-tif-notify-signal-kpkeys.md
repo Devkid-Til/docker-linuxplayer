@@ -384,6 +384,6 @@ blocks:
       - label: "FOLL_FORCE"
         text: "GUP 的强制映射标志，允许绕过 VMA 权限读写。SELinux 补丁对 /proc/self/mem 的 FOLL_FORCE 引入 LSM 把关。"
   - type: closing
-    tagline: "如果觉得有用，点个赞，或留言聊聊你最关心的内核话题。"
+    tagline: "如果觉得有用，点个赞。"
     source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
 ---

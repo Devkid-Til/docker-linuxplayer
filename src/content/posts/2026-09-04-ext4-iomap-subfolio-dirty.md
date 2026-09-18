@@ -290,6 +290,6 @@ blocks:
       - label: "RTNL"
         text: "内核网络全局大锁（rtnl_mutex），几乎所有 netlink 配置 / 转储先拿它。「去 RTNL 化」是把读路径迁到 RCU、缩小全局串行范围。"
   - type: closing
-    tagline: "如果对你有用，点个赞，或留言聊聊你最关心的内核话题。"
+    tagline: "如果对你有用，点个赞。"
     source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
 ---

@@ -382,6 +382,6 @@ blocks:
       - label: "v4l2_m2m"
         text: "V4L2 的 memory-to-memory 任务队列框架，编解码器与图像处理器建在它上面。本期它第一次支持一次派发多个并行 job。"
   - type: closing
-    tagline: "如果对你有用，点个赞，或留言聊聊你最关心的板块。"
+    tagline: "如果对你有用，点个赞。"
     source: "数据来源：lore.kernel.org（全内核 13 列表）· 数据截至 09-17 06:50 北京 · 时区均为北京时间"
 ---
