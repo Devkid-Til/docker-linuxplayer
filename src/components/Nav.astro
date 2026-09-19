@@ -1,5 +1,6 @@
 ---
 // 导航（组件化：只写一次，全站共用）
+import AnnouncementBar from './AnnouncementBar.astro';
 ---
 <nav class="nav">
   <div class="nav-inner">
@@ -9,6 +10,7 @@
       <a href="/subscribe/">RSS</a>
       <a href="/sponsor/">支持</a>
       <a href="/feedback/">反馈</a>
+      <AnnouncementBar />
       <button class="theme-btn" id="theme-toggle" aria-label="切换暗色模式">🌙</button>
     </div>
     <button class="hamburger" aria-label="菜单"><span></span><span></span><span></span></button>

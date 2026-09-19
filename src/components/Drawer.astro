@@ -1,0 +1,111 @@
+---
+// 通用右侧滑出抽屉
+// 用法：
+// <Drawer id="my-drawer" title="标题">
+//   <p>内容</p>
+// </Drawer>
+// 然后 JS 里调用 window.drawers.open('my-drawer') / close('my-drawer')
+interface Props {
+  id: string;
+  title: string;
+}
+const { id, title } = Astro.props;
+---
+<div class="drawer-backdrop" id={`drawer-backdrop-${id}`} data-drawer={id} aria-hidden="true"></div>
+<aside class="drawer-panel" id={`drawer-panel-${id}`} data-drawer={id} aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby={`drawer-title-${id}`}>
+  <div class="drawer-header">
+    <h3 id={`drawer-title-${id}`}>{title}</h3>
+    <button class="drawer-close" data-drawer-close={id} aria-label="关闭">✕</button>
+  </div>
+  <div class="drawer-body">
+    <slot />
+  </div>
+</aside>
+
+<script is:inline>
+  (function () {
+    if (window.drawers) return;
+    window.drawers = {
+      open: function (id) {
+        var backdrop = document.getElementById('drawer-backdrop-' + id);
+        var panel = document.getElementById('drawer-panel-' + id);
+        if (!backdrop || !panel) return;
+        backdrop.classList.add('open');
+        panel.classList.add('open');
+        backdrop.setAttribute('aria-hidden', 'false');
+        panel.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+      },
+      close: function (id) {
+        var backdrop = document.getElementById('drawer-backdrop-' + id);
+        var panel = document.getElementById('drawer-panel-' + id);
+        if (!backdrop || !panel) return;
+        backdrop.classList.remove('open');
+        panel.classList.remove('open');
+        backdrop.setAttribute('aria-hidden', 'true');
+        panel.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+      }
+    };
+
+    document.addEventListener('click', function (e) {
+      var target = e.target;
+      var openId = target && target.getAttribute && target.getAttribute('data-drawer-open');
+      if (openId) {
+        e.preventDefault();
+        window.drawers.open(openId);
+      }
+      var closeId = target && target.getAttribute && target.getAttribute('data-drawer-close');
+      if (closeId) {
+        e.preventDefault();
+        window.drawers.close(closeId);
+      }
+      if (target && target.classList && target.classList.contains('drawer-backdrop') && target.classList.contains('open')) {
+        var id = target.getAttribute('data-drawer');
+        if (id) window.drawers.close(id);
+      }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        var openPanel = document.querySelector('.drawer-panel.open');
+        if (openPanel) {
+          var id = openPanel.getAttribute('data-drawer');
+          if (id) window.drawers.close(id);
+        }
+      }
+    });
+  })();
+</script>
+
+<style>
+  .drawer-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,.45);
+    opacity: 0; pointer-events: none; transition: opacity .25s var(--ease-out);
+    z-index: 950;
+  }
+  .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+  .drawer-panel {
+    position: fixed; top: 0; right: 0; bottom: 0; width: min(420px, 90vw);
+    background: var(--card); border-left: 1px solid var(--border);
+    box-shadow: var(--shadow-lg); transform: translateX(100%);
+    transition: transform .3s var(--ease-out); z-index: 960;
+    display: flex; flex-direction: column;
+  }
+  .drawer-panel.open { transform: translateX(0); }
+  .drawer-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: var(--space-md) var(--space-lg); border-bottom: 1px solid var(--border);
+  }
+  .drawer-header h3 { margin: 0; font-size: 1rem; color: var(--text); }
+  .drawer-close {
+    background: none; border: none; font-size: 1.25rem; color: var(--text-secondary);
+    cursor: pointer; padding: 4px; line-height: 1; border-radius: var(--radius-sm);
+  }
+  .drawer-close:hover { color: var(--text); background: var(--brand-bg); }
+  .drawer-body { flex: 1; overflow-y: auto; padding: var(--space-lg); }
+
+  @media (max-width: 640px) {
+    .drawer-panel { width: 92vw; }
+  }
+</style>
