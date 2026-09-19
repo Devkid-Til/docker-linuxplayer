@@ -77,6 +77,15 @@ const { id, title } = Astro.props;
         }
       }
     });
+
+    // 抽屉内链接跳转到同页 hash（如 /#english）时不会刷新页面，需要自动关抽屉
+    function closeAllDrawers() {
+      document.querySelectorAll('.drawer-panel.open').forEach(function (panel) {
+        var id = panel.getAttribute('data-drawer');
+        if (id) window.drawers.close(id);
+      });
+    }
+    window.addEventListener('hashchange', closeAllDrawers);
   })();
 </script>
 
