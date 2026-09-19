@@ -23,11 +23,6 @@ const latestDate = latest ? latest.date : '';
       </span>
     </button>
   )}
-  {variant === 'mobile' && latest && (
-    <button class="ann-ticker-mobile" id={`ann-ticker${suffix}`} data-drawer-open="announcements" aria-label="查看最新公告" title="查看最新公告">
-      <span class="ann-ticker-text" data-latest-id={latestId} data-latest-date={latestDate}>{latestTitle}</span>
-    </button>
-  )}
 </div>
 
 <script is:inline>
@@ -59,7 +54,7 @@ const latestDate = latest ? latest.date : '';
       try { localStorage.setItem(KEY, JSON.stringify({ id: latestId, date: latestDate })); } catch (e) {}
     }
 
-    document.querySelectorAll('.ann-bell, .ann-ticker, .ann-ticker-mobile').forEach(function (btn) {
+    document.querySelectorAll('.ann-bell, .ann-ticker').forEach(function (btn) {
       btn.addEventListener('click', openAndMark);
     });
   })();
@@ -100,10 +95,5 @@ const latestDate = latest ? latest.date : '';
     .ann-bar-desktop { display: none; }
     .ann-bar-mobile { display: flex; }
     .ann-ticker { display: none; }
-    .ann-ticker-mobile {
-      max-width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
-      background: none; border: none; padding: 0; cursor: pointer; text-align: left;
-      font-size: .75rem; color: var(--text-secondary); line-height: 1.4;
-    }
   }
 </style>
