@@ -1,5 +1,5 @@
 ---
-// 文章页悬浮反馈按钮：可拖动（位置存 localStorage），点击跳飞书表单并预填当前页链接。
+// 文章页悬浮反馈按钮：可拖动（仅当次会话，刷新回到默认位置），点击跳飞书表单并预填当前页链接。
 // 预填参数格式（飞书官方）：表单分享链接 + ?prefill_问题名称=值，问题名称须与表单题目完全一致。
 const FORM_URL = 'https://uq0ip8uep08.feishu.cn/share/base/shrcnSIfR7Sd2oEvR2E0HJHL38g';
 ---
@@ -9,16 +9,10 @@ const FORM_URL = 'https://uq0ip8uep08.feishu.cn/share/base/shrcnSIfR7Sd2oEvR2E0H
   (function () {
     var fab = document.getElementById('fab-feedback');
     if (!fab) return;
-    var POS_KEY = 'fab-feedback-pos';
     var DRAG_THRESHOLD = 5; // px：小于此位移视为点击
 
-    // 恢复上次位置
-    try {
-      var saved = JSON.parse(localStorage.getItem(POS_KEY) || 'null');
-      if (saved && typeof saved.x === 'number' && typeof saved.y === 'number') {
-        applyPos(saved.x, saved.y);
-      }
-    } catch (e) {}
+    // 清理历史遗留的位置记忆（旧版本会持久化，导致刷新后停在奇怪位置）
+    try { localStorage.removeItem('fab-feedback-pos'); } catch (e) {}
 
     function applyPos(x, y) {
       // 钳制在视口内
@@ -61,8 +55,7 @@ const FORM_URL = 'https://uq0ip8uep08.feishu.cn/share/base/shrcnSIfR7Sd2oEvR2E0H
       if (!dragging) return;
       dragging = false;
       if (moved) {
-        var r = fab.getBoundingClientRect();
-        try { localStorage.setItem(POS_KEY, JSON.stringify({ x: r.left, y: r.top })); } catch (err) {}
+        // 拖动结束：位置仅保留在本次会话，刷新即回到默认右下角
       } else {
         // 点击：跳表单，预填来源页面 = 当前页 URL（不含 hash）
         var url = location.origin + location.pathname;
