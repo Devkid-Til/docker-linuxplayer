@@ -10,7 +10,7 @@ set -euo pipefail
 DOMAIN="${DOMAIN:-kernelplayer.cn}"
 SERVER="admin@118.31.67.240"
 REMOTE_CERT="/home/admin/kernel-blog/docker/ssl/$DOMAIN.pem"
-ALERT_CHAT="${ALERT_CHAT:-oc_b3bf629607272393dfb5e9bb32f63d63}"   # 群「站点运维告警」
+ALERT_CHAT="${ALERT_CHAT:-oc_b3bf629607272393dfb5e9bb32f63d63}"   # 群「网站运营」
 THRESHOLD="${THRESHOLD:-14}"        # 剩余天数低于此值告警
 LARK_PATH="/home/jiaqi/.nvm/versions/node/v24.19.0/bin"
 
