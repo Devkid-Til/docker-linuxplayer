@@ -12,7 +12,7 @@ import newbieItems from '../data/newbie-guide.json';
     刚接触 Linux 内核社区？从这里开始，逐步熟悉邮件列表、补丁流程和阅读方法。
   </p>
   <ul class="newbie-list">
-    {newbieItems.map(item => {
+    {newbieItems.filter(item => item.active !== false).map(item => {
       const isExternal = item.link.startsWith('http://') || item.link.startsWith('https://');
       return (
         <li class="newbie-item">
