@@ -160,6 +160,20 @@
     window.addEventListener('scroll', function () { closeMenu(); }, { passive: true });
   }
 
+  /* ── 代码块横向滑动提示：内容溢出才显示渐隐/提示，滑到末尾收起 ── */
+  document.querySelectorAll('.block-code-card').forEach(function (card) {
+    var pre = card.querySelector('pre');
+    if (!pre) return;
+    function sync() {
+      var overflow = pre.scrollWidth - pre.clientWidth;
+      card.classList.toggle('is-scrollable', overflow > 1);
+      card.classList.toggle('at-end', overflow > 1 && pre.scrollLeft >= overflow - 1);
+    }
+    sync();
+    pre.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+  });
+
   /* ── 复制链接 ── */
   document.querySelectorAll('.share-copy').forEach(function (b) {
     b.addEventListener('click', function () {

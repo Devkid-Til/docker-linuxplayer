@@ -10,6 +10,7 @@ const langLabel = block.lang || 'text';
 <div class="block-code-card">
   <div class="block-code-bar">
     <span class="code-lang">{langLabel}</span>
+    <span class="code-scroll-hint" aria-hidden="true">⇄ 可左右滑动</span>
   </div>
   {highlighted
     ? <Fragment set:html={highlighted} />
