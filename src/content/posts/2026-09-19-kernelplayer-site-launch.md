@@ -4,7 +4,7 @@ date: "2026-09-19"
 desc: "Linux 内核玩家主站发布。除了每日内核雷达，现在你可以直接纠错、提建议、支持持续更新。"
 column: "journal"
 tags:
-  - "笔记"
+  - "日志"
 blocks:
   - type: "hook"
     text: "追内核邮件列表太累，不看又怕漏掉关键改动。这里想做一个 lighter 的选择。"

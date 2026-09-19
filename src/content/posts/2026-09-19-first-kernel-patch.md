@@ -4,7 +4,7 @@ date: "2026-09-19"
 desc: "一份保姆级流程指南：用 drivers/staging/fbtft 里的真实 checkpatch 错误做例子，带你走完找问题、改代码、生成 patch、发邮件到邮件列表的完整流程。"
 column: "journal"
 tags:
-  - "笔记"
+  - "教程"
 blocks:
   - type: "hook"
     text: "很多内核开发者都说：『你的第一个补丁不需要惊天动地，走通流程才是最重要的。』Linux 内核的 staging 驱动目录就是专门给新手练手的地方。本文用一个真实的 checkpatch 报错做例子，一步一步带你发出第一封补丁邮件。"
