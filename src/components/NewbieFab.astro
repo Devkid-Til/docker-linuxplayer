@@ -48,6 +48,9 @@ import newbieItems from '../data/newbie-guide.json';
     background: var(--bg); text-decoration: none;
     transition: border-color .15s, transform .15s, box-shadow .15s;
     position: relative;
+    touch-action: pan-y;
+    -webkit-user-drag: none;
+    user-select: none;
   }
   .newbie-card:hover {
     border-color: var(--brand); transform: translateY(-2px);
