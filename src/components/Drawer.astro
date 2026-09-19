@@ -81,6 +81,17 @@ const { id, title } = Astro.props;
         if (target && target.classList && target.classList.contains('drawer-backdrop') && target.classList.contains('open')) {
           window.drawers.close(target.getAttribute('data-drawer'));
         }
+        /* 抽屉内的链接：点击即关抽屉。
+           同页 hash 链接（如 /#english）在 hash 已相同时不会触发 hashchange，
+           不在这里关就会出现「点了没反应、抽屉也不关」。 */
+        var linkEl = target && target.closest && target.closest('a[href]');
+        if (linkEl) {
+          var linkPanel = linkEl.closest('.drawer-panel');
+          if (linkPanel) {
+            var linkId = linkPanel.getAttribute('data-drawer');
+            if (linkId) window.drawers.close(linkId);
+          }
+        }
       });
 
       document.addEventListener('keydown', function (e) {

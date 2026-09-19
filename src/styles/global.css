@@ -196,7 +196,8 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 
 /* ── 11b. Column Filter Bar —— 导航层：下划线式 tab（区别于下方胶囊标签） ── */
 /* 主切换 tab：全部栏目 | 内核英语（同级视图切换）——文字 tab，下划线式（与 column-filter 一致，非胶囊） */
-.main-tabs{display:flex;gap:2px 24px;border-bottom:1px solid var(--border);margin:var(--space-md) 0 var(--space-lg);flex-wrap:wrap}
+/* scroll-margin-top：栏目切换后 scrollIntoView 时避免被 sticky 导航遮住 */
+.main-tabs{display:flex;gap:2px 24px;border-bottom:1px solid var(--border);margin:var(--space-md) 0 var(--space-lg);flex-wrap:wrap;scroll-margin-top:calc(var(--nav-height) + 12px)}
 .main-tab{font-size:1.0625rem;font-weight:600;padding:8px 2px 11px;background:transparent;color:var(--text-secondary);border:none;border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:color .15s,border-color .15s;font-family:var(--font-sans);white-space:nowrap}
 .main-tab .count{font-family:var(--font-mono);font-size:.75rem;opacity:.7;margin-left:4px}
 .main-tab:hover{color:var(--brand)}
