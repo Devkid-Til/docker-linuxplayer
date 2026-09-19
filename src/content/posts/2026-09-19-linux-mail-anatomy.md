@@ -141,46 +141,57 @@ blocks:
     kind: "section"
 
   - type: "paragraph"
-    text: "社区讨论不是单封邮件，而是一棵树状的线程（Thread）。同一个补丁可能被多个人从多个角度回复，作者也会根据评审意见重发 v2、v3。"
-
-  - type: "paragraph"
-    text: "线程是怎么串起来的？靠三个字段："
+    text: "社区讨论不是单封邮件，而是一棵树。同一个补丁可能被多个人从不同角度回复，作者也会根据评审意见重发 v2、v3。树能立起来，靠的是三个字段："
 
   - type: "toc"
     items:
       - label: "Message-Id"
-        text: "每封邮件出生时的唯一身份证号。"
+        text: "每封邮件出生时的唯一身份证号，形如 <20260919020000.1234-1-alice@example.com>。"
       - label: "In-Reply-To"
-        text: "回复哪封邮件，就填那封邮件的 Message-Id。"
+        text: "只填一封：你直接回复的是哪封邮件，就写它的 Message-Id。"
       - label: "References"
-        text: "列出从根邮件到父邮件的所有 Message-Id，方便客户端还原整条路径。"
+        text: "从根邮件到父邮件的所有 Message-Id，按顺序列出，用来还原整条路径。"
 
   - type: "paragraph"
-    text: "假设 Alice 发了一个两补丁的系列，Hans 评审后她改了 v2。整个线程长这样："
+    text: "References 的推导规则只有一条：发回复时，References = 父邮件的 References + 父邮件的 Message-Id。每一层都继承上一层，链路因此完整。"
+
+  - type: "paragraph"
+    text: "下面用一组具体消息 ID 走一遍。场景：Alice 在 9 月 18 日发了 [PATCH 0/2] 封面信和两封补丁，Hans 评审了补丁 1/2，Mauro 评审了补丁 2/2，Alice 据此在 9 月 19 日重发 v2。线程树如下（尖括号里就是 Message-Id）："
 
   - type: "code"
     lang: "text"
-    text: "[cover letter] msg-A\n  ├─ [PATCH 1/2]   msg-B\n  │    └─ Hans 的 review    msg-D\n  └─ [PATCH 2/2]   msg-C\n       └─ Hans 的 review    msg-E\n            └─ [PATCH v2 0/2] msg-F  ← Alice 的第二轮\n                  ├─ [PATCH v2 1/2] msg-G\n                  └─ [PATCH v2 2/2] msg-H"
+    text: "<20260918000000.1000-1-alice@example.com>\n  [PATCH 0/2] media: dvb: fix streaming race\n  ├─ <20260918000001.1000-2-alice@example.com>\n  │    [PATCH 1/2] media: dvb: hold fe->lock in start\n  │    └─ <20260918120000.2000-1-hans@xs4all.nl>\n  │         Re: [PATCH 1/2] media: dvb: hold fe->lock in start\n  └─ <20260918000002.1000-3-alice@example.com>\n       [PATCH 2/2] media: dvb: check state before alloc\n       └─ <20260918150000.3000-1-mauro@kernel.org>\n            Re: [PATCH 2/2] media: dvb: check state before alloc\n            └─ <20260919020000.4000-1-alice@example.com>\n                 [PATCH v2 0/2] media: dvb: fix streaming race\n                 ├─ <20260919020001.4000-2-alice@example.com>\n                 │    [PATCH v2 1/2] media: dvb: hold fe->lock in start\n                 └─ <20260919020002.4000-3-alice@example.com>\n                      [PATCH v2 2/2] media: dvb: check state before alloc"
 
   - type: "paragraph"
-    text: "msg-D 是 Hans 对补丁 1/2 的回复，它的 In-Reply-To 指向 msg-B；msg-F 是 Alice 发的 v2 封面信，它的 In-Reply-To 指向 msg-E（最后一轮评审）。"
-
-  - type: "paragraph"
-    text: "对应到真实邮件头部："
+    text: "把树上的每条边翻译成真实头部字段："
 
   - type: "code"
     lang: "text"
-    text: "# Hans 回复 [PATCH 1/2]\nMessage-Id: <msg-D@example.com>\nIn-Reply-To: <msg-B@example.com>\nReferences: <msg-A@example.com> <msg-B@example.com>\n\n# Alice 发出 v2 封面信\nMessage-Id: <msg-F@example.com>\nIn-Reply-To: <msg-E@example.com>\nReferences: <msg-A@example.com> <msg-C@example.com> <msg-E@example.com>"
+    text: "# 1) Alice 的 [PATCH 1/2]，父节点是封面信\nMessage-Id: <20260918000001.1000-2-alice@example.com>\nIn-Reply-To: <20260918000000.1000-1-alice@example.com>\nReferences: <20260918000000.1000-1-alice@example.com>\n\n# 2) Hans 评审补丁 1/2：In-Reply-To 指向补丁，不是封面信\nMessage-Id: <20260918120000.2000-1-hans@xs4all.nl>\nIn-Reply-To: <20260918000001.1000-2-alice@example.com>\nReferences: <20260918000000.1000-1-alice@example.com>\n            <20260918000001.1000-2-alice@example.com>\n\n# 3) Mauro 评审补丁 2/2\nMessage-Id: <20260918150000.3000-1-mauro@kernel.org>\nIn-Reply-To: <20260918000002.1000-3-alice@example.com>\nReferences: <20260918000000.1000-1-alice@example.com>\n            <20260918000002.1000-3-alice@example.com>\n\n# 4) Alice 的 v2 封面信：In-Reply-To 指向最后一轮评审，不是自己的 v1 封面信\nMessage-Id: <20260919020000.4000-1-alice@example.com>\nIn-Reply-To: <20260918150000.3000-1-mauro@kernel.org>\nReferences: <20260918000000.1000-1-alice@example.com>\n            <20260918000002.1000-3-alice@example.com>\n            <20260918150000.3000-1-mauro@kernel.org>\n\n# 5) v2 的第一封补丁：References 重新从 v2 封面信起算\nMessage-Id: <20260919020001.4000-2-alice@example.com>\nIn-Reply-To: <20260919020000.4000-1-alice@example.com>\nReferences: <20260919020000.4000-1-alice@example.com>"
 
   - type: "paragraph"
-    text: "邮件客户端和 lore.kernel.org 就是根据这些引用关系，把讨论折叠成可展开的树。你点一下就能从评审意见跳到被评审的补丁，再跳到修改后的 v2，不用一封一封翻。"
+    text: "对照这五段头部，几个新手最容易踩的点就清楚了："
+
+  - type: "toc"
+    items:
+      - label: "In-Reply-To 只指向直接父节点"
+        text: "Hans 评的是补丁 1/2（第 2 段），所以 In-Reply-To 是补丁自己的 ID，而不是封面信的。写成封面信，评审就会挂错分支。"
+      - label: "References 是累加的"
+        text: "父邮件的 References 原样保留，末尾再补上父邮件的 Message-Id。第 2、3 段都比第 1 段多出一项，就是这个规则。"
+      - label: "v2 要回复到最后一轮评审"
+        text: "第 4 段的 In-Reply-To 指向 Mauro 的评审，而不是 Alice 自己的 v1 封面信。这样读者能从评审意见直接看到「作者已经改了」。"
+      - label: "新一轮系列重新起算"
+        text: "第 5 段的 References 只有 v2 封面信一项——补丁属于新一轮系列，链路从本轮封面信重新开始，不再背着 v1 的历史。"
 
   - type: "paragraph"
-    text: "回复时，系统还会自动在正文顶部引用原邮件内容，用 <code>></code> 缩进。这是为了在跨时区、异步沟通时，读邮件的人不用翻历史就能看到上下文。"
+    text: "lore.kernel.org 和邮件客户端就是靠这些 ID 把讨论折叠成可展开的树：点开一个评审节点，能一路向上追到它评论的是哪一版补丁，再横向跳到作者有没有发 v2，不必一封一封翻。"
+
+  - type: "paragraph"
+    text: "回复时，客户端还会在正文顶部用 <code>></code> 缩进引用原邮件，方便跨时区、异步阅读时不用翻历史就看得到上下文："
 
   - type: "code"
     lang: "text"
-    text: "> On Sat, Sep 19, 2026 at 10:00:00 +0800, Alice Chen wrote:\n> > This patch fixes the race by holding the mutex earlier.\n> \n> Looks good, but can we also add a comment explaining why?"
+    text: "> On Sat, Sep 19, 2026 at 10:00:00 +0800, Alice Chen wrote:\n> > This patch holds fe->lock across the start sequence.\n>\n> Looks good, but can we also add a comment explaining why?"
 
   - type: "paragraph"
     text: "维护者回复里常见的黑话："
