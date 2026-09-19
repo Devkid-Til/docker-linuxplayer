@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ArticleBody from '../../components/article/ArticleBody.astro';
+import FeedbackFab from '../../components/FeedbackFab.astro';
 import type { Block } from '../../components/article/blocks/types';
 import { getCollection } from 'astro:content';
 
@@ -87,4 +88,5 @@ const displayDate = post.data.date.slice(5);
 
   </main>
   </div>
+  <FeedbackFab />
 </Base>
