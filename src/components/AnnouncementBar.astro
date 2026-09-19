@@ -1,21 +1,31 @@
 ---
 import announcements from '../data/announcements.json';
+interface Props {
+  variant?: 'desktop' | 'mobile';
+}
+const { variant = 'desktop' } = Astro.props;
+const suffix = variant === 'mobile' ? '-mobile' : '-desktop';
 const active = announcements.filter(a => a.active).sort((a, b) => b.date.localeCompare(a.date));
 const latest = active[0] || null;
 const latestId = latest ? latest.id : '';
 const latestTitle = latest ? latest.title : '';
 const latestDate = latest ? latest.date : '';
 ---
-<div class="ann-bar" id="ann-bar">
-  <button class="ann-bell" id="ann-bell" aria-label="公告" title="公告">
+<div class={`ann-bar ann-bar-${variant}`} id={`ann-bar${suffix}`}>
+  <button class="ann-bell" id={`ann-bell${suffix}`} data-drawer-open="announcements" aria-label="公告" title="公告">
     📢
-    <span class="ann-dot" id="ann-dot"></span>
+    <span class="ann-dot" id={`ann-dot${suffix}`}></span>
   </button>
-  {latest && (
-    <button class="ann-ticker" id="ann-ticker" aria-label="查看最新公告" title="查看最新公告">
+  {variant === 'desktop' && latest && (
+    <button class="ann-ticker" id={`ann-ticker${suffix}`} data-drawer-open="announcements" aria-label="查看最新公告" title="查看最新公告">
       <span class="ann-ticker-track">
         <span class="ann-ticker-text" data-latest-id={latestId} data-latest-date={latestDate}>{latestTitle}</span>
       </span>
+    </button>
+  )}
+  {variant === 'mobile' && latest && (
+    <button class="ann-ticker-mobile" id={`ann-ticker${suffix}`} data-drawer-open="announcements" aria-label="查看最新公告" title="查看最新公告">
+      <span class="ann-ticker-text" data-latest-id={latestId} data-latest-date={latestDate}>{latestTitle}</span>
     </button>
   )}
 </div>
@@ -24,8 +34,6 @@ const latestDate = latest ? latest.date : '';
   (function () {
     var KEY = 'kernel-blog-ann-read';
     var latestEl = document.querySelector('.ann-ticker-text');
-    var dot = document.getElementById('ann-dot');
-    if (!dot) return;
     var latestId = latestEl ? latestEl.getAttribute('data-latest-id') : '';
     var latestDate = latestEl ? latestEl.getAttribute('data-latest-date') : '';
 
@@ -40,29 +48,32 @@ const latestDate = latest ? latest.date : '';
       } catch (e) { return true; }
     }
 
-    if (isUnread()) dot.classList.add('unread');
+    document.querySelectorAll('.ann-dot').forEach(function (dot) {
+      if (isUnread()) dot.classList.add('unread');
+    });
 
     function openAndMark(e) {
       if (e) e.stopPropagation();
       if (window.drawers) window.drawers.open('announcements');
-      dot.classList.remove('unread');
+      document.querySelectorAll('.ann-dot').forEach(function (dot) { dot.classList.remove('unread'); });
       try { localStorage.setItem(KEY, JSON.stringify({ id: latestId, date: latestDate })); } catch (e) {}
     }
 
-    var bell = document.getElementById('ann-bell');
-    var ticker = document.getElementById('ann-ticker');
-    if (bell) bell.addEventListener('click', openAndMark);
-    if (ticker) ticker.addEventListener('click', openAndMark);
+    document.querySelectorAll('.ann-bell, .ann-ticker, .ann-ticker-mobile').forEach(function (btn) {
+      btn.addEventListener('click', openAndMark);
+    });
   })();
 </script>
 
 <style>
   .ann-bar { display: flex; align-items: center; gap: 6px; }
+  .ann-bar-mobile { display: none; }
   .ann-bell {
     position: relative; width: 36px; height: 36px; border-radius: 50%;
     background: none; border: 1px solid var(--border); cursor: pointer;
     display: flex; align-items: center; justify-content: center; font-size: 1rem;
     color: var(--text-secondary); transition: border-color .15s, background .15s;
+    flex-shrink: 0;
   }
   .ann-bell:hover { border-color: var(--brand); background: var(--brand-bg); }
   .ann-dot {
@@ -86,6 +97,13 @@ const latestDate = latest ? latest.date : '';
   }
 
   @media (max-width: 640px) {
+    .ann-bar-desktop { display: none; }
+    .ann-bar-mobile { display: flex; }
     .ann-ticker { display: none; }
+    .ann-ticker-mobile {
+      max-width: 120px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+      background: none; border: none; padding: 0; cursor: pointer; text-align: left;
+      font-size: .75rem; color: var(--text-secondary); line-height: 1.4;
+    }
   }
 </style>

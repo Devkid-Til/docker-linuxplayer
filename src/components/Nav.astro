@@ -10,9 +10,12 @@ import AnnouncementBar from './AnnouncementBar.astro';
       <a href="/subscribe/">RSS</a>
       <a href="/sponsor/">支持</a>
       <a href="/feedback/">反馈</a>
-      <AnnouncementBar />
+      <AnnouncementBar variant="desktop" />
       <button class="theme-btn" id="theme-toggle" aria-label="切换暗色模式">🌙</button>
     </div>
-    <button class="hamburger" aria-label="菜单"><span></span><span></span><span></span></button>
+    <div class="nav-tools">
+      <AnnouncementBar variant="mobile" />
+      <button class="hamburger" aria-label="菜单"><span></span><span></span><span></span></button>
+    </div>
   </div>
 </nav>
