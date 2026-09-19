@@ -28,172 +28,165 @@ const { id, title } = Astro.props;
 
 <script is:inline>
   (function () {
-    if (window.drawers) return;
-    window.drawers = {
-      open: function (id) {
-        var backdrop = document.getElementById('drawer-backdrop-' + id);
-        var panel = document.getElementById('drawer-panel-' + id);
-        if (!backdrop || !panel) return;
-        backdrop.classList.add('open');
-        panel.classList.add('open');
-        backdrop.setAttribute('aria-hidden', 'false');
-        panel.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-      },
-      close: function (id) {
-        var backdrop = document.getElementById('drawer-backdrop-' + id);
-        var panel = document.getElementById('drawer-panel-' + id);
-        if (!backdrop || !panel) return;
-        backdrop.classList.remove('open');
-        panel.classList.remove('open');
-        backdrop.setAttribute('aria-hidden', 'true');
-        panel.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-      }
-    };
+    // 全局 open/close 只初始化一次
+    if (!window.drawers) {
+      window.drawers = {
+        open: function (id) {
+          var backdrop = document.getElementById('drawer-backdrop-' + id);
+          var panel = document.getElementById('drawer-panel-' + id);
+          if (!backdrop || !panel) return;
+          backdrop.classList.add('open');
+          panel.classList.add('open');
+          backdrop.setAttribute('aria-hidden', 'false');
+          panel.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        },
+        close: function (id) {
+          var backdrop = document.getElementById('drawer-backdrop-' + id);
+          var panel = document.getElementById('drawer-panel-' + id);
+          if (!backdrop || !panel) return;
+          backdrop.classList.remove('open');
+          panel.classList.remove('open');
+          backdrop.setAttribute('aria-hidden', 'true');
+          panel.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+        }
+      };
 
-    document.addEventListener('click', function (e) {
-      var target = e.target;
-      var openEl = target && target.closest && target.closest('[data-drawer-open]');
-      var openId = openEl ? openEl.getAttribute('data-drawer-open') : null;
-      if (openId) {
-        e.preventDefault();
-        window.drawers.open(openId);
-      }
-      var closeEl = target && target.closest && target.closest('[data-drawer-close]');
-      var closeId = closeEl ? closeEl.getAttribute('data-drawer-close') : null;
-      if (closeId) {
-        e.preventDefault();
-        window.drawers.close(closeId);
-      }
-      if (target && target.classList && target.classList.contains('drawer-backdrop') && target.classList.contains('open')) {
-        var id = target.getAttribute('data-drawer');
-        if (id) window.drawers.close(id);
-      }
-    });
-
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        var openPanel = document.querySelector('.drawer-panel.open');
-        if (openPanel) {
-          var id = openPanel.getAttribute('data-drawer');
+      document.addEventListener('click', function (e) {
+        var target = e.target;
+        var openEl = target && target.closest && target.closest('[data-drawer-open]');
+        var openId = openEl ? openEl.getAttribute('data-drawer-open') : null;
+        if (openId) {
+          e.preventDefault();
+          window.drawers.open(openId);
+        }
+        var closeEl = target && target.closest && target.closest('[data-drawer-close]');
+        var closeId = closeEl ? closeEl.getAttribute('data-drawer-close') : null;
+        if (closeId) {
+          e.preventDefault();
+          window.drawers.close(closeId);
+        }
+        if (target && target.classList && target.classList.contains('drawer-backdrop') && target.classList.contains('open')) {
+          var id = target.getAttribute('data-drawer');
           if (id) window.drawers.close(id);
         }
-      }
-    });
-
-    // 抽屉内链接跳转到同页 hash（如 /#english）时不会刷新页面，需要自动关抽屉
-    function closeAllDrawers() {
-      document.querySelectorAll('.drawer-panel.open').forEach(function (panel) {
-        var id = panel.getAttribute('data-drawer');
-        if (id) window.drawers.close(id);
       });
-    }
-    window.addEventListener('hashchange', closeAllDrawers);
 
-    // 抽屉右滑关闭：手势条与内容层隔离，从根本上避免内容（链接/滚动）截胡事件
-    (function initSwipe() {
-      var DRAG_START_THRESHOLD = 4; // px：向右滑动超过此值启动拖动
-      var CLOSE_RATIO = 0.25;       // 滑动超过面板宽度 25% 关闭
-      var CLOSE_MIN_PX = 56;        // 至少滑动 56px
-
-      function bindSwipe(panel) {
-        var edge = panel.querySelector('.drawer-edge');
-        if (!edge) return;
-
-        var dragging = false;
-        var startX = 0, currentX = 0;
-
-        function resetTransform() {
-          panel.style.transform = '';
-          panel.style.transition = '';
-        }
-
-        function finish(dx) {
-          dragging = false;
-          panel.style.transition = 'transform .2s var(--ease-out)';
-          var threshold = Math.max(CLOSE_MIN_PX, panel.offsetWidth * CLOSE_RATIO);
-          if (dx > threshold) {
-            panel.style.transform = 'translateX(100%)';
-            setTimeout(function () {
-              var id = panel.getAttribute('data-drawer');
-              if (id) window.drawers.close(id);
-              resetTransform();
-            }, 200);
-          } else {
-            panel.style.transform = 'translateX(0)';
-            setTimeout(resetTransform, 200);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          var openPanel = document.querySelector('.drawer-panel.open');
+          if (openPanel) {
+            var id = openPanel.getAttribute('data-drawer');
+            if (id) window.drawers.close(id);
           }
         }
+      });
 
-        function onStart(clientX) {
-          if (!panel.classList.contains('open')) return false;
-          startX = clientX;
-          currentX = clientX;
-          dragging = false;
-          panel.style.transition = 'none';
-          return true;
-        }
-
-        function onMove(clientX) {
-          var dx = clientX - startX;
-          currentX = clientX;
-          if (!dragging) {
-            if (dx > DRAG_START_THRESHOLD) dragging = true; else return false;
-          }
-          panel.style.transform = 'translateX(' + Math.max(0, dx) + 'px)';
-          return true;
-        }
-
-        function onEnd() {
-          if (!dragging) return;
-          finish(currentX - startX);
-        }
-
-        function onCancel() {
-          if (!dragging) return;
-          dragging = false;
-          resetTransform();
-        }
-
-        // Touch 主路径
-        edge.addEventListener('touchstart', function (e) {
-          if (onStart(e.touches[0].clientX)) return;
-        }, { passive: true });
-
-        edge.addEventListener('touchmove', function (e) {
-          if (onMove(e.touches[0].clientX)) e.preventDefault();
-        }, { passive: false });
-
-        edge.addEventListener('touchend', onEnd);
-        edge.addEventListener('touchcancel', onCancel);
-
-        // Pointer 兜底（桌面鼠标 / 触屏笔记本）
-        var pointerActive = false;
-        edge.addEventListener('pointerdown', function (e) {
-          if (!onStart(e.clientX)) return;
-          pointerActive = true;
-          try { edge.setPointerCapture(e.pointerId); } catch (err) {}
-        });
-
-        edge.addEventListener('pointermove', function (e) {
-          if (!pointerActive) return;
-          if (onMove(e.clientX)) e.preventDefault();
-        });
-
-        edge.addEventListener('pointerup', function () {
-          if (!pointerActive) return;
-          pointerActive = false;
-          onEnd();
-        });
-
-        edge.addEventListener('pointercancel', function () {
-          pointerActive = false;
-          onCancel();
+      function closeAllDrawers() {
+        document.querySelectorAll('.drawer-panel.open').forEach(function (panel) {
+          var id = panel.getAttribute('data-drawer');
+          if (id) window.drawers.close(id);
         });
       }
+      window.addEventListener('hashchange', closeAllDrawers);
+    }
 
-      document.querySelectorAll('.drawer-panel').forEach(bindSwipe);
+    // 每个 Drawer 实例独立绑定自己的 panel，避免实例间执行顺序影响
+    (function bindPanelSwipe() {
+      var id = '{id}';
+      var panel = document.getElementById('drawer-panel-' + id);
+      var edge = panel ? panel.querySelector('.drawer-edge') : null;
+      if (!edge || edge._swipeBound) return;
+      edge._swipeBound = true;
+
+      var DRAG_START_THRESHOLD = 4;
+      var CLOSE_RATIO = 0.25;
+      var CLOSE_MIN_PX = 56;
+      var dragging = false;
+      var startX = 0, currentX = 0;
+
+      function resetTransform() {
+        panel.style.transform = '';
+        panel.style.transition = '';
+      }
+
+      function finish(dx) {
+        dragging = false;
+        panel.style.transition = 'transform .2s var(--ease-out)';
+        var threshold = Math.max(CLOSE_MIN_PX, panel.offsetWidth * CLOSE_RATIO);
+        if (dx > threshold) {
+          panel.style.transform = 'translateX(100%)';
+          setTimeout(function () {
+            window.drawers.close(id);
+            resetTransform();
+          }, 200);
+        } else {
+          panel.style.transform = 'translateX(0)';
+          setTimeout(resetTransform, 200);
+        }
+      }
+
+      function onStart(clientX) {
+        if (!panel.classList.contains('open')) return false;
+        startX = clientX;
+        currentX = clientX;
+        dragging = false;
+        panel.style.transition = 'none';
+        return true;
+      }
+
+      function onMove(clientX) {
+        var dx = clientX - startX;
+        currentX = clientX;
+        if (!dragging) {
+          if (dx > DRAG_START_THRESHOLD) dragging = true; else return false;
+        }
+        panel.style.transform = 'translateX(' + Math.max(0, dx) + 'px)';
+        return true;
+      }
+
+      edge.addEventListener('touchstart', function (e) {
+        onStart(e.touches[0].clientX);
+      }, { passive: true });
+
+      edge.addEventListener('touchmove', function (e) {
+        if (onMove(e.touches[0].clientX)) e.preventDefault();
+      }, { passive: false });
+
+      edge.addEventListener('touchend', function () {
+        if (!dragging) return;
+        finish(currentX - startX);
+      });
+
+      edge.addEventListener('touchcancel', function () {
+        if (!dragging) return;
+        dragging = false;
+        resetTransform();
+      });
+
+      var pointerActive = false;
+      edge.addEventListener('pointerdown', function (e) {
+        if (!onStart(e.clientX)) return;
+        pointerActive = true;
+        try { edge.setPointerCapture(e.pointerId); } catch (err) {}
+      });
+
+      edge.addEventListener('pointermove', function (e) {
+        if (!pointerActive) return;
+        if (onMove(e.clientX)) e.preventDefault();
+      });
+
+      edge.addEventListener('pointerup', function () {
+        if (!pointerActive) return;
+        pointerActive = false;
+        if (dragging) finish(currentX - startX); else resetTransform();
+      });
+
+      edge.addEventListener('pointercancel', function () {
+        pointerActive = false;
+        if (dragging) { dragging = false; resetTransform(); }
+      });
     })();
   })();
 </script>
