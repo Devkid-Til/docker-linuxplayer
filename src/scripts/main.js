@@ -265,13 +265,26 @@
   /* 主切换：内核内容 | 内核英语 | 站长手记 */
   var mainTabs = document.querySelectorAll('.main-tab');
   var mainViews = document.querySelectorAll('.main-view');
+  function switchMainTab(view) {
+    var targetTab = document.querySelector('.main-tab[data-view="' + view + '"]');
+    if (!targetTab) return;
+    mainTabs.forEach(function (t) { t.classList.toggle('active', t === targetTab); });
+    mainViews.forEach(function (vw) { vw.classList.toggle('hidden', vw.id !== 'view-' + view); });
+  }
   mainTabs.forEach(function (tab) {
     tab.addEventListener('click', function () {
       var v = tab.getAttribute('data-view');
-      mainTabs.forEach(function (t) { t.classList.toggle('active', t === tab); });
-      mainViews.forEach(function (vw) { vw.classList.toggle('hidden', vw.id !== 'view-' + v); });
+      switchMainTab(v);
+      history.replaceState(null, '', '#' + v);
     });
   });
+  // 页面加载 / hash 变化时按 #english / #journal / #kernel 自动切换
+  function applyHash() {
+    var h = location.hash.replace(/^#/, '');
+    if (['kernel', 'english', 'journal'].indexOf(h) !== -1) switchMainTab(h);
+  }
+  applyHash();
+  window.addEventListener('hashchange', applyHash);
 
   /* 内核内容视图：栏目过滤 */
   if (columnBar) {
