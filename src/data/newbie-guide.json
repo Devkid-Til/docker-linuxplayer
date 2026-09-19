@@ -12,7 +12,8 @@
   {
     "title": "🛠️ 发第一个补丁",
     "desc": "从 git format-patch 到 git send-email 的完整流程，以及 Signed-off-by 的含义。",
-    "link": "/posts/待补充-发第一个补丁/"
+    "link": "/posts/待补充-发第一个补丁/",
+    "active": false
   },
   {
     "title": "📖 内核英语",
