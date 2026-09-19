@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="意见反馈 · Linux 内核玩家" desc="内容纠错、优化建议、合作交流——通过飞书表单提交，直达作者">
+  <main class="container">
+    <div class="article-head">
+      <a class="back-link" href="/">← 首页</a>
+      <div class="article-meta"><span class="article-date">反馈</span></div>
+      <h1>意见反馈 📮</h1>
+      <div class="article-divider"></div>
+    </div>
+
+    <div class="guide reveal">
+      <h2>发现错误？有建议？</h2>
+      <p>内核雷达每天从邮件列表筛补丁、写解读，难免有看错的时候。内容纠错、翻译建议、栏目想法、合作意向——都欢迎提。</p>
+      <p>表单只有三道题：反馈类型、内容、联系方式（选填）。提交后直达我的飞书，会定期查看。</p>
+      <a class="cta" href="https://uq0ip8uep08.feishu.cn/share/base/shrcnSIfR7Sd2oEvR2E0HJHL38g" target="_blank" rel="noopener">📝 打开反馈表单</a>
+      <p class="note">表单由飞书托管，无需注册登录即可提交；联系方式完全选填，不留也能提。</p>
+    </div>
+
+    <div class="guide reveal">
+      <h2>💬 其他渠道</h2>
+      <ul class="alt-list">
+        <li>公众号「Linux内核玩家」后台直接留言，一样能到我</li>
+        <li>只是想常来看看？订阅 <a href="/subscribe/">RSS</a> 就好</li>
+        <li>觉得内容不错想支持一下，看 <a href="/sponsor/">这里</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <style>
+    .guide{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px}
+    .guide h2{font-size:1.125rem;margin-bottom:8px;color:var(--brand)}
+    .guide p{font-size:.9375rem;color:var(--text);line-height:1.7;margin-bottom:10px}
+    .guide p.note{font-size:.8125rem;color:var(--text-secondary);background:var(--bg-alt);padding:10px 14px;border-radius:var(--radius-md);border-left:3px solid var(--brand);margin:14px 0 0}
+    .cta{display:inline-block;margin-top:6px;padding:13px 28px;background:var(--brand);color:#fff;font-weight:600;border-radius:var(--radius-md);text-decoration:none;transition:transform .15s,background .15s}
+    .cta:hover{background:var(--brand-dark);transform:translateY(-1px)}
+    .alt-list{list-style:none;padding:0;margin:8px 0 0;font-size:.9375rem;color:var(--text-secondary);line-height:1.9}
+    .alt-list li{padding-left:1.25rem;position:relative}
+    .alt-list li::before{content:'→';position:absolute;left:0;color:var(--brand)}
+    .alt-list a{color:var(--brand);text-decoration:none;border-bottom:1px dashed var(--brand-border)}
+    .alt-list a:hover{border-bottom-style:solid}
+  </style>
+</Base>
