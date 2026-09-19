@@ -3,6 +3,7 @@
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import AnnouncementDrawer from '../components/AnnouncementDrawer.astro';
 // 品牌配色单一数据源：--brand 系列 token 从这里注入，改色只改 src/brand.json
 import brand from '../brand.json';
 
@@ -89,6 +90,8 @@ const brandCss = `:root{${lightTokens}}${termRule}${darkTokens ? ` html.dark{${d
   <slot />
 
   <Footer />
+
+  <AnnouncementDrawer />
 
   <button class="to-top" id="to-top" aria-label="回到顶部">↑</button>
 
