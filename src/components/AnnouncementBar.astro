@@ -1,0 +1,124 @@
+---
+import Drawer from './Drawer.astro';
+import announcements from '../data/announcements.json';
+const active = announcements.filter(a => a.active).sort((a, b) => b.date.localeCompare(a.date));
+const latest = active[0] || null;
+const latestId = latest ? latest.id : '';
+const latestTitle = latest ? latest.title : '';
+const latestDate = latest ? latest.date : '';
+---
+<div class="ann-bar" id="ann-bar">
+  <button class="ann-bell" data-drawer-open="announcements" aria-label="公告" title="公告">
+    📢
+    <span class="ann-dot" id="ann-dot"></span>
+  </button>
+  {latest && (
+    <button class="ann-ticker" data-drawer-open="announcements" aria-label="查看最新公告" title="查看最新公告">
+      <span class="ann-ticker-track">
+        <span class="ann-ticker-text" data-latest-id={latestId} data-latest-date={latestDate}>{latestTitle}</span>
+      </span>
+    </button>
+  )}
+</div>
+
+<Drawer id="announcements" title="📢 公告">
+  {active.length === 0 ? (
+    <p class="ann-empty">暂无公告</p>
+  ) : (
+    <ul class="ann-list">
+      {active.map(item => (
+        <li class="ann-item" data-ann-id={item.id}>
+          <span class="ann-date">{item.date}</span>
+          <h4 class="ann-title">{item.title}</h4>
+          <p class="ann-summary">{item.summary}</p>
+          {item.link && <a class="ann-link" href={item.link}>查看详情 →</a>}
+        </li>
+      ))}
+    </ul>
+  )}
+</Drawer>
+
+<script is:inline>
+  (function () {
+    var KEY = 'kernel-blog-ann-read';
+    var latestEl = document.querySelector('.ann-ticker-text');
+    var dot = document.getElementById('ann-dot');
+    if (!latestEl || !dot) return;
+    var latestId = latestEl.getAttribute('data-latest-id');
+    var latestDate = latestEl.getAttribute('data-latest-date');
+
+    function isUnread() {
+      try {
+        var last = localStorage.getItem(KEY);
+        if (!last) return true;
+        // 兼容旧数据：旧版只存日期字符串；新版存 JSON {id, date}
+        var parsed;
+        try { parsed = JSON.parse(last); } catch (e) { parsed = { date: last }; }
+        if (parsed.id === latestId) return false;
+        return !parsed.date || parsed.date < latestDate;
+      } catch (e) { return true; }
+    }
+
+    if (isUnread()) dot.classList.add('unread');
+
+    // 打开抽屉时标记已读
+    var bell = document.querySelector('.ann-bell');
+    var ticker = document.querySelector('.ann-ticker');
+    function markRead() {
+      dot.classList.remove('unread');
+      try { localStorage.setItem(KEY, JSON.stringify({ id: latestId, date: latestDate })); } catch (e) {}
+    }
+    if (bell) bell.addEventListener('click', markRead);
+    if (ticker) ticker.addEventListener('click', markRead);
+  })();
+</script>
+
+<style>
+  .ann-bar { display: flex; align-items: center; gap: 6px; }
+  .ann-bell {
+    position: relative; width: 36px; height: 36px; border-radius: 50%;
+    background: none; border: 1px solid var(--border); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    color: var(--text-secondary); transition: border-color .15s, background .15s;
+  }
+  .ann-bell:hover { border-color: var(--brand); background: var(--brand-bg); }
+  .ann-dot {
+    position: absolute; top: 6px; right: 6px; width: 8px; height: 8px;
+    background: #EF4444; border-radius: 50%; opacity: 0; transition: opacity .15s;
+  }
+  .ann-dot.unread { opacity: 1; }
+  .ann-ticker {
+    max-width: 160px; overflow: hidden; background: none; border: none;
+    padding: 0; cursor: pointer; text-align: left;
+  }
+  .ann-ticker-track {
+    display: block; position: relative; overflow: hidden; white-space: nowrap;
+  }
+  .ann-ticker-text {
+    display: inline-block; font-size: .8125rem; color: var(--text-secondary);
+    padding-right: 1rem; line-height: 1.4;
+  }
+  /* 只有文字超长时才滚动 */
+  @media (hover: hover) {
+    .ann-ticker-text:hover { color: var(--brand); }
+  }
+  @keyframes ann-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  /* 用 JS 判断是否需要滚动更可靠，这里用 CSS 兜底：复制一份实现无缝滚动 */
+
+  .ann-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-lg); }
+  .ann-item { border-bottom: 1px solid var(--border); padding-bottom: var(--space-lg); }
+  .ann-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .ann-date { font-size: .75rem; color: var(--text-tertiary); font-family: var(--font-mono); }
+  .ann-title { font-size: 1rem; margin: var(--space-xs) 0 var(--space-sm); color: var(--text); }
+  .ann-summary { font-size: .875rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-sm); }
+  .ann-link { font-size: .875rem; color: var(--brand); font-weight: 500; }
+  .ann-link:hover { text-decoration: underline; }
+  .ann-empty { color: var(--text-secondary); font-size: .875rem; }
+
+  @media (max-width: 640px) {
+    .ann-ticker { display: none; }
+  }
+</style>

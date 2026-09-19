@@ -1,0 +1,22 @@
+[
+  {
+    "title": "📧 邮件格式拆解",
+    "desc": "看懂 Linux 邮件列表里 Message-Id / In-Reply-To / References 如何串成线程。",
+    "link": "/posts/2026-09-19-linux-mail-anatomy/"
+  },
+  {
+    "title": "📡 订阅邮件列表",
+    "desc": "在 lore.kernel.org 找到你感兴趣的子系统，按列表说明订阅。",
+    "link": "https://lore.kernel.org/"
+  },
+  {
+    "title": "🛠️ 发第一个补丁",
+    "desc": "从 git format-patch 到 git send-email 的完整流程，以及 Signed-off-by 的含义。",
+    "link": "/posts/待补充-发第一个补丁/"
+  },
+  {
+    "title": "📖 内核英语",
+    "desc": "读补丁先看标题、术语和地道表达，降低阅读门槛。",
+    "link": "/"
+  }
+]
