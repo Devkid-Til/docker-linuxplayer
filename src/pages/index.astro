@@ -2,7 +2,6 @@
 import Base from '../layouts/Base.astro';
 import PostCard from '../components/PostCard.astro';
 import NewbieFab from '../components/NewbieFab.astro';
-import AnnouncementMarquee from '../components/AnnouncementMarquee.astro';
 import { getCollection } from 'astro:content';
 import { COLUMNS, ALL_COLUMN, COLUMN_MAP } from '../column';
 import fs from 'node:fs';
@@ -88,7 +87,6 @@ const BOARD_SLOTS = ['media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio', 'Rust',
 <Base title="Linux 内核玩家 · 每日内核雷达">
   <header class="hero">
     <div class="hero-bg"></div>
-    <AnnouncementMarquee />
     <span class="term-deco">$ watch -n 10 kernel-patches</span>
     <div class="container hero-inner">
       <span class="hero-eyebrow reveal">KERNEL DAILY · 每日内核雷达</span>

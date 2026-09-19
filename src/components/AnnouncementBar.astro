@@ -23,6 +23,15 @@ const latestDate = latest ? latest.date : '';
       </span>
     </button>
   )}
+  {variant === 'mobile' && latest && (
+    <button class="ann-ticker-mobile" id={`ann-ticker${suffix}`} data-drawer-open="announcements" aria-label="查看最新公告" title="查看最新公告">
+      <span class="ann-mobile-viewport">
+        <span class="ann-mobile-track">
+          <span class="ann-ticker-text" data-latest-id={latestId} data-latest-date={latestDate}>{latestTitle}</span>
+        </span>
+      </span>
+    </button>
+  )}
 </div>
 
 <script is:inline>
@@ -54,9 +63,36 @@ const latestDate = latest ? latest.date : '';
       try { localStorage.setItem(KEY, JSON.stringify({ id: latestId, date: latestDate })); } catch (e) {}
     }
 
-    document.querySelectorAll('.ann-bell, .ann-ticker').forEach(function (btn) {
+    document.querySelectorAll('.ann-bell, .ann-ticker, .ann-ticker-mobile').forEach(function (btn) {
       btn.addEventListener('click', openAndMark);
     });
+
+    // 移动端 header 内跑马灯：标题溢出才滚动，否则居中静态
+    var viewport = document.querySelector('.ann-mobile-viewport');
+    var track = document.querySelector('.ann-mobile-track');
+    var text = track ? track.querySelector('.ann-ticker-text') : null;
+    if (viewport && track && text) {
+      var w = viewport.clientWidth;
+      var c = text.offsetWidth;
+      if (w > 0 && c > 0) {
+        if (c <= w) {
+          // 不溢出：居中静态
+          track.classList.add('ann-mobile-static');
+        } else {
+          // 溢出：复制足够份数 + rAF 滚动
+          var n = Math.ceil(w / c) + 2;
+          while (track.children.length < n) track.appendChild(text.cloneNode(true));
+          var x = 0, speed = 0.6;
+          function step() {
+            x += speed;
+            if (x >= c) x -= c;
+            track.style.transform = 'translateX(' + (-x) + 'px)';
+            requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        }
+      }
+    }
   })();
 </script>
 
@@ -93,7 +129,22 @@ const latestDate = latest ? latest.date : '';
 
   @media (max-width: 640px) {
     .ann-bar-desktop { display: none; }
-    .ann-bar-mobile { display: flex; }
+    .ann-bar-mobile { display: flex; flex: 1; min-width: 0; }
     .ann-ticker { display: none; }
+    .ann-ticker-mobile {
+      flex: 1; min-width: 0; overflow: hidden; background: none; border: none;
+      padding: 0; cursor: pointer; text-align: left;
+    }
+    .ann-mobile-viewport {
+      display: block; overflow: hidden; white-space: nowrap; width: 100%;
+    }
+    .ann-mobile-track {
+      display: inline-flex; white-space: nowrap; align-items: center;
+    }
+    .ann-mobile-static { width: 100%; justify-content: center; }
+    .ann-ticker-text {
+      font-size: .75rem; color: var(--text-secondary);
+      padding-right: 2rem; line-height: 1.4;
+    }
   }
 </style>
