@@ -30,7 +30,7 @@ const englishFilterTabs = (COLUMN_MAP['english']?.tags ?? []).map(t => ({
 }));
 // 站长手记：独立视图（低频不定期），固定词表 + emoji
 const journalPosts = posts.filter(p => p.data.column === 'journal');
-const JOURNAL_TAG_EMOJI: Record<string, string> = { '笔记': '📓', '感谢': '🙏', '随想': '💭' };
+const JOURNAL_TAG_EMOJI: Record<string, string> = { '日志': '📰', '教程': '📘', '笔记': '📓', '感谢': '🙏', '随想': '💭' };
 const journalCounts = journalPosts.reduce((acc, p) => { p.data.tags.forEach(t => { acc[t] = (acc[t] || 0) + 1; }); return acc; }, {} as Record<string, number>);
 const journalFilterTabs = (COLUMN_MAP['journal']?.tags ?? []).map(t => ({
   name: t, emoji: JOURNAL_TAG_EMOJI[t] || '', count: journalCounts[t] || 0,

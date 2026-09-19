@@ -4,7 +4,7 @@ date: "2026-09-19"
 desc: "从 Subject 到 Signed-off-by，拆解 Linux 邮件列表里一封正式邮件的各个组成部分，帮助新手入门开源社区。"
 column: "journal"
 tags:
-  - "笔记"
+  - "教程"
 blocks:
   - type: "hook"
     text: "Linux 内核社区靠邮件列表议事。但新手第一次打开 lore.kernel.org，往往被满屏的 Re:、[PATCH v3 2/7]、Signed-off-by 吓到。其实一封正式邮件的结构非常固定，看懂之后，阅读门槛会陡降。"
