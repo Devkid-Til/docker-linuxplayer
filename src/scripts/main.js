@@ -110,12 +110,14 @@
       setOpen(group.classList.contains('collapsed'));
     });
 
+    // hint-active：新手提示未消失期间，不因点击外部/ Esc 自动收起（由提示自己决定何时结束）
     document.addEventListener('click', function (e) {
+      if (group.classList.contains('hint-active')) return;
       if (!group.classList.contains('collapsed') && !e.target.closest('#fab-group')) setOpen(false);
     });
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') setOpen(false);
+      if (e.key === 'Escape' && !group.classList.contains('hint-active')) setOpen(false);
     });
 
     if (toTop) {

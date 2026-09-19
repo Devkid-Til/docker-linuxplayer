@@ -14,35 +14,23 @@
       var hint = document.getElementById('newbie-hint');
       var group = document.getElementById('fab-group');
       var toggle = document.getElementById('fab-toggle');
-      if (!hint || !group) return;
-      // 只在首次访问提示一次（localStorage 不可用时静默跳过，不打扰）
+      var fab = document.getElementById('newbie-fab');
+      if (!hint || !group || !fab) return;
+      // 已经点过新手入口 → 不再提示（localStorage 不可用时静默跳过）
       try { if (localStorage.getItem(KEY)) return; } catch (e) { return; }
 
-      var touched = false;
-      group.addEventListener('click', function () { touched = true; }, true);
-
-      // 展开快捷组让入口可见，再亮出气泡
+      // 展开快捷组让入口可见，再亮出气泡；hint-active 期间组不自动收起
+      group.classList.add('hint-active');
       group.classList.remove('collapsed');
       if (toggle) toggle.setAttribute('aria-expanded', 'true');
       requestAnimationFrame(function () { hint.classList.add('show'); });
 
-      var timer = setTimeout(dismiss, 8000);
-      function dismiss() {
-        if (!hint.classList.contains('show')) return;
+      // 只有「点中新手入口」才消失——不设超时、不因滚动/点击别处消失
+      fab.addEventListener('click', function () {
         hint.classList.remove('show');
-        clearTimeout(timer);
-        document.removeEventListener('click', dismiss);
-        window.removeEventListener('scroll', dismiss);
+        group.classList.remove('hint-active');
         try { localStorage.setItem(KEY, '1'); } catch (e) {}
-        // 用户全程没碰过这个组 → 收回默认收起态，不留状态
-        if (!touched) {
-          group.classList.add('collapsed');
-          if (toggle) toggle.setAttribute('aria-expanded', 'false');
-        }
-      }
-
-      document.addEventListener('click', dismiss);
-      window.addEventListener('scroll', dismiss, { passive: true, once: true });
+      });
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
     else run();
