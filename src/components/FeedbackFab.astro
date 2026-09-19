@@ -73,7 +73,7 @@ const FORM_URL = 'https://uq0ip8uep08.feishu.cn/share/base/shrcnSIfR7Sd2oEvR2E0H
 
 <style>
   .fab-feedback{
-    position:fixed;right:20px;bottom:72px;width:44px;height:44px;border-radius:50%;
+    position:fixed;right:calc(20px + var(--fab-w));bottom:72px;width:44px;height:44px;border-radius:50%;
     background:var(--brand);border:none;color:#fff;font-size:1.25rem;cursor:grab;
     display:flex;align-items:center;justify-content:center;
     box-shadow:0 4px 14px var(--brand-glow);z-index:800;
@@ -82,6 +82,6 @@ const FORM_URL = 'https://uq0ip8uep08.feishu.cn/share/base/shrcnSIfR7Sd2oEvR2E0H
   .fab-feedback:hover{transform:scale(1.08);box-shadow:0 6px 20px var(--brand-glow)}
   .fab-feedback.dragging{cursor:grabbing;transform:scale(1.05);transition:none}
   @media(max-width:640px){
-    .fab-feedback{right:16px;bottom:64px;width:40px;height:40px;font-size:1.125rem}
+    .fab-feedback{right:calc(16px + var(--fab-w));bottom:64px;width:40px;height:40px;font-size:1.125rem}
   }
 </style>

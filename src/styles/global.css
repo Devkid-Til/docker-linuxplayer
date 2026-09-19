@@ -29,6 +29,8 @@
   --shadow-lg: 0 12px 32px rgba(0,0,0,.08);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --nav-height: 56px;
+  /* 悬浮按钮宽度：右下角按钮（回到顶部/反馈）以此为基准避让 */
+  --fab-w: 44px;
 }
 
 /* ── 2. Reset & Base ─────────────────────────────────────────── */
@@ -389,7 +391,8 @@ html.dark .article-hero{background:color-mix(in srgb,var(--card) 88%,transparent
 .site-footer .links a:hover{color:var(--brand)}
 
 /* ── 15. Back-to-top ──────────────────────────────────────────── */
-.to-top{position:fixed;right:20px;bottom:20px;width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.125rem;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .25s,transform .25s,visibility .25s;box-shadow:var(--shadow-sm);z-index:800}
+/* right 以 --fab-w 避让一列：与反馈按钮左移同一位移，两按钮保持同列 */
+.to-top{position:fixed;right:calc(20px + var(--fab-w));bottom:20px;width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.125rem;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .25s,transform .25s,visibility .25s;box-shadow:var(--shadow-sm);z-index:800}
 .to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
 .to-top:hover{border-color:var(--brand);color:var(--brand)}
 
@@ -411,7 +414,7 @@ html.dark .to-top{background:var(--card)}
 html.dark .timeline-item::before{border-color:var(--bg)}
 
 /* ── 19. Responsive ───────────────────────────────────────────── */
-@media(max-width:640px){:root{--font-size-base:14px;--nav-height:48px}.container{padding:0 var(--space-md)}.nav-inner{padding:0 var(--space-md)}.hamburger{display:block}.nav-links{position:absolute;top:var(--nav-height);left:0;right:0;background:var(--card);flex-direction:column;align-items:stretch;padding:0 var(--space-md);border-bottom:1px solid transparent;max-height:0;overflow:hidden;opacity:0;transform:translateY(-8px);pointer-events:none;transition:max-height .3s var(--ease-out),opacity .2s var(--ease-out),transform .3s var(--ease-out),padding .3s var(--ease-out),border-color .3s,box-shadow .3s}.nav-links.open{max-height:420px;opacity:1;transform:translateY(0);pointer-events:auto;border-bottom-color:var(--border);box-shadow:var(--shadow-md);padding:var(--space-sm) var(--space-md) var(--space-md)}.nav-tools{display:flex;align-items:center;gap:var(--space-xs);flex:1;min-width:0}.nav-links .theme-btn{align-self:center}.nav-links a{padding:var(--space-sm)}.hero{padding:36px 0 32px}.hero h1{font-size:1.35rem}.hero .subtitle{font-size:.75rem;max-width:100%}.hero .term-deco{top:10px;right:10px;font-size:11px;padding:3px 10px}.hero-eyebrow{font-size:.7rem;padding:4px 12px}.timeline-card{padding:var(--space-md)}.timeline-card h3{font-size:.9375rem}.article-header h1{font-size:1.375rem}.about-card{flex-direction:column;text-align:center}}
+@media(max-width:640px){:root{--font-size-base:14px;--nav-height:48px;--fab-w:40px}.container{padding:0 var(--space-md)}.nav-inner{padding:0 var(--space-md)}.hamburger{display:block}.nav-links{position:absolute;top:var(--nav-height);left:0;right:0;background:var(--card);flex-direction:column;align-items:stretch;padding:0 var(--space-md);border-bottom:1px solid transparent;max-height:0;overflow:hidden;opacity:0;transform:translateY(-8px);pointer-events:none;transition:max-height .3s var(--ease-out),opacity .2s var(--ease-out),transform .3s var(--ease-out),padding .3s var(--ease-out),border-color .3s,box-shadow .3s}.nav-links.open{max-height:420px;opacity:1;transform:translateY(0);pointer-events:auto;border-bottom-color:var(--border);box-shadow:var(--shadow-md);padding:var(--space-sm) var(--space-md) var(--space-md)}.nav-tools{display:flex;align-items:center;gap:var(--space-xs);flex:1;min-width:0}.nav-links .theme-btn{align-self:center}.nav-links a{padding:var(--space-sm)}.hero{padding:36px 0 32px}.hero h1{font-size:1.35rem}.hero .subtitle{font-size:.75rem;max-width:100%}.hero .term-deco{top:10px;right:10px;font-size:11px;padding:3px 10px}.hero-eyebrow{font-size:.7rem;padding:4px 12px}.timeline-card{padding:var(--space-md)}.timeline-card h3{font-size:.9375rem}.article-header h1{font-size:1.375rem}.about-card{flex-direction:column;text-align:center}}
 @media(min-width:641px) and (max-width:1024px){.container{max-width:100%;padding:0 28px}}
 @media(min-width:1025px){.container{max-width:960px}}
 
