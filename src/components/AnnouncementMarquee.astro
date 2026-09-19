@@ -4,12 +4,11 @@ const active = announcements.filter(a => a.active).sort((a, b) => b.date.localeC
 const latest = active[0] || null;
 ---
 {latest && (
-  <div class="ann-marquee" data-latest-id={latest.id} data-latest-date={latest.date}>
+  <div class="ann-marquee">
     <button class="ann-marquee-btn" data-drawer-open="announcements" aria-label="查看最新公告" title="查看最新公告">
       <span class="ann-marquee-viewport">
         <span class="ann-marquee-track">
           <span class="ann-marquee-text">{latest.title}</span>
-          <span class="ann-marquee-text" aria-hidden="true">{latest.title}</span>
         </span>
       </span>
     </button>
@@ -20,12 +19,28 @@ const latest = active[0] || null;
   (function () {
     var viewport = document.querySelector('.ann-marquee-viewport');
     var track = document.querySelector('.ann-marquee-track');
-    var texts = document.querySelectorAll('.ann-marquee-text');
-    if (!viewport || !track || !texts.length) return;
-    // 标题短于容器则不滚动，居中显示
-    if (texts[0].scrollWidth <= viewport.clientWidth) {
-      track.classList.add('ann-marquee-static');
+    var text = document.querySelector('.ann-marquee-text');
+    if (!viewport || !track || !text) return;
+
+    // 复制足够份数，保证无缝循环（视口宽度 / 单份宽度 + 2）
+    var w = viewport.clientWidth;
+    var c = text.offsetWidth;
+    if (w <= 0 || c <= 0) return;
+    var n = Math.ceil(w / c) + 2;
+    while (track.children.length < n) {
+      track.appendChild(text.cloneNode(true));
     }
+
+    // rAF 驱动跑马灯：滚动一份宽度后回绕，无缝
+    var x = 0;
+    var speed = 0.6; // px/frame ≈ 36px/s
+    function step() {
+      x += speed;
+      if (x >= c) x -= c;
+      track.style.transform = 'translateX(' + (-x) + 'px)';
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
   })();
 </script>
 
@@ -35,10 +50,11 @@ const latest = active[0] || null;
   @media (max-width: 640px) {
     .ann-marquee {
       display: block;
+      position: absolute; top: 0; left: 0; right: 0;
+      z-index: 1;
       background: transparent;
-      border-bottom: 1px solid var(--border-light);
       overflow: hidden;
-      padding: 4px 0;
+      padding: 6px 0;
     }
     .ann-marquee-btn {
       display: flex; align-items: center; width: 100%;
@@ -48,21 +64,12 @@ const latest = active[0] || null;
       flex: 1; overflow: hidden; white-space: nowrap;
     }
     .ann-marquee-track {
-      display: inline-flex; white-space: nowrap;
-      animation: ann-marquee-scroll 14s linear infinite;
+      display: inline-flex; white-space: nowrap; will-change: transform;
     }
-    .ann-marquee-track.ann-marquee-static {
-      animation: none; width: 100%; justify-content: center;
-    }
-    .ann-marquee-static .ann-marquee-text:last-child { display: none; }
     .ann-marquee-text {
       display: inline-block; padding-right: 3rem;
-      font-size: .75rem; color: var(--text-secondary); line-height: 1.6;
+      font-size: .75rem; line-height: 1.6;
+      color: var(--hero-text, rgba(255,255,255,.9));
     }
-  }
-
-  @keyframes ann-marquee-scroll {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
   }
 </style>
