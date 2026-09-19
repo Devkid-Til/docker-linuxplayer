@@ -1,0 +1,68 @@
+---
+import announcements from '../data/announcements.json';
+const active = announcements.filter(a => a.active).sort((a, b) => b.date.localeCompare(a.date));
+const latest = active[0] || null;
+---
+{latest && (
+  <div class="ann-marquee" data-latest-id={latest.id} data-latest-date={latest.date}>
+    <button class="ann-marquee-btn" data-drawer-open="announcements" aria-label="查看最新公告" title="查看最新公告">
+      <span class="ann-marquee-viewport">
+        <span class="ann-marquee-track">
+          <span class="ann-marquee-text">{latest.title}</span>
+          <span class="ann-marquee-text" aria-hidden="true">{latest.title}</span>
+        </span>
+      </span>
+    </button>
+  </div>
+)}
+
+<script is:inline>
+  (function () {
+    var viewport = document.querySelector('.ann-marquee-viewport');
+    var track = document.querySelector('.ann-marquee-track');
+    var texts = document.querySelectorAll('.ann-marquee-text');
+    if (!viewport || !track || !texts.length) return;
+    // 标题短于容器则不滚动，居中显示
+    if (texts[0].scrollWidth <= viewport.clientWidth) {
+      track.classList.add('ann-marquee-static');
+    }
+  })();
+</script>
+
+<style>
+  .ann-marquee { display: none; }
+
+  @media (max-width: 640px) {
+    .ann-marquee {
+      display: block;
+      background: transparent;
+      border-bottom: 1px solid var(--border-light);
+      overflow: hidden;
+      padding: 4px 0;
+    }
+    .ann-marquee-btn {
+      display: flex; align-items: center; width: 100%;
+      background: none; border: none; cursor: pointer; padding: 0;
+    }
+    .ann-marquee-viewport {
+      flex: 1; overflow: hidden; white-space: nowrap;
+    }
+    .ann-marquee-track {
+      display: inline-flex; white-space: nowrap;
+      animation: ann-marquee-scroll 14s linear infinite;
+    }
+    .ann-marquee-track.ann-marquee-static {
+      animation: none; width: 100%; justify-content: center;
+    }
+    .ann-marquee-static .ann-marquee-text:last-child { display: none; }
+    .ann-marquee-text {
+      display: inline-block; padding-right: 3rem;
+      font-size: .75rem; color: var(--text-secondary); line-height: 1.6;
+    }
+  }
+
+  @keyframes ann-marquee-scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 // 导航（组件化：只写一次，全站共用）
 import AnnouncementBar from './AnnouncementBar.astro';
+import AnnouncementMarquee from './AnnouncementMarquee.astro';
 ---
 <nav class="nav">
   <div class="nav-inner">
@@ -20,3 +21,6 @@ import AnnouncementBar from './AnnouncementBar.astro';
     </div>
   </div>
 </nav>
+
+<!-- header 下方透明公告滚动条（仅移动端显示） -->
+<AnnouncementMarquee />
