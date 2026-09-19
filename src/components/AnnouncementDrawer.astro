@@ -1,0 +1,33 @@
+---
+import Drawer from './Drawer.astro';
+import announcements from '../data/announcements.json';
+const active = announcements.filter(a => a.active).sort((a, b) => b.date.localeCompare(a.date));
+---
+<Drawer id="announcements" title="📢 公告">
+  {active.length === 0 ? (
+    <p class="ann-empty">暂无公告</p>
+  ) : (
+    <ul class="ann-list">
+      {active.map(item => (
+        <li class="ann-item" data-ann-id={item.id}>
+          <span class="ann-date">{item.date}</span>
+          <h4 class="ann-title">{item.title}</h4>
+          <p class="ann-summary">{item.summary}</p>
+          {item.link && <a class="ann-link" href={item.link}>查看详情 →</a>}
+        </li>
+      ))}
+    </ul>
+  )}
+</Drawer>
+
+<style>
+  .ann-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-lg); }
+  .ann-item { border-bottom: 1px solid var(--border); padding-bottom: var(--space-lg); }
+  .ann-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .ann-date { font-size: .75rem; color: var(--text-tertiary); font-family: var(--font-mono); }
+  .ann-title { font-size: 1rem; margin: var(--space-xs) 0 var(--space-sm); color: var(--text); }
+  .ann-summary { font-size: .875rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-sm); }
+  .ann-link { font-size: .875rem; color: var(--brand); font-weight: 500; }
+  .ann-link:hover { text-decoration: underline; }
+  .ann-empty { color: var(--text-secondary); font-size: .875rem; }
+</style>
