@@ -123,10 +123,10 @@ const latestDate = latest ? latest.date : '';
 
   @media (max-width: 640px) {
     .ann-bar-desktop { display: none; }
-    .ann-bar-mobile { display: flex; flex: 1; min-width: 0; }
+    .ann-bar-mobile { display: flex; align-items: center; gap: 6px; margin-left: auto; }
     .ann-ticker { display: none; }
     .ann-ticker-mobile {
-      flex: 1; min-width: 0; overflow: hidden; background: none; border: none;
+      max-width: 104px; overflow: hidden; background: none; border: none;
       padding: 0; cursor: pointer; text-align: left;
     }
     .ann-mobile-viewport {
@@ -135,7 +135,6 @@ const latestDate = latest ? latest.date : '';
     .ann-mobile-track {
       display: inline-flex; white-space: nowrap; align-items: center;
     }
-    .ann-mobile-static { width: 100%; justify-content: center; }
     .ann-ticker-text {
       font-size: .75rem; color: var(--text-secondary);
       padding-right: 2rem; line-height: 1.4;
