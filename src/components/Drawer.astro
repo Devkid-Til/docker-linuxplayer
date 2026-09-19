@@ -50,12 +50,14 @@ const { id, title } = Astro.props;
 
     document.addEventListener('click', function (e) {
       var target = e.target;
-      var openId = target && target.getAttribute && target.getAttribute('data-drawer-open');
+      var openEl = target && target.closest && target.closest('[data-drawer-open]');
+      var openId = openEl ? openEl.getAttribute('data-drawer-open') : null;
       if (openId) {
         e.preventDefault();
         window.drawers.open(openId);
       }
-      var closeId = target && target.getAttribute && target.getAttribute('data-drawer-close');
+      var closeEl = target && target.closest && target.closest('[data-drawer-close]');
+      var closeId = closeEl ? closeEl.getAttribute('data-drawer-close') : null;
       if (closeId) {
         e.preventDefault();
         window.drawers.close(closeId);
