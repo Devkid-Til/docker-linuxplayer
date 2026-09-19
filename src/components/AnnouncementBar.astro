@@ -67,26 +67,41 @@ const latestDate = latest ? latest.date : '';
       var text = track ? track.querySelector('.ann-ticker-text') : null;
       if (!viewport || !track || !text) return;
 
-      function init() {
+      var rafId = null, unit = 0, offset = 0;
+
+      // 按当前宽度重新测量：先回到单份，再补足份数（换视口尺寸后必须重算，否则滚动距离错位）
+      function measure() {
+        while (track.children.length > 1) track.removeChild(track.lastChild);
+        track.style.transform = '';
         var w = viewport.clientWidth;
         var c = text.offsetWidth;
         if (!w || !c) return false;
-        // 复制到总宽 ≥ 视口宽 + 一份，保证循环无缝
         var need = Math.ceil(w / c) + 2;
         while (track.children.length < need) track.appendChild(text.cloneNode(true));
-        var x = 0, speed = 0.5; // px/frame ≈ 30px/s
-        function step() {
-          x += speed;
-          if (x >= c) x -= c;
-          track.style.transform = 'translateX(' + (-x) + 'px)';
-          requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
+        unit = c; offset = 0;
         return true;
       }
 
-      // 等布局稳定后再测量（字体/宽度就绪）
-      if (!init()) requestAnimationFrame(init);
+      function step() {
+        offset += 0.5; // ≈30px/s
+        if (offset >= unit) offset -= unit;
+        track.style.transform = 'translateX(' + (-offset) + 'px)';
+        rafId = requestAnimationFrame(step);
+      }
+
+      function restart() {
+        if (rafId) cancelAnimationFrame(rafId);
+        if (measure()) step();
+        else rafId = requestAnimationFrame(restart);
+      }
+
+      restart();
+
+      var rt = null;
+      window.addEventListener('resize', function () {
+        clearTimeout(rt);
+        rt = setTimeout(restart, 200);
+      });
     });
   })();
 </script>
