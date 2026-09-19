@@ -119,14 +119,14 @@ const { id, title } = Astro.props;
           }
         }
 
-        // Touch 事件（移动端主路径）
+        // Touch 事件（移动端主路径），捕获阶段确保先于子元素（如链接）处理
         panel.addEventListener('touchstart', function (e) {
           if (!panel.classList.contains('open')) return;
           startX = e.touches[0].clientX;
           currentX = startX;
           dragging = false;
           panel.style.transition = 'none';
-        }, { passive: true });
+        }, { passive: true, capture: true });
 
         panel.addEventListener('touchmove', function (e) {
           var tx = e.touches[0].clientX;
@@ -144,18 +144,18 @@ const { id, title } = Astro.props;
 
           e.preventDefault();
           panel.style.transform = 'translateX(' + Math.max(0, dx) + 'px)';
-        }, { passive: false });
+        }, { passive: false, capture: true });
 
         panel.addEventListener('touchend', function () {
           if (!dragging) return;
           finish(currentX - startX);
-        });
+        }, { capture: true });
 
         panel.addEventListener('touchcancel', function () {
           if (!dragging) return;
           dragging = false;
           resetTransform();
-        });
+        }, { capture: true });
 
         // Pointer 事件（桌面鼠标/触屏笔记本兜底）
         var pointerDown = false;
