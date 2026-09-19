@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="支持一下 · Linux 内核玩家" desc="如果 Linux 内核玩家的内容对你有帮助，可以通过第三方平台支持作者">
+<Base title="支持一下 · Linux 内核玩家" desc="如果 Linux 内核玩家的内容对你有帮助，可以微信扫码请作者喝杯咖啡">
   <main class="container">
     <div class="article-head">
       <a class="back-link" href="/">← 首页</a>
@@ -12,22 +12,32 @@ import Base from '../layouts/Base.astro';
 
     <div class="guide reveal">
       <h2>为什么放这个页面</h2>
-      <p>这个博客是我业余时间维护的：每天读内核邮件列表、筛选补丁、写雷达日报、运维服务器。如果内容对你有帮助，请一杯咖啡，是对这项工作最直接的肯定。</p>
+      <p>这个博客是我业余时间维护的：每天读内核邮件列表、筛选补丁、写雷达日报、运维服务器。如果内容对你有帮助，扫码请一杯咖啡，是对这项工作最直接的肯定。</p>
       <p class="note">完全自愿，无任何权益绑定 —— 不解锁内容、不影响阅读、不附加任何会员功能。</p>
     </div>
 
-    <div class="guide reveal placeholder">
-      <h2>🚧 打赏通道筹备中</h2>
-      <p>正在接入第三方创作者平台（支持微信/支付宝，不暴露双方个人账户信息），近期上线。先把这份心意记下，过两天再来看看。</p>
+    <div class="qr-single reveal">
+      <div class="qr-card">
+        <div class="qr-frame">
+          <img src="/images/sponsor-wechat.png" alt="微信赞赏码" loading="lazy" />
+        </div>
+        <div class="qr-label">微信扫码赞赏</div>
+        <div class="qr-sub">金额随意，1 元也是心意</div>
+      </div>
     </div>
 
     <div class="guide reveal">
-      <h2>🔍 现在就能做的</h2>
-      <p>不想等，或者不想花钱也完全可以：</p>
+      <h2>💡 小提示</h2>
+      <p>手机截图保存二维码 → 微信扫一扫 → 从相册选择截图即可。也可以直接长按二维码识别。</p>
+    </div>
+
+    <div class="guide reveal">
+      <h2>🔍 其他支持方式</h2>
+      <p>不想花钱也完全可以：</p>
       <ul class="alt-list">
         <li>把文章转给需要的同事/朋友</li>
         <li>通过 <a href="/feedback/">意见反馈</a> 指出错误或建议</li>
-        <li>公众号「Linux内核玩家」后台留言</li>
+        <li>公众号「Linux内核玩家」文章底部点「喜欢作者」，零抽成</li>
         <li>订阅 <a href="/subscribe/">RSS</a> 常回来看看</li>
       </ul>
     </div>
@@ -38,11 +48,22 @@ import Base from '../layouts/Base.astro';
     .guide h2{font-size:1.125rem;margin-bottom:8px;color:var(--brand)}
     .guide p{font-size:.9375rem;color:var(--text);line-height:1.7;margin-bottom:8px}
     .guide p.note{font-size:.8125rem;color:var(--text-secondary);background:var(--bg-alt);padding:10px 14px;border-radius:var(--radius-md);border-left:3px solid var(--brand);margin-top:12px}
-    .guide.placeholder{border-style:dashed}
     .alt-list{list-style:none;padding:0;margin:8px 0 0;font-size:.9375rem;color:var(--text-secondary);line-height:1.9}
     .alt-list li{padding-left:1.25rem;position:relative}
     .alt-list li::before{content:'→';position:absolute;left:0;color:var(--brand)}
     .alt-list a{color:var(--brand);text-decoration:none;border-bottom:1px dashed var(--brand-border)}
     .alt-list a:hover{border-bottom-style:solid}
+
+    .qr-single{display:flex;justify-content:center;margin-bottom:20px}
+    .qr-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:28px 32px;text-align:center;transition:transform .2s,box-shadow .2s}
+    .qr-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--brand-glow)}
+    .qr-frame{background:#fff;border-radius:var(--radius-md);padding:16px;display:inline-block;line-height:0}
+    .qr-frame img{width:260px;height:260px;border-radius:8px}
+    .qr-label{margin-top:14px;font-weight:600;font-size:1rem;color:#07C160;letter-spacing:.03em}
+    .qr-sub{margin-top:4px;font-size:.8125rem;color:var(--text-tertiary)}
+
+    @media(max-width:560px){
+      .qr-frame img{width:220px;height:220px}
+    }
   </style>
 </Base>
