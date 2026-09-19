@@ -35,7 +35,10 @@
 
 /* ── 2. Reset & Base ─────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:var(--font-size-base);scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+/* text-size-adjust:100% —— 禁止移动端「文字自动放大」（font boosting）。
+   浏览器在布局视口 ≠ device-width 时会自行放大字号（切桌面版再切回手机版即触发），
+   表现为正文整体变宽、固定定位元素跑出可视区。锁死为 100% 后布局宽度只由 CSS 决定。 */
+html{font-size:var(--font-size-base);scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;-webkit-text-size-adjust:100%;-moz-text-size-adjust:100%;text-size-adjust:100%}
 body{font-family:var(--font-sans);font-size:1rem;line-height:var(--line-height-base);color:var(--text);background:var(--bg);overflow-x:hidden}
 ::selection{background:var(--brand);color:#fff}
 a{color:var(--brand);text-decoration:none}
