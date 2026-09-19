@@ -16,17 +16,10 @@ const latestDate = latest ? latest.date : '';
     📢
     <span class="ann-dot" id={`ann-dot${suffix}`}></span>
   </button>
-  {variant === 'desktop' && latest && (
-    <button class="ann-ticker" id={`ann-ticker${suffix}`} data-drawer-open="announcements" aria-label="查看最新公告" title="查看最新公告">
-      <span class="ann-ticker-track">
-        <span class="ann-ticker-text" data-latest-id={latestId} data-latest-date={latestDate}>{latestTitle}</span>
-      </span>
-    </button>
-  )}
-  {variant === 'mobile' && latest && (
-    <button class="ann-ticker-mobile" id={`ann-ticker${suffix}`} data-drawer-open="announcements" aria-label="查看最新公告" title="查看最新公告">
-      <span class="ann-mobile-viewport">
-        <span class="ann-mobile-track">
+  {latest && (
+    <button class={`ann-scroll ann-scroll-${variant}`} data-drawer-open="announcements" aria-label="查看最新公告" title="查看最新公告">
+      <span class="ann-scroll-viewport">
+        <span class="ann-scroll-track">
           <span class="ann-ticker-text" data-latest-id={latestId} data-latest-date={latestDate}>{latestTitle}</span>
         </span>
       </span>
@@ -63,21 +56,25 @@ const latestDate = latest ? latest.date : '';
       try { localStorage.setItem(KEY, JSON.stringify({ id: latestId, date: latestDate })); } catch (e) {}
     }
 
-    document.querySelectorAll('.ann-bell, .ann-ticker, .ann-ticker-mobile').forEach(function (btn) {
+    document.querySelectorAll('.ann-bell, .ann-scroll').forEach(function (btn) {
       btn.addEventListener('click', openAndMark);
     });
 
-    // 移动端 header 内跑马灯：始终滚动（复制足够份数 + rAF 无缝循环）
-    var viewport = document.querySelector('.ann-mobile-viewport');
-    var track = document.querySelector('.ann-mobile-track');
-    var text = track ? track.querySelector('.ann-ticker-text') : null;
-    if (viewport && track && text) {
-      var w = viewport.clientWidth;
-      var c = text.offsetWidth;
-      if (w > 0 && c > 0) {
-        var n = Math.ceil(w / c) + 2;
-        while (track.children.length < n) track.appendChild(text.cloneNode(true));
-        var x = 0, speed = 0.5;
+    // 公告跑马灯（桌面/移动统一）：复制足够份数 + rAF 无缝循环滚动
+    document.querySelectorAll('.ann-scroll').forEach(function (btn) {
+      var viewport = btn.querySelector('.ann-scroll-viewport');
+      var track = btn.querySelector('.ann-scroll-track');
+      var text = track ? track.querySelector('.ann-ticker-text') : null;
+      if (!viewport || !track || !text) return;
+
+      function init() {
+        var w = viewport.clientWidth;
+        var c = text.offsetWidth;
+        if (!w || !c) return false;
+        // 复制到总宽 ≥ 视口宽 + 一份，保证循环无缝
+        var need = Math.ceil(w / c) + 2;
+        while (track.children.length < need) track.appendChild(text.cloneNode(true));
+        var x = 0, speed = 0.5; // px/frame ≈ 30px/s
         function step() {
           x += speed;
           if (x >= c) x -= c;
@@ -85,8 +82,12 @@ const latestDate = latest ? latest.date : '';
           requestAnimationFrame(step);
         }
         requestAnimationFrame(step);
+        return true;
       }
-    }
+
+      // 等布局稳定后再测量（字体/宽度就绪）
+      if (!init()) requestAnimationFrame(init);
+    });
   })();
 </script>
 
@@ -106,16 +107,18 @@ const latestDate = latest ? latest.date : '';
     background: #EF4444; border-radius: 50%; opacity: 0; transition: opacity .15s;
   }
   .ann-dot.unread { opacity: 1; }
-  .ann-ticker {
-    max-width: 160px; overflow: hidden; background: none; border: none;
-    padding: 0; cursor: pointer; text-align: left;
+
+  /* 跑马灯（桌面/移动共用结构） */
+  .ann-scroll {
+    overflow: hidden; background: none; border: none; padding: 0;
+    cursor: pointer; text-align: left; min-width: 0;
   }
-  .ann-ticker-track {
-    display: block; position: relative; overflow: hidden; white-space: nowrap;
-  }
+  .ann-scroll-desktop { flex: 0 1 180px; }
+  .ann-scroll-viewport { display: block; overflow: hidden; white-space: nowrap; width: 100%; }
+  .ann-scroll-track { display: inline-flex; white-space: nowrap; align-items: center; will-change: transform; }
   .ann-ticker-text {
     display: inline-block; font-size: .8125rem; color: var(--text-secondary);
-    padding-right: 1rem; line-height: 1.4;
+    padding-right: 2rem; line-height: 1.4;
   }
   @media (hover: hover) {
     .ann-ticker-text:hover { color: var(--brand); }
@@ -124,20 +127,7 @@ const latestDate = latest ? latest.date : '';
   @media (max-width: 640px) {
     .ann-bar-desktop { display: none; }
     .ann-bar-mobile { display: flex; align-items: center; gap: 6px; margin-left: auto; }
-    .ann-ticker { display: none; }
-    .ann-ticker-mobile {
-      max-width: 104px; overflow: hidden; background: none; border: none;
-      padding: 0; cursor: pointer; text-align: left;
-    }
-    .ann-mobile-viewport {
-      display: block; overflow: hidden; white-space: nowrap; width: 100%;
-    }
-    .ann-mobile-track {
-      display: inline-flex; white-space: nowrap; align-items: center;
-    }
-    .ann-ticker-text {
-      font-size: .75rem; color: var(--text-secondary);
-      padding-right: 2rem; line-height: 1.4;
-    }
+    .ann-scroll-mobile { max-width: 104px; }
+    .ann-ticker-text { font-size: .75rem; }
   }
 </style>
