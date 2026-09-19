@@ -396,7 +396,7 @@ html.dark .article-hero{background:color-mix(in srgb,var(--card) 88%,transparent
 .fab-rail{position:fixed;left:0;right:0;bottom:20px;z-index:800;pointer-events:none;
   max-width:var(--measure);margin:0 auto;padding:0 var(--space-lg);
   display:flex;justify-content:flex-end}
-.fab-group{pointer-events:auto;
+.fab-group{pointer-events:auto;position:relative;
   display:flex;flex-direction:column;align-items:center;gap:12px;width:var(--fab-w)}
 /* 子项列：展开/收起靠 opacity + 位移，指针事件随状态开关 */
 .fab-group-items{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;

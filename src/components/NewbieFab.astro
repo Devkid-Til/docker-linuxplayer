@@ -4,6 +4,51 @@
 ---
 <button class="newbie-fab" id="newbie-fab" data-drawer-open="newbie-guide" aria-label="新手入门" title="新手入门">🎓</button>
 
+<!-- 首次访问的一次性提示气泡：只指路，不拦截任何交互（pointer-events:none） -->
+<span class="newbie-hint" id="newbie-hint" role="status">第一次来？点这里入门</span>
+
+<script is:inline>
+  (function () {
+    var KEY = 'kernel-blog-newbie-hint';
+    function run() {
+      var hint = document.getElementById('newbie-hint');
+      var group = document.getElementById('fab-group');
+      var toggle = document.getElementById('fab-toggle');
+      if (!hint || !group) return;
+      // 只在首次访问提示一次（localStorage 不可用时静默跳过，不打扰）
+      try { if (localStorage.getItem(KEY)) return; } catch (e) { return; }
+
+      var touched = false;
+      group.addEventListener('click', function () { touched = true; }, true);
+
+      // 展开快捷组让入口可见，再亮出气泡
+      group.classList.remove('collapsed');
+      if (toggle) toggle.setAttribute('aria-expanded', 'true');
+      requestAnimationFrame(function () { hint.classList.add('show'); });
+
+      var timer = setTimeout(dismiss, 8000);
+      function dismiss() {
+        if (!hint.classList.contains('show')) return;
+        hint.classList.remove('show');
+        clearTimeout(timer);
+        document.removeEventListener('click', dismiss);
+        window.removeEventListener('scroll', dismiss);
+        try { localStorage.setItem(KEY, '1'); } catch (e) {}
+        // 用户全程没碰过这个组 → 收回默认收起态，不留状态
+        if (!touched) {
+          group.classList.add('collapsed');
+          if (toggle) toggle.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      document.addEventListener('click', dismiss);
+      window.addEventListener('scroll', dismiss, { passive: true, once: true });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+    else run();
+  })();
+</script>
+
 <style>
   /* 尺寸/定位由 global.css 的 .fab-group 统一控制，这里只定外观 */
   .newbie-fab {
@@ -17,4 +62,30 @@
     transition: transform .15s, box-shadow .15s;
   }
   .newbie-fab:hover { transform: scale(1.08); box-shadow: 0 6px 20px var(--brand-glow); }
+
+  /* 提示气泡：定位到按钮左侧，箭头指向按钮；不接收指针事件 */
+  .newbie-hint {
+    position: absolute; top: 0; right: calc(100% + 12px);
+    height: var(--fab-w);
+    display: flex; align-items: center;
+    padding: 0 14px; border-radius: 999px; white-space: nowrap;
+    background: var(--card); color: var(--text);
+    border: 1px solid var(--border); box-shadow: var(--shadow-md);
+    font-size: .8125rem; font-weight: 500;
+    opacity: 0; transform: translateX(8px);
+    transition: opacity .3s var(--ease-out), transform .3s var(--ease-out);
+    pointer-events: none;
+  }
+  .newbie-hint.show { opacity: 1; transform: translateX(0); }
+  /* 箭头：右上两条边旋转 45° → 指向右侧按钮 */
+  .newbie-hint::after {
+    content: ''; position: absolute; right: -5px; top: 50%; margin-top: -5px;
+    width: 10px; height: 10px; background: var(--card);
+    border-top: 1px solid var(--border); border-right: 1px solid var(--border);
+    transform: rotate(45deg);
+  }
+
+  @media (max-width: 640px) {
+    .newbie-hint { font-size: .75rem; padding: 0 12px; right: calc(100% + 8px); }
+  }
 </style>
