@@ -11,9 +11,9 @@
   },
   {
     "title": "🛠️ 发第一个补丁",
-    "desc": "从 git format-patch 到 git send-email 的完整流程，以及 Signed-off-by 的含义。",
-    "link": "/posts/待补充-发第一个补丁/",
-    "active": false
+    "desc": "从 git format-patch 到 git send-email 的完整流程，用 staging 驱动里的真实例子练手。",
+    "link": "/posts/2026-09-19-first-kernel-patch/",
+    "active": true
   },
   {
     "title": "📖 内核英语",
