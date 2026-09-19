@@ -271,11 +271,22 @@
   /* 主切换：内核内容 | 内核英语 | 站长手记 */
   var mainTabs = document.querySelectorAll('.main-tab');
   var mainViews = document.querySelectorAll('.main-view');
+  var TAB_VIEWS = ['kernel', 'english', 'journal'];
   function switchMainTab(view) {
     var targetTab = document.querySelector('.main-tab[data-view="' + view + '"]');
     if (!targetTab) return;
     mainTabs.forEach(function (t) { t.classList.toggle('active', t === targetTab); });
     mainViews.forEach(function (vw) { vw.classList.toggle('hidden', vw.id !== 'view-' + view); });
+  }
+  /* 切完滚到栏目切换区：否则用户还停在顶部 hero，看不到切换结果 */
+  function scrollToTabs() {
+    var tabs = document.querySelector('.main-tabs');
+    if (tabs) tabs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  /* 从链接解析本站栏目锚点（/#english 等），非本站锚点返回 null */
+  function tabViewFromHref(href) {
+    var m = String(href || '').match(/^(?:\/|\.\/)?(?:index\.html)?#(kernel|english|journal)$/);
+    return m ? m[1] : null;
   }
   mainTabs.forEach(function (tab) {
     tab.addEventListener('click', function () {
@@ -284,13 +295,26 @@
       history.replaceState(null, '', '#' + v);
     });
   });
-  // 页面加载 / hash 变化时按 #english / #journal / #kernel 自动切换
+  // 页面加载 / hash 变化时按 #english / #journal / #kernel 自动切换并滚动
   function applyHash() {
     var h = location.hash.replace(/^#/, '');
-    if (['kernel', 'english', 'journal'].indexOf(h) !== -1) switchMainTab(h);
+    if (TAB_VIEWS.indexOf(h) === -1) return;
+    switchMainTab(h);
+    scrollToTabs();
   }
   applyHash();
   window.addEventListener('hashchange', applyHash);
+  /* 点击栏目锚点链接时，若当前 hash 已经就是目标（如已在「内核英语」又点一次 /#english），
+     浏览器不会派发 hashchange —— 这里补一次切换 + 滚动，避免「点了没反应」 */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href]');
+    if (!a) return;
+    var view = tabViewFromHref(a.getAttribute('href'));
+    if (view && location.hash === '#' + view) {
+      switchMainTab(view);
+      scrollToTabs();
+    }
+  });
 
   /* 内核内容视图：栏目过滤 */
   if (columnBar) {
