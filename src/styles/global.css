@@ -403,7 +403,7 @@ html.dark .article-hero{background:color-mix(in srgb,var(--card) 88%,transparent
   transition:opacity .2s var(--ease-out),transform .25s var(--ease-out)}
 .fab-group.collapsed .fab-group-items{opacity:0;transform:translateY(10px) scale(.92);pointer-events:none}
 /* 组内按钮统一直径，天然同列对齐（不再靠手调 right 偏移） */
-.fab-group .to-top,.fab-group .fab-feedback{
+.fab-group .to-top,.fab-group .fab-feedback,.fab-group .newbie-fab{
   width:var(--fab-w);height:var(--fab-w);border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   cursor:pointer;box-shadow:var(--shadow-sm);

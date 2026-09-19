@@ -1,0 +1,49 @@
+---
+// 新手入门面板（body 层级渲染，与触发按钮分离——避免受 fab-group 的收起/位移影响）
+import Drawer from './Drawer.astro';
+import newbieItems from '../data/newbie-guide.json';
+---
+<Drawer id="newbie-guide" title="🎓 新手入门 · Linux 内核社区">
+  <p class="newbie-intro">
+    刚接触 Linux 内核社区？从这里开始，逐步熟悉邮件列表、补丁流程和阅读方法。
+  </p>
+  <ul class="newbie-list">
+    {newbieItems.filter(item => item.active !== false).map(item => {
+      const isExternal = item.link.startsWith('http://') || item.link.startsWith('https://');
+      return (
+        <li class="newbie-item">
+          <a class="newbie-card" href={item.link} target={isExternal ? '_blank' : undefined} rel={isExternal ? 'noopener' : undefined}>
+            <h4 class="newbie-card-title">{item.title}</h4>
+            <p class="newbie-card-desc">{item.desc}</p>
+            <span class="newbie-card-arrow">→</span>
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</Drawer>
+
+<style>
+  .newbie-intro { font-size: .875rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-lg); }
+  .newbie-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-md); }
+  .newbie-card {
+    display: block; padding: var(--space-md) var(--space-lg);
+    border: 1px solid var(--border); border-radius: var(--radius-md);
+    background: var(--bg); text-decoration: none;
+    transition: border-color .15s, transform .15s, box-shadow .15s;
+    position: relative;
+    touch-action: pan-y;
+    -webkit-user-drag: none;
+    user-select: none;
+  }
+  .newbie-card:hover {
+    border-color: var(--brand); transform: translateY(-2px);
+    box-shadow: 0 4px 14px var(--brand-glow);
+  }
+  .newbie-card-title { font-size: 1rem; color: var(--text); margin-bottom: var(--space-xs); }
+  .newbie-card-desc { font-size: .8125rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+  .newbie-card-arrow {
+    position: absolute; right: var(--space-md); top: 50%; transform: translateY(-50%);
+    color: var(--brand); font-size: 1.125rem;
+  }
+</style>

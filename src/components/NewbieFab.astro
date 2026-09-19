@@ -1,71 +1,20 @@
 ---
-import Drawer from './Drawer.astro';
-import newbieItems from '../data/newbie-guide.json';
+// 首页新手入口按钮：位于右下角快捷操作组内（组由 Base 渲染）。
+// 面板在 NewbieGuideDrawer（单独组件，body 层级渲染）。
 ---
-<button class="newbie-fab" id="newbie-fab" data-drawer-open="newbie-guide" aria-label="新手入门" title="新手入门">
-  <span class="newbie-fab-icon">🎓</span>
-  <span class="newbie-fab-text">新手入门</span>
-</button>
-
-<Drawer id="newbie-guide" title="🎓 新手入门 · Linux 内核社区">
-  <p class="newbie-intro">
-    刚接触 Linux 内核社区？从这里开始，逐步熟悉邮件列表、补丁流程和阅读方法。
-  </p>
-  <ul class="newbie-list">
-    {newbieItems.filter(item => item.active !== false).map(item => {
-      const isExternal = item.link.startsWith('http://') || item.link.startsWith('https://');
-      return (
-        <li class="newbie-item">
-          <a class="newbie-card" href={item.link} target={isExternal ? '_blank' : undefined} rel={isExternal ? 'noopener' : undefined}>
-            <h4 class="newbie-card-title">{item.title}</h4>
-            <p class="newbie-card-desc">{item.desc}</p>
-            <span class="newbie-card-arrow">→</span>
-          </a>
-        </li>
-      );
-    })}
-  </ul>
-</Drawer>
+<button class="newbie-fab" id="newbie-fab" data-drawer-open="newbie-guide" aria-label="新手入门" title="新手入门">🎓</button>
 
 <style>
+  /* 尺寸/定位由 global.css 的 .fab-group 统一控制，这里只定外观 */
   .newbie-fab {
-    position: fixed; right: 20px; bottom: 130px; z-index: 800;
-    display: inline-flex; align-items: center; gap: 6px;
-    height: 44px; padding: 0 16px; border-radius: 999px;
-    background: var(--brand); color: #fff; border: none;
-    box-shadow: 0 4px 14px var(--brand-glow); cursor: pointer;
-    font-size: .875rem; font-weight: 600;
+    position: static;
+    background: var(--brand);
+    color: #fff;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    box-shadow: 0 4px 14px var(--brand-glow);
     transition: transform .15s, box-shadow .15s;
   }
-  .newbie-fab:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--brand-glow); }
-  .newbie-fab-icon { font-size: 1rem; }
-
-  .newbie-intro { font-size: .875rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--space-lg); }
-  .newbie-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-md); }
-  .newbie-card {
-    display: block; padding: var(--space-md) var(--space-lg);
-    border: 1px solid var(--border); border-radius: var(--radius-md);
-    background: var(--bg); text-decoration: none;
-    transition: border-color .15s, transform .15s, box-shadow .15s;
-    position: relative;
-    touch-action: pan-y;
-    -webkit-user-drag: none;
-    user-select: none;
-  }
-  .newbie-card:hover {
-    border-color: var(--brand); transform: translateY(-2px);
-    box-shadow: 0 4px 14px var(--brand-glow);
-  }
-  .newbie-card-title { font-size: 1rem; color: var(--text); margin-bottom: var(--space-xs); }
-  .newbie-card-desc { font-size: .8125rem; color: var(--text-secondary); line-height: 1.6; margin: 0; }
-  .newbie-card-arrow {
-    position: absolute; right: var(--space-md); top: 50%; transform: translateY(-50%);
-    color: var(--brand); font-size: 1.125rem;
-  }
-
-  @media (max-width: 640px) {
-    .newbie-fab { right: 16px; bottom: 120px; height: 40px; padding: 0 12px; }
-    .newbie-fab-text { display: none; }
-    .newbie-fab { width: 40px; justify-content: center; }
-  }
+  .newbie-fab:hover { transform: scale(1.08); box-shadow: 0 6px 20px var(--brand-glow); }
 </style>
