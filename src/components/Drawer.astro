@@ -86,6 +86,100 @@ const { id, title } = Astro.props;
       });
     }
     window.addEventListener('hashchange', closeAllDrawers);
+
+    // 抽屉右滑随手关闭
+    var DRAG_START_THRESHOLD = 10;   // px：水平位移超过此值才认为是拖动
+    var CLOSE_RATIO = 0.25;          // 滑动超过面板宽度的 25% 即关闭
+    var CLOSE_MIN_PX = 60;           // 至少滑动 60px
+    var pointerDown = false;
+    var dragging = false;
+    var startX = 0, startY = 0, currentX = 0;
+    var activePanel = null, activeId = null;
+
+    function resetPanelTransform(panel) {
+      panel.style.transform = '';
+      panel.style.transition = '';
+    }
+
+    document.addEventListener('pointerdown', function (e) {
+      var panel = e.target.closest('.drawer-panel.open');
+      if (!panel) return;
+      activePanel = panel;
+      activeId = panel.getAttribute('data-drawer');
+      pointerDown = true;
+      dragging = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      currentX = startX;
+      panel.style.transition = 'none';
+      panel.setPointerCapture && panel.setPointerCapture(e.pointerId);
+    }, { passive: true });
+
+    document.addEventListener('pointermove', function (e) {
+      if (!pointerDown || !activePanel) return;
+      var dx = e.clientX - startX;
+      var dy = e.clientY - startY;
+      currentX = e.clientX;
+
+      if (!dragging) {
+        // 未启动拖动：水平够大且垂直不大，才开始跟随
+        if (Math.abs(dx) > DRAG_START_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
+          dragging = true;
+        } else if (Math.abs(dy) > DRAG_START_THRESHOLD) {
+          // 明显垂直滚动，放弃本次拖动
+          pointerDown = false;
+          activePanel = null;
+          return;
+        }
+      }
+
+      if (dragging) {
+        e.preventDefault();
+        var tx = Math.max(0, dx);
+        activePanel.style.transform = 'translateX(' + tx + 'px)';
+      }
+    });
+
+    document.addEventListener('pointerup', function (e) {
+      if (!activePanel) return;
+      var panel = activePanel;
+      var id = activeId;
+      var dx = currentX - startX;
+      pointerDown = false;
+      activePanel = null;
+      activeId = null;
+
+      panel.style.transition = 'transform .2s var(--ease-out)';
+
+      if (dragging) {
+        var threshold = Math.max(CLOSE_MIN_PX, panel.offsetWidth * CLOSE_RATIO);
+        if (dx > threshold) {
+          // 滑够距离：先让它滑出，再调用 close 同步状态
+          panel.style.transform = 'translateX(100%)';
+          setTimeout(function () {
+            if (id) window.drawers.close(id);
+            resetPanelTransform(panel);
+          }, 200);
+        } else {
+          // 没滑够：弹性回到原位
+          panel.style.transform = 'translateX(0)';
+          setTimeout(function () { resetPanelTransform(panel); }, 200);
+        }
+      } else {
+        resetPanelTransform(panel);
+      }
+      dragging = false;
+    });
+
+    document.addEventListener('pointercancel', function () {
+      if (activePanel) {
+        resetPanelTransform(activePanel);
+        activePanel = null;
+        activeId = null;
+      }
+      pointerDown = false;
+      dragging = false;
+    });
   })();
 </script>
 
