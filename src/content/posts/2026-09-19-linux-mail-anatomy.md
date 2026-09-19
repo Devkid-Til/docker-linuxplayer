@@ -37,6 +37,7 @@ blocks:
     text: "下面是一封完整补丁邮件的头部示例："
 
   - type: "code"
+    lang: "text"
     text: "From: Alice Chen <alice@example.com>\nTo: linux-media@vger.kernel.org\nCc: Hans Verkuil <hverkuil@xs4all.nl>,\n    Mauro Carvalho Chehab <mchehab@kernel.org>,\n    linux-kernel@vger.kernel.org\nSubject: [PATCH v2 3/5] media: dvb: fix race condition in streaming start\nDate: Sat, 19 Sep 2026 10:00:00 +0800\nMessage-Id: <20260919020000.1234-1-alice@example.com>\nIn-Reply-To: <20260918010000.5678-1-alice@example.com>\nReferences: <20260918010000.5678-1-alice@example.com>"
 
   - type: "paragraph"
@@ -50,6 +51,7 @@ blocks:
     text: "Subject 是新手最容易懵的地方。因为它不只是标题，还承载了大量结构化信息。"
 
   - type: "code"
+    lang: "text"
     text: "Subject: [PATCH v2 3/5] media: dvb: fix race condition in streaming start"
 
   - type: "paragraph"
@@ -84,6 +86,7 @@ blocks:
     text: "如果是回复，Subject 前面会加 <mark>Re:</mark>；如果是转发，会加 <mark>Fw:</mark>。"
 
   - type: "code"
+    lang: "text"
     text: "Subject: Re: [PATCH v2 3/5] media: dvb: fix race condition in streaming start"
 
   - type: "divider"
@@ -106,12 +109,14 @@ blocks:
     text: "一个典型的正文示例："
 
   - type: "code"
+    lang: "text"
     text: "When the frontend is started concurrently with a tuning request,\nthe state lock is not held long enough, leading to a use-after-free\nin dvb_frontend_stop().\n\nHold fe->lock across the entire start sequence and move the state\ncheck before any resource is allocated.\n\nTested on a USB DVB-T2 stick with dvb-usb-rtl28xxu.\n\nSigned-off-by: Alice Chen <alice@example.com>"
 
   - type: "paragraph"
     text: "正文末尾通常有一行或多行 <strong>Signed-off-by</strong>："
 
   - type: "code"
+    lang: "text"
     text: "Signed-off-by: Alice Chen <alice@example.com>"
 
   - type: "paragraph"
@@ -125,6 +130,7 @@ blocks:
     text: "补丁邮件的正文之后，会跟着一段 <code>---</code> 分隔线和 diff 内容。"
 
   - type: "code"
+    lang: "diff"
     text: "---\n drivers/media/dvb-core/dvb_frontend.c | 4 +++-\n 1 file changed, 3 insertions(+), 1 deletion(-)\n\ndiff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c\nindex 1a2b3c4..5d6e7f8 100644\n--- a/drivers/media/dvb-core/dvb_frontend.c\n+++ b/drivers/media/dvb-core/dvb_frontend.c\n@@ -1456,7 +1456,8 @@ static int dvb_frontend_start(struct dvb_frontend *fe)\n \tmutex_lock(&fe->lock);\n \tif (fe->state != DVB_FE_IDLE) {\n \t\tmutex_unlock(&fe->lock);\n-\t\treturn -EBUSY;\n+\t\tret = -EBUSY;\n+\t\tgoto err;\n \t}\n \tfe->state = DVB_FE_STARTING;\n \tmutex_unlock(&fe->lock);"
 
   - type: "paragraph"
@@ -141,6 +147,7 @@ blocks:
     text: "回复邮件的头部会指向父邮件："
 
   - type: "code"
+    lang: "text"
     text: "From: Hans Verkuil <hverkuil@xs4all.nl>\nTo: Alice Chen <alice@example.com>\nCc: linux-media@vger.kernel.org\nSubject: Re: [PATCH v2 3/5] media: dvb: fix race condition in streaming start\nMessage-Id: <20260919110000.4321-hans@xs4all.nl>\nIn-Reply-To: <20260919020000.1234-1-alice@example.com>\nReferences: <20260918010000.5678-1-alice@example.com>\n          <20260919020000.1234-1-alice@example.com>"
 
   - type: "paragraph"
@@ -150,6 +157,7 @@ blocks:
     text: "回复时，系统会自动在正文顶部引用原邮件内容，用 <code>></code> 缩进。这是为了方便大家不用翻历史就能看到上下文。"
 
   - type: "code"
+    lang: "text"
     text: "> On Sat, Sep 19, 2026 at 10:00:00 +0800, Alice Chen wrote:\n> > This patch fixes the race by holding the mutex earlier.\n> \n> Looks good, but can we also add a comment explaining why?"
 
   - type: "paragraph"
