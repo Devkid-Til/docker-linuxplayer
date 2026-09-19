@@ -390,11 +390,29 @@ html.dark .article-hero{background:color-mix(in srgb,var(--card) 88%,transparent
 .site-footer .copyright{margin-top:var(--space-sm);font-size:.75rem;color:var(--text-tertiary)}
 .site-footer .links a:hover{color:var(--brand)}
 
-/* ── 15. Back-to-top ──────────────────────────────────────────── */
-/* right 以 --fab-w 避让一列：与反馈按钮左移同一位移，两按钮保持同列 */
-.to-top{position:fixed;right:calc(20px + var(--fab-w));bottom:20px;width:40px;height:40px;border-radius:50%;background:var(--card);border:1px solid var(--border);color:var(--text-secondary);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.125rem;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .25s,transform .25s,visibility .25s;box-shadow:var(--shadow-sm);z-index:800}
-.to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
-.to-top:hover{border-color:var(--brand);color:var(--brand)}
+/* ── 15. 右下角快捷操作组（收起/弹出）────────────────────────── */
+.fab-group{position:fixed;right:calc(20px + var(--fab-w));bottom:20px;z-index:800;
+  display:flex;flex-direction:column;align-items:center;gap:12px;width:var(--fab-w)}
+/* 子项列：展开/收起靠 opacity + 位移，指针事件随状态开关 */
+.fab-group-items{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;
+  transition:opacity .2s var(--ease-out),transform .25s var(--ease-out)}
+.fab-group.collapsed .fab-group-items{opacity:0;transform:translateY(10px) scale(.92);pointer-events:none}
+/* 组内按钮统一直径，天然同列对齐（不再靠手调 right 偏移） */
+.fab-group .to-top,.fab-group .fab-feedback{
+  width:var(--fab-w);height:var(--fab-w);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;box-shadow:var(--shadow-sm);
+}
+.fab-group .to-top{background:var(--card);border:1px solid var(--border);color:var(--text-secondary);font-size:1.125rem}
+.fab-group .to-top:hover{border-color:var(--brand);color:var(--brand)}
+/* 主钮：收起时是入口，展开时旋转成关闭态 */
+.fab-toggle{width:var(--fab-w);height:var(--fab-w);border-radius:50%;border:none;cursor:pointer;
+  background:var(--brand);color:#fff;font-size:1.25rem;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 14px var(--brand-glow);
+  transition:transform .25s var(--ease-out),box-shadow .15s}
+.fab-toggle:hover{box-shadow:0 6px 20px var(--brand-glow)}
+.fab-group:not(.collapsed) .fab-toggle{transform:rotate(135deg)}
 
 /* ── 16. Animations ───────────────────────────────────────────── */
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out)}

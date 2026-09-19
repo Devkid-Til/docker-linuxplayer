@@ -85,16 +85,46 @@
   /* ── 滚动进度 ── */
   var bar = document.querySelector('.progress-bar');
   var nav = document.querySelector('.nav');
-  var toTop = document.getElementById('to-top');
   function onScroll() {
     var st = scrollY || document.documentElement.scrollTop;
     var h = document.documentElement.scrollHeight - innerHeight;
     if (bar) bar.style.width = h > 0 ? (st / h) * 100 + '%' : '0%';
     if (nav) nav.classList.toggle('scrolled', st > 8);
-    if (toTop) toTop.classList.toggle('show', st > 500);
   }
   addEventListener('scroll', onScroll, { passive: true });
-  if (toTop) toTop.addEventListener('click', function () { scrollTo({ top: 0, behavior: 'smooth' }); });
+
+  /* ── 右下角快捷操作组：点主钮展开/收起，点外部或 Esc 收起 ── */
+  (function () {
+    var group = document.getElementById('fab-group');
+    var toggle = document.getElementById('fab-toggle');
+    var toTop = document.getElementById('to-top');
+    if (!group || !toggle) return;
+
+    function setOpen(open) {
+      group.classList.toggle('collapsed', !open);
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    }
+
+    toggle.addEventListener('click', function (e) {
+      e.stopPropagation();
+      setOpen(group.classList.contains('collapsed'));
+    });
+
+    document.addEventListener('click', function (e) {
+      if (!group.classList.contains('collapsed') && !e.target.closest('#fab-group')) setOpen(false);
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') setOpen(false);
+    });
+
+    if (toTop) {
+      toTop.addEventListener('click', function () {
+        scrollTo({ top: 0, behavior: 'smooth' });
+        setOpen(false);
+      });
+    }
+  })();
 
   /* ── 滚动显现 ── */
   var reveals = document.querySelectorAll('.reveal');
