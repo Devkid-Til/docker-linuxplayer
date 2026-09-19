@@ -327,6 +327,12 @@ html.dark .article-hero{background:color-mix(in srgb,var(--card) 88%,transparent
 .block-code-card .code-lang{font-family:var(--font-mono);font-size:.72rem;color:#8B949E;letter-spacing:.05em;text-transform:lowercase}
 .block-code-card pre{background:#0D1117;color:#E6EDF3;margin:0;border-radius:0;border:none;padding:14px 16px;font-size:.8125rem;line-height:1.7;overflow-x:auto}
 .block-code-card code{font-family:var(--font-mono);background:none;padding:0;color:inherit}
+/* 横向可滑动提示：内容确实溢出时由 main.js 加 .is-scrollable（滑到末尾加 .at-end 收起渐隐） */
+.code-scroll-hint{display:none;margin-left:auto;font-size:.68rem;color:#8B949E;white-space:nowrap}
+.block-code-card.is-scrollable .code-scroll-hint{display:inline}
+.block-code-card.is-scrollable::after{content:"";position:absolute;right:0;bottom:0;top:34px;width:38px;
+  pointer-events:none;background:linear-gradient(to right,rgba(13,17,23,0),#0D1117);transition:opacity .2s}
+.block-code-card.at-end::after{opacity:0}
 .block-image{text-align:center;padding:var(--space-md)}
 .block-image img{max-width:100%;border-radius:var(--radius-md)}
 .img-ph{color:var(--text-tertiary);font-size:.8125rem;text-align:center;margin:0}
