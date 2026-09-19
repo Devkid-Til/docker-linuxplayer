@@ -1,0 +1,94 @@
+---
+// 文章页悬浮反馈按钮：可拖动（位置存 localStorage），点击跳飞书表单并预填当前页链接。
+// 预填参数格式（飞书官方）：表单分享链接 + ?prefill_问题名称=值，问题名称须与表单题目完全一致。
+const FORM_URL = 'https://uq0ip8uep08.feishu.cn/share/base/shrcnSIfR7Sd2oEvR2E0HJHL38g';
+---
+<button class="fab-feedback" id="fab-feedback" aria-label="意见反馈" title="意见反馈">💬</button>
+
+<script define:vars={{ FORM_URL }}>
+  (function () {
+    var fab = document.getElementById('fab-feedback');
+    if (!fab) return;
+    var POS_KEY = 'fab-feedback-pos';
+    var DRAG_THRESHOLD = 5; // px：小于此位移视为点击
+
+    // 恢复上次位置
+    try {
+      var saved = JSON.parse(localStorage.getItem(POS_KEY) || 'null');
+      if (saved && typeof saved.x === 'number' && typeof saved.y === 'number') {
+        applyPos(saved.x, saved.y);
+      }
+    } catch (e) {}
+
+    function applyPos(x, y) {
+      // 钳制在视口内
+      var r = fab.getBoundingClientRect();
+      var maxX = window.innerWidth - r.width - 4;
+      var maxY = window.innerHeight - r.height - 4;
+      x = Math.max(4, Math.min(x, maxX));
+      y = Math.max(4, Math.min(y, maxY));
+      fab.style.left = x + 'px';
+      fab.style.top = y + 'px';
+      fab.style.right = 'auto';
+      fab.style.bottom = 'auto';
+      return { x: x, y: y };
+    }
+
+    var startX = 0, startY = 0, originX = 0, originY = 0, dragging = false, moved = false;
+
+    fab.addEventListener('pointerdown', function (e) {
+      dragging = true;
+      moved = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      var r = fab.getBoundingClientRect();
+      originX = r.left;
+      originY = r.top;
+      fab.setPointerCapture(e.pointerId);
+      fab.classList.add('dragging');
+    });
+
+    fab.addEventListener('pointermove', function (e) {
+      if (!dragging) return;
+      var dx = e.clientX - startX;
+      var dy = e.clientY - startY;
+      if (!moved && Math.abs(dx) + Math.abs(dy) > DRAG_THRESHOLD) moved = true;
+      if (moved) applyPos(originX + dx, originY + dy);
+    });
+
+    fab.addEventListener('pointerup', function (e) {
+      fab.classList.remove('dragging');
+      if (!dragging) return;
+      dragging = false;
+      if (moved) {
+        var r = fab.getBoundingClientRect();
+        try { localStorage.setItem(POS_KEY, JSON.stringify({ x: r.left, y: r.top })); } catch (err) {}
+      } else {
+        // 点击：跳表单，预填来源页面 = 当前页 URL（不含 hash）
+        var url = location.origin + location.pathname;
+        window.open(FORM_URL + '?prefill_' + encodeURIComponent('来源页面') + '=' + encodeURIComponent(url), '_blank', 'noopener');
+      }
+    });
+
+    // 拖动中指针取消（如系统手势打断）
+    fab.addEventListener('pointercancel', function () {
+      dragging = false;
+      fab.classList.remove('dragging');
+    });
+  })();
+</script>
+
+<style>
+  .fab-feedback{
+    position:fixed;right:20px;bottom:72px;width:44px;height:44px;border-radius:50%;
+    background:var(--brand);border:none;color:#fff;font-size:1.25rem;cursor:grab;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 14px var(--brand-glow);z-index:800;
+    transition:transform .15s,box-shadow .15s;touch-action:none;user-select:none;
+  }
+  .fab-feedback:hover{transform:scale(1.08);box-shadow:0 6px 20px var(--brand-glow)}
+  .fab-feedback.dragging{cursor:grabbing;transform:scale(1.05);transition:none}
+  @media(max-width:640px){
+    .fab-feedback{right:16px;bottom:64px;width:40px;height:40px;font-size:1.125rem}
+  }
+</style>
