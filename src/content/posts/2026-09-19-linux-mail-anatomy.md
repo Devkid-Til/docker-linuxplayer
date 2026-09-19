@@ -141,20 +141,42 @@ blocks:
     kind: "section"
 
   - type: "paragraph"
-    text: "社区讨论不是单封邮件，而是线程（Thread）。邮件客户端或 lore.kernel.org 会把同一主题的邮件折叠成树状结构。"
+    text: "社区讨论不是单封邮件，而是一棵树状的线程（Thread）。同一个补丁可能被多个人从多个角度回复，作者也会根据评审意见重发 v2、v3。"
 
   - type: "paragraph"
-    text: "回复邮件的头部会指向父邮件："
+    text: "线程是怎么串起来的？靠三个字段："
+
+  - type: "toc"
+    items:
+      - label: "Message-Id"
+        text: "每封邮件出生时的唯一身份证号。"
+      - label: "In-Reply-To"
+        text: "回复哪封邮件，就填那封邮件的 Message-Id。"
+      - label: "References"
+        text: "列出从根邮件到父邮件的所有 Message-Id，方便客户端还原整条路径。"
+
+  - type: "paragraph"
+    text: "假设 Alice 发了一个两补丁的系列，Hans 评审后她改了 v2。整个线程长这样："
 
   - type: "code"
     lang: "text"
-    text: "From: Hans Verkuil <hverkuil@xs4all.nl>\nTo: Alice Chen <alice@example.com>\nCc: linux-media@vger.kernel.org\nSubject: Re: [PATCH v2 3/5] media: dvb: fix race condition in streaming start\nMessage-Id: <20260919110000.4321-hans@xs4all.nl>\nIn-Reply-To: <20260919020000.1234-1-alice@example.com>\nReferences: <20260918010000.5678-1-alice@example.com>\n          <20260919020000.1234-1-alice@example.com>"
+    text: "[cover letter] msg-A\n  ├─ [PATCH 1/2]   msg-B\n  │    └─ Hans 的 review    msg-D\n  └─ [PATCH 2/2]   msg-C\n       └─ Hans 的 review    msg-E\n            └─ [PATCH v2 0/2] msg-F  ← Alice 的第二轮\n                  ├─ [PATCH v2 1/2] msg-G\n                  └─ [PATCH v2 2/2] msg-H"
 
   - type: "paragraph"
-    text: "<code>In-Reply-To</code> 指向父邮件的 Message-Id，<code>References</code> 则列出整条线程链。邮件客户端就是靠这两个字段把讨论串起来的。"
+    text: "msg-D 是 Hans 对补丁 1/2 的回复，它的 In-Reply-To 指向 msg-B；msg-F 是 Alice 发的 v2 封面信，它的 In-Reply-To 指向 msg-E（最后一轮评审）。"
 
   - type: "paragraph"
-    text: "回复时，系统会自动在正文顶部引用原邮件内容，用 <code>></code> 缩进。这是为了方便大家不用翻历史就能看到上下文。"
+    text: "对应到真实邮件头部："
+
+  - type: "code"
+    lang: "text"
+    text: "# Hans 回复 [PATCH 1/2]\nMessage-Id: <msg-D@example.com>\nIn-Reply-To: <msg-B@example.com>\nReferences: <msg-A@example.com> <msg-B@example.com>\n\n# Alice 发出 v2 封面信\nMessage-Id: <msg-F@example.com>\nIn-Reply-To: <msg-E@example.com>\nReferences: <msg-A@example.com> <msg-C@example.com> <msg-E@example.com>"
+
+  - type: "paragraph"
+    text: "邮件客户端和 lore.kernel.org 就是根据这些引用关系，把讨论折叠成可展开的树。你点一下就能从评审意见跳到被评审的补丁，再跳到修改后的 v2，不用一封一封翻。"
+
+  - type: "paragraph"
+    text: "回复时，系统还会自动在正文顶部引用原邮件内容，用 <code>></code> 缩进。这是为了在跨时区、异步沟通时，读邮件的人不用翻历史就能看到上下文。"
 
   - type: "code"
     lang: "text"
@@ -173,6 +195,8 @@ blocks:
         text: "比 Acked-by 更正式的代码审查通过标记。例如：Reviewed-by: Mauro Carvalho Chehab <mchehab@kernel.org>"
       - label: "Queued"
         text: "补丁已加入维护者的本地队列，很快会进入主线。"
+      - label: "v2 / v3 / vN"
+        text: "第 N 版补丁。每一轮评审修改后，作者会重发整个系列并递增版本号。"
 
   - type: "divider"
     label: "📌 新手建议"
