@@ -67,7 +67,7 @@ const latestDate = latest ? latest.date : '';
       btn.addEventListener('click', openAndMark);
     });
 
-    // 移动端 header 内跑马灯：标题溢出才滚动，否则居中静态
+    // 移动端 header 内跑马灯：始终滚动（复制足够份数 + rAF 无缝循环）
     var viewport = document.querySelector('.ann-mobile-viewport');
     var track = document.querySelector('.ann-mobile-track');
     var text = track ? track.querySelector('.ann-ticker-text') : null;
@@ -75,22 +75,16 @@ const latestDate = latest ? latest.date : '';
       var w = viewport.clientWidth;
       var c = text.offsetWidth;
       if (w > 0 && c > 0) {
-        if (c <= w) {
-          // 不溢出：居中静态
-          track.classList.add('ann-mobile-static');
-        } else {
-          // 溢出：复制足够份数 + rAF 滚动
-          var n = Math.ceil(w / c) + 2;
-          while (track.children.length < n) track.appendChild(text.cloneNode(true));
-          var x = 0, speed = 0.6;
-          function step() {
-            x += speed;
-            if (x >= c) x -= c;
-            track.style.transform = 'translateX(' + (-x) + 'px)';
-            requestAnimationFrame(step);
-          }
+        var n = Math.ceil(w / c) + 2;
+        while (track.children.length < n) track.appendChild(text.cloneNode(true));
+        var x = 0, speed = 0.5;
+        function step() {
+          x += speed;
+          if (x >= c) x -= c;
+          track.style.transform = 'translateX(' + (-x) + 'px)';
           requestAnimationFrame(step);
         }
+        requestAnimationFrame(step);
       }
     }
   })();
