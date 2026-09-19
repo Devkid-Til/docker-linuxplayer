@@ -2,29 +2,39 @@
 (function () {
   'use strict';
 
-  /* 触摸设备检测：触摸用 touch 事件控制光晕/粒子，手指接触才显示、松手即隐 */
-  var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-
   /* ── 暗色模式 ── */
   var html = document.documentElement;
-  var themeBtn = document.getElementById('theme-toggle');
+  var themeBtns = document.querySelectorAll('.theme-btn');
   function apply(d) {
     d ? html.classList.add('dark') : html.classList.remove('dark');
+  }
+  function icon() {
+    var dark = html.classList.contains('dark');
+    themeBtns.forEach(function (b) { b.textContent = dark ? '🌙' : '☀️'; });
   }
   var s = localStorage.getItem('kernel-blog-theme');
   if (s !== null) apply(s === 'dark');
   else if (matchMedia('(prefers-color-scheme:dark)').matches) apply(true);
-  if (themeBtn) {
-    function icon() { themeBtn.textContent = html.classList.contains('dark') ? '🌙' : '☀️'; }
-    icon();
-    themeBtn.addEventListener('click', function () {
+  themeBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
       var d = !html.classList.contains('dark');
       apply(d); localStorage.setItem('kernel-blog-theme', d ? 'dark' : 'light'); icon();
     });
-  }
+  });
+  icon();
+  /* 未手动设置主题时，跟随系统深浅色切换 */
+  var mqDark = matchMedia('(prefers-color-scheme: dark)');
+  var onSysTheme = function (e) {
+    if (localStorage.getItem('kernel-blog-theme') === null) {
+      apply(e.matches); icon();
+    }
+  };
+  if (mqDark.addEventListener) mqDark.addEventListener('change', onSysTheme);
+  else if (mqDark.addListener) mqDark.addListener(onSysTheme);
 
-  /* ── Canvas 环境粒子（仅背景星空，已移除跟随指针的尾迹） ── */
+  /* ── Canvas 环境粒子（仅背景星空，移动端停用省电） ── */
   (function () {
+    if (matchMedia('(max-width: 640px)').matches) return;
     var c = document.getElementById('particles-canvas');
     if (!c) return;
     var ctx = c.getContext('2d');
