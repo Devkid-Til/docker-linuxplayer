@@ -4,6 +4,7 @@ import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import AnnouncementDrawer from '../components/AnnouncementDrawer.astro';
+import FeedbackFab from '../components/FeedbackFab.astro';
 // 品牌配色单一数据源：--brand 系列 token 从这里注入，改色只改 src/brand.json
 import brand from '../brand.json';
 
@@ -93,13 +94,18 @@ const brandCss = `:root{${lightTokens}}${termRule}${darkTokens ? ` html.dark{${d
 
   <AnnouncementDrawer />
 
-  <!-- 右下角快捷操作组：默认收起，点主钮弹出（回到顶部 + 页面自定义项，如文章页的反馈）
-      外层 fab-rail 与 .container 同宽同内边距，保证按钮与正文右边缘对齐（各断点一致） -->
+  <!-- 页面级浮层（如首页的新手入门面板）——独立于 fab-group，避免被收起动画影响 -->
+  <slot name="overlays" />
+
+  <!-- 右下角快捷操作组：默认收起，点主钮弹出。
+       含全站通用的 回到顶部 / 意见反馈，以及各页面通过 fab-extra 追加的项。
+       外层 fab-rail 与 .container 同宽同内边距，保证按钮与正文右边缘对齐（各断点一致） -->
   <div class="fab-rail">
     <div class="fab-group collapsed" id="fab-group">
       <div class="fab-group-items">
-        <button class="to-top" id="to-top" aria-label="回到顶部" title="回到顶部">↑</button>
         <slot name="fab-extra" />
+        <button class="to-top" id="to-top" aria-label="回到顶部" title="回到顶部">↑</button>
+        <FeedbackFab />
       </div>
       <button class="fab-toggle" id="fab-toggle" aria-label="快捷操作" title="快捷操作" aria-expanded="false">⋯</button>
     </div>
