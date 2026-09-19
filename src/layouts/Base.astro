@@ -93,7 +93,14 @@ const brandCss = `:root{${lightTokens}}${termRule}${darkTokens ? ` html.dark{${d
 
   <AnnouncementDrawer />
 
-  <button class="to-top" id="to-top" aria-label="回到顶部">↑</button>
+  <!-- 右下角快捷操作组：默认收起，点主钮弹出（回到顶部 + 页面自定义项，如文章页的反馈） -->
+  <div class="fab-group collapsed" id="fab-group">
+    <div class="fab-group-items">
+      <button class="to-top" id="to-top" aria-label="回到顶部" title="回到顶部">↑</button>
+      <slot name="fab-extra" />
+    </div>
+    <button class="fab-toggle" id="fab-toggle" aria-label="快捷操作" title="快捷操作" aria-expanded="false">⋯</button>
+  </div>
 
   <script>
     import '../scripts/main.js';
