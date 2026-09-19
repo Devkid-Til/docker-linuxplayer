@@ -238,7 +238,12 @@ body::before{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .article-cat,.article-reading{font-size:.8125rem;color:var(--text-tertiary)}
 .article-header h1{font-size:1.75rem;line-height:1.35;font-weight:700;margin-bottom:var(--space-md)}
 .article-divider{width:56px;height:3px;border-radius:2px;background:var(--brand);margin-bottom:var(--space-xl)}
-.article-body{font-size:1rem;line-height:1.85}
+/* overflow-wrap:anywhere —— 配置宏/长路径/URL 这类 token 在窄屏下无法断行，
+   会撑破容器并让移动端「布局视口」膨胀（实测最坏达 726px），
+   表现为正文整体变宽、fixed 定位按钮被推出真实屏幕外。允许任意位置断行以杜绝该类问题。 */
+.article-body{font-size:1rem;line-height:1.85;overflow-wrap:anywhere}
+/* 代码块例外：保持横向滚动，不因上面的规则被折行（pre 本就 white-space:pre，此处显式兜底） */
+.article-body pre{overflow-wrap:normal;word-break:normal}
 
 /* ── 文章页全幅星域：星空延续自首页 hero（--hero-image 同源），全屏 fixed + 展开/呼吸动画 ── */
 .article-bg{position:relative}
