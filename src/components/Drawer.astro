@@ -30,28 +30,39 @@ const { id, title } = Astro.props;
   (function () {
     // ── 全局 open/close 与事件，只初始化一次 ──
     if (!window.drawers) {
-      var prevOverflow = '';
+      /* 滚动锁用引用计数 + 只记一次原始值。
+         若把「原始值」存成单变量、每次 open 都覆盖：当 body 已是 hidden 时再 open
+         （连开两个抽屉 / 快速双击入口导致 open 被调两次），存下的就是 'hidden'，
+         关闭时写回 'hidden' → 页面永久无法滚动。 */
+      var openCount = 0;
+      var savedOverflow = '';
       window.drawers = {
         open: function (id) {
           var backdrop = document.getElementById('drawer-backdrop-' + id);
           var panel = document.getElementById('drawer-panel-' + id);
           if (!backdrop || !panel) return;
+          // 重复 open 同一个已展开的抽屉不重复计数
+          if (!panel.classList.contains('open')) {
+            if (openCount === 0) savedOverflow = document.body.style.overflow;
+            openCount++;
+          }
           backdrop.classList.add('open');
           panel.classList.add('open');
           backdrop.setAttribute('aria-hidden', 'false');
           panel.setAttribute('aria-hidden', 'false');
-          prevOverflow = document.body.style.overflow;
           document.body.style.overflow = 'hidden';
         },
         close: function (id) {
           var backdrop = document.getElementById('drawer-backdrop-' + id);
           var panel = document.getElementById('drawer-panel-' + id);
           if (!backdrop || !panel) return;
+          if (panel.classList.contains('open')) openCount = Math.max(0, openCount - 1);
           backdrop.classList.remove('open');
           panel.classList.remove('open');
           backdrop.setAttribute('aria-hidden', 'true');
           panel.setAttribute('aria-hidden', 'true');
-          document.body.style.overflow = prevOverflow;
+          // 所有抽屉都关掉才恢复，且恢复的是首次 open 前记录的值
+          if (openCount === 0) document.body.style.overflow = savedOverflow;
         }
       };
 
