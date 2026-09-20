@@ -73,8 +73,10 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 /* ── 6. Navigation ───────────────────────────────────────────── */
 .nav{position:sticky;top:0;z-index:900;height:var(--nav-height);background:var(--bg);border-bottom:1px solid transparent;transition:border-color .25s var(--ease-out),box-shadow .25s var(--ease-out)}
 .nav.scrolled{border-bottom-color:var(--border);box-shadow:var(--shadow-sm)}
-.nav-inner{height:var(--nav-height);display:flex;align-items:center;justify-content:space-between;max-width:var(--measure);margin:0 auto;padding:0 var(--space-lg)}
-.nav-brand{font-weight:800;font-size:1.125rem;text-decoration:none;letter-spacing:-0.01em;white-space:nowrap;min-width:0;
+/* header 三栏 Grid：brand | nav-links(right) | tools(right)。
+   第一列 1fr 把 brand 推到最左；nav-links 和 tools 都在右侧。 */
+.nav-inner{height:var(--nav-height);display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:var(--space-md);max-width:var(--measure);margin:0 auto;padding:0 var(--space-lg)}
+.nav-brand{font-weight:800;font-size:1.125rem;text-decoration:none;letter-spacing:-0.01em;white-space:nowrap;min-width:0;overflow:hidden;
   /* 完整品牌名「Linux 内核玩家」：字内流光——靛→蓝→青渐变在文字内部流动（background-clip:text），
      高光在字体内部扫过，非覆盖在字上的独立光带；周期 5s 从容，首尾同色循环无缝 */
   background-image: linear-gradient(100deg, #5B2FE0 0%, #3866E8 18%, #fff 42%, #15C9E8 55%, #3866E8 78%, #5B2FE0 100%);
@@ -86,8 +88,10 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .nav-brand:hover{text-decoration:none}
 .nav-brand em{font-style:normal}
 @keyframes brand-shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
-.nav-links{display:flex;align-items:center;gap:var(--space-xs);min-width:0}
-.nav-tools{display:none;align-items:center;gap:var(--space-xs);min-width:0}
+/* 中间列：导航链接，靠右对齐；min-width:0 配合 grid 允许收缩 */
+.nav-links{display:flex;align-items:center;justify-content:flex-end;gap:var(--space-xs);min-width:0}
+/* 右侧工具栏：靠右对齐；桌面端显示主题按钮；移动端显示汉堡菜单 + 移动端公告 */
+.nav-tools{display:flex;align-items:center;justify-self:end;gap:var(--space-xs);min-width:0}
 .nav-links a{font-size:.875rem;font-weight:500;color:var(--text-secondary);text-decoration:none;padding:var(--space-xs) 12px;border-radius:var(--radius-sm);transition:color .15s,background .15s;white-space:nowrap}
 .nav-links a:hover,.nav-links a.active{color:var(--brand);background:var(--brand-bg)}
 .theme-btn{background:none;border:1px solid var(--border);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s;color:var(--text-secondary);flex-shrink:0}
@@ -452,7 +456,7 @@ html.dark .to-top{background:var(--card)}
 html.dark .timeline-item::before{border-color:var(--bg)}
 
 /* ── 19. Responsive ───────────────────────────────────────────── */
-@media(max-width:640px){:root{--font-size-base:14px;--nav-height:48px;--fab-w:40px}.container{padding:0 var(--space-md)}.fab-rail{padding:0 var(--space-md)}.nav-inner{padding:0 var(--space-md)}.hamburger{display:block}.nav-links{position:absolute;top:var(--nav-height);left:0;right:0;background:var(--card);flex-direction:column;align-items:stretch;padding:0 var(--space-md);border-bottom:1px solid transparent;max-height:0;overflow:hidden;opacity:0;transform:translateY(-8px);pointer-events:none;transition:max-height .3s var(--ease-out),opacity .2s var(--ease-out),transform .3s var(--ease-out),padding .3s var(--ease-out),border-color .3s,box-shadow .3s}.nav-links.open{max-height:420px;opacity:1;transform:translateY(0);pointer-events:auto;border-bottom-color:var(--border);box-shadow:var(--shadow-md);padding:var(--space-sm) var(--space-md) var(--space-md)}.nav-tools{display:flex;align-items:center;gap:var(--space-xs);flex:1;min-width:0}.nav-links .theme-btn{align-self:center}.nav-links a{padding:var(--space-sm)}.hero{padding:36px 0 32px}.hero h1{font-size:1.35rem}.hero .subtitle{font-size:.75rem;max-width:100%}.hero .term-deco{top:10px;right:10px;font-size:11px;padding:3px 10px}.hero-eyebrow{font-size:.7rem;padding:4px 12px}.timeline-card{padding:var(--space-md)}.timeline-card h3{font-size:.9375rem}.article-header h1{font-size:1.375rem}.about-card{flex-direction:column;text-align:center}}
+@media(max-width:640px){:root{--font-size-base:14px;--nav-height:48px;--fab-w:40px}.container{padding:0 var(--space-md)}.fab-rail{padding:0 var(--space-md)}.nav-inner{padding:0 var(--space-md);grid-template-columns:1fr auto auto}.hamburger{display:block}.nav-links{position:absolute;top:var(--nav-height);left:0;right:0;background:var(--card);flex-direction:column;align-items:stretch;padding:0 var(--space-md);border-bottom:1px solid transparent;max-height:0;overflow:hidden;opacity:0;transform:translateY(-8px);pointer-events:none;transition:max-height .3s var(--ease-out),opacity .2s var(--ease-out),transform .3s var(--ease-out),padding .3s var(--ease-out),border-color .3s,box-shadow .3s}.nav-links.open{max-height:420px;opacity:1;transform:translateY(0);pointer-events:auto;border-bottom-color:var(--border);box-shadow:var(--shadow-md);padding:var(--space-sm) var(--space-md) var(--space-md)}.nav-tools{display:flex;align-items:center;gap:var(--space-xs);min-width:0}.nav-links a{padding:var(--space-sm)}.hero{padding:36px 0 32px}.hero h1{font-size:1.35rem}.hero .subtitle{font-size:.75rem;max-width:100%}.hero .term-deco{top:10px;right:10px;font-size:11px;padding:3px 10px}.hero-eyebrow{font-size:.7rem;padding:4px 12px}.timeline-card{padding:var(--space-md)}.timeline-card h3{font-size:.9375rem}.article-header h1{font-size:1.375rem}.about-card{flex-direction:column;text-align:center}}
 @media(min-width:641px) and (max-width:1024px){.container{max-width:100%;padding:0 28px}.fab-rail{max-width:100%;padding:0 28px}}
 @media(min-width:1025px){.container{max-width:960px}.fab-rail{max-width:960px}}
 
