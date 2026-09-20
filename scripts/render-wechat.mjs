@@ -202,7 +202,11 @@ const outHtml = html.replace(colorRe, m => COLOR_MAP[m]);
 
 if (writeOut) {
   mkdirSync(path.join(ROOT, 'output'), { recursive: true });
-  const out = path.join(ROOT, 'output', `公众号-${data.date}.html`);
+  /* 同一天可能有多篇（日报 + 周报 + 英语），只按日期命名会互相覆盖。
+     规则：日报保持「公众号-YYYY-MM-DD.html」不变（cron 依赖此名），其余栏目加 slug 后缀消歧。 */
+  const slugOf = base(target).replace(/\.md$/, '');
+  const suffix = (data.column || 'daily') === 'daily' ? '' : '-' + slugOf.replace(data.date + '-', '');
+  const out = path.join(ROOT, 'output', `公众号-${data.date}${suffix}.html`);
   writeFileSync(out, outHtml);
   console.log(`✓ 已写入 ${out}`);
 } else {
