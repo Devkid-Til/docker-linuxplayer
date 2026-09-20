@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import ArticleBody from '../../components/article/ArticleBody.astro';
 import type { Block } from '../../components/article/blocks/types';
 import { getCollection } from 'astro:content';
+import { COLUMN_MAP } from '../../column';
 
 interface Adjacent {
   slug: string;
@@ -38,6 +39,8 @@ export async function getStaticPaths() {
 
 const { post, prev, next } = Astro.props;
 const displayDate = post.data.date.slice(5);
+/* 眉标按栏目取名（周报 → KERNEL WEEKLY），不再对全栏目写死 KERNEL DAILY */
+const eyebrow = COLUMN_MAP[post.data.column || 'daily']?.eyebrow || 'KERNEL DAILY';
 ---
 <Base title={`${post.data.title} · Linux 内核玩家`} desc={post.data.desc}>
   <div class="article-bg">
@@ -46,7 +49,7 @@ const displayDate = post.data.date.slice(5);
     <header class="article-hero">
       <a class="back-link" href="/">← 首页</a>
       <div class="hero-inner">
-        <span class="hero-eyebrow reveal">KERNEL DAILY · {displayDate}</span>
+        <span class="hero-eyebrow reveal">{eyebrow} · {displayDate}</span>
         <h1 class="reveal">{post.data.title}</h1>
         <p class="subtitle reveal">{post.data.desc}</p>
       </div>

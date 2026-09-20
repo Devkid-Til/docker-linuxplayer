@@ -6,6 +6,7 @@ export interface ColumnMeta {
   label: string;      // 短标签（过滤栏 + 卡片徽标）
   emoji: string;
   fullLabel: string;  // 全称（文章页 hero eyebrow 用）
+  eyebrow: string;    // 文章页 hero 眉标的英文前缀（KERNEL DAILY / KERNEL WEEKLY…）
   tags: string[];     // 本栏目受控词表（内容分类唯一允许的标签集合）
 }
 
@@ -15,35 +16,35 @@ export interface ColumnMeta {
    周报是 mm/sched/pci 雷达 → 词表 = 机制域；月/季/年报是盘点 → 词表 = 盘点视角。 */
 export const COLUMNS: ColumnMeta[] = [
   {
-    value: 'daily', label: '日报', emoji: '📅', fullLabel: '每日内核日报',
+    value: 'daily', label: '日报', emoji: '📅', fullLabel: '每日内核日报', eyebrow: 'KERNEL DAILY',
     tags: ['media', 'DRM', 'mm', 'PCI', 'net', 'fs', 'virtio', 'Rust', 'LSM', 'block', 'arch', 'sched', 'driver-core'],
   },
   {
-    value: 'weekly', label: '周报', emoji: '📊', fullLabel: '每周雷达',
+    value: 'weekly', label: '周报', emoji: '📊', fullLabel: '每周雷达', eyebrow: 'KERNEL WEEKLY',
     tags: ['内存管理', '进程调度', 'PCI/总线', '架构动向', '版本/发布', '社区/生态'],
   },
   {
-    value: 'monthly', label: '月报', emoji: '📈', fullLabel: '月报',
+    value: 'monthly', label: '月报', emoji: '📈', fullLabel: '月报', eyebrow: 'KERNEL MONTHLY',
     tags: ['月度盘点', '趋势观察', '数据指标'],
   },
   {
-    value: 'quarterly', label: '季报', emoji: '🎯', fullLabel: '季报',
+    value: 'quarterly', label: '季报', emoji: '🎯', fullLabel: '季报', eyebrow: 'KERNEL QUARTERLY',
     tags: ['季度盘点', '趋势观察', '里程碑'],
   },
   {
-    value: 'yearly', label: '年报', emoji: '📚', fullLabel: '年报',
+    value: 'yearly', label: '年报', emoji: '📚', fullLabel: '年报', eyebrow: 'KERNEL YEARLY',
     tags: ['年度盘点', '生态回顾', '里程碑'],
   },
   /* 内核英语：独立栏目（不是日报周边）——用内核资料学英语。
      词表 = 学习维度（全方面：阅读+口语+写作），文章按「学什么」标记 */
   {
-    value: 'english', label: '内核英语', emoji: '📖', fullLabel: '内核英语',
+    value: 'english', label: '内核英语', emoji: '📖', fullLabel: '内核英语', eyebrow: 'KERNEL ENGLISH',
     tags: ['标题解析', '术语卡', '地道表达', '阅读', '写作', '口语'],
   },
   /* 站长手记：独立栏目——日志/教程/笔记/感谢/随想，低频不定期（贵在真实不日更）
      日志 = 站点自身动态（上线、改版）／教程 = 面向新手的入门指南 */
   {
-    value: 'journal', label: '站长手记', emoji: '📔', fullLabel: '站长手记',
+    value: 'journal', label: '站长手记', emoji: '📔', fullLabel: '站长手记', eyebrow: 'SITE JOURNAL',
     tags: ['日志', '教程', '笔记', '感谢', '随想'],
   },
 ];
