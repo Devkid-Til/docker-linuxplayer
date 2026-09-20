@@ -74,7 +74,7 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .nav{position:sticky;top:0;z-index:900;height:var(--nav-height);background:var(--bg);border-bottom:1px solid transparent;transition:border-color .25s var(--ease-out),box-shadow .25s var(--ease-out)}
 .nav.scrolled{border-bottom-color:var(--border);box-shadow:var(--shadow-sm)}
 .nav-inner{height:var(--nav-height);display:flex;align-items:center;justify-content:space-between;max-width:var(--measure);margin:0 auto;padding:0 var(--space-lg)}
-.nav-brand{font-weight:800;font-size:1.125rem;text-decoration:none;letter-spacing:-0.01em;white-space:nowrap;
+.nav-brand{font-weight:800;font-size:1.125rem;text-decoration:none;letter-spacing:-0.01em;white-space:nowrap;min-width:0;
   /* 完整品牌名「Linux 内核玩家」：字内流光——靛→蓝→青渐变在文字内部流动（background-clip:text），
      高光在字体内部扫过，非覆盖在字上的独立光带；周期 5s 从容，首尾同色循环无缝 */
   background-image: linear-gradient(100deg, #5B2FE0 0%, #3866E8 18%, #fff 42%, #15C9E8 55%, #3866E8 78%, #5B2FE0 100%);
@@ -90,7 +90,7 @@ hr{border:none;border-top:1px solid var(--border);margin:var(--space-2xl) 0}
 .nav-tools{display:none;align-items:center;gap:var(--space-xs);min-width:0}
 .nav-links a{font-size:.875rem;font-weight:500;color:var(--text-secondary);text-decoration:none;padding:var(--space-xs) 12px;border-radius:var(--radius-sm);transition:color .15s,background .15s;white-space:nowrap}
 .nav-links a:hover,.nav-links a.active{color:var(--brand);background:var(--brand-bg)}
-.theme-btn{background:none;border:1px solid var(--border);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s;color:var(--text-secondary)}
+.theme-btn{background:none;border:1px solid var(--border);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s;color:var(--text-secondary);flex-shrink:0}
 .theme-btn:hover{border-color:var(--brand);background:var(--brand-bg)}
 .hamburger{display:none;background:none;border:none;cursor:pointer;padding:var(--space-xs)}
 .hamburger span{display:block;width:20px;height:2px;background:var(--text);margin:4px 0;border-radius:2px;transition:transform .3s,opacity .3s}
