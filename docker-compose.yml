@@ -9,10 +9,22 @@ services:
     ports:
       - "80:80"             # 生产端口
       - "443:443"           # HTTPS
+    environment:
+      # 容器默认 UTC，nginx 日志时间戳也按 UTC 写；而 fail2ban 跑在宿主（CST），
+      # 解析日志时按本地时区理解 → 把 UTC 的 10:42 当成 CST 的 10:42，认定事件在
+      # 8 小时前 → 超出 findtime，全部丢弃，jail 静默失效永不封禁（2026-09-21 实测踩到）。
+      # 设 TZ 后日志写本地时间，与 fail2ban 的解析一致。镜像自带 /usr/share/zoneinfo。
+      - TZ=Asia/Shanghai
     volumes:
       - ./site:/usr/share/nginx/html:ro   # 静态文件，只读挂载；rsync 更新后无需重启容器即生效
-      - ./docker/nginx-default.conf:/etc/nginx/conf.d/default.conf:ro   # 防爬配置（限速+UA 过滤），覆盖默认
+      - ./docker/nginx-default.conf:/etc/nginx/conf.d/default.conf:ro   # 防爬配置（限速+并发+UA 过滤），覆盖默认
       - ./docker/ssl:/etc/nginx/ssl:ro     # SSL 证书
+      # 日志落宿主机文件，供 fail2ban 读取（jail: nginx-limit-req）。
+      # 为什么必须落文件：容器默认把 access/error.log 软链到 /dev/stdout|stderr，
+      # 只能经 docker logs 看；而 fail2ban 直读 docker 的 json-file 会因 JSON 转义
+      # （zone "x" → zone \"x\"）导致 filter 正则失配。挂载后是纯文本，filter 原样可用。
+      # 副作用：docker logs 不再显示 nginx 访问日志（改看 ./logs/）；轮转见 /etc/logrotate.d/kernel-blog
+      - ./logs:/var/log/nginx
     healthcheck:
       # 指向 127.0.0.1 强制 IPv4（localhost 会优先解析到 ::1，而 nginx 只监听 IPv4），
       # 路径用 /healthz —— 它在 80 端口直接返回 200，不参与 301 跳转（详见 nginx-default.conf）。
@@ -23,6 +35,13 @@ services:
       retries: 3
       start_period: 5s
     restart: unless-stopped
+    # docker 自身日志（容器 stdout/stderr）限大小。默认 json-file 无上限，长期会撑大磁盘。
+    # 与上面的 ./logs 挂载是两回事：这里是 docker 采集的 stdout，那里是 nginx 写的文件。
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   tunnel:
     image: cloudflare/cloudflared:2024.6.1
