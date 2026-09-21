@@ -10,6 +10,7 @@
     "wechat": "node scripts/render-wechat.mjs",
     "oss": "node scripts/upload-oss.mjs",
     "recap": "node scripts/monthly-recap.mjs",
+    "dod": "node scripts/check-dod.mjs",
     "prebuild": "node scripts/validate-blocks.mjs"
   },
   "dependencies": {
