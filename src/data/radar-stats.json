@@ -3,16 +3,16 @@
   "window": "24h",
   "lists": {
     "media": 140,
-    "DRM": 400,
-    "mm": 331,
-    "PCI": 190,
-    "net": 711,
-    "fs": 188,
+    "DRM": 351,
+    "mm": 322,
+    "PCI": 194,
+    "net": 707,
+    "fs": 201,
     "virtio": 2,
-    "Rust": 52,
+    "Rust": 62,
     "LSM": 38,
     "block": 57,
-    "arch": 93,
+    "arch": 56,
     "rt": 33
   }
 }
