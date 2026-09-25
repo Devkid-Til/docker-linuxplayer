@@ -59,9 +59,6 @@ blocks:
 
       # 6 安装 lark-cli
       npx @larksuite/cli@latest install
-  - type: image
-    src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-09-25/ccswitch-config.png"
-    alt: "cc-switch GUI 配置界面"
   - type: divider
     label: "2. nvm / npm 安装（Ubuntu 实录）"
     kind: section
@@ -97,6 +94,13 @@ blocks:
       ccswitch init   # ~/.ccswitch 下创建必要的文件夹结构
       ccswitch add <配置文件名称>   # 例如：ccswitch add deepseek-claude
       ccswitch use <你的配置名>     # 切换到该配置
+  - type: paragraph
+    text: >-
+      Mac 用户也可以装 cc-switch 的 GUI 桌面版（cc-switch.cc/tutorials），在图形界面里填 key 和 base URL——
+      和上面命令行的 add 是同一件事的两种做法，界面如下。
+  - type: image
+    src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-09-25/ccswitch-config.png"
+    alt: "cc-switch GUI 配置界面"
   - type: code
     lang: bash
     text: |-
@@ -165,6 +169,11 @@ blocks:
     text: |-
       # 生成默认配置
       cc-connect config example > config.toml
+  - type: paragraph
+    text: >-
+      接飞书：执行 <code>cc-connect feishu setup</code> 会生成一个授权链接，打开后选择
+      <b>「创建新 Bot」或「选择已有 Bot」</b>，完成后把拿到的 <code>app_id</code> / <code>app_secret</code>
+      填进下面的 config.toml。
   - type: code
     lang: text
     text: |-
@@ -192,8 +201,8 @@ blocks:
       type = "feishu"
 
       [projects.platforms.options]
-      app_id = "你的 APP ID"
-      app_secret = "你的 APP Secret"
+      app_id = "飞书 Bot 的 APP ID（feishu setup 拿到）"
+      app_secret = "飞书 Bot 的 APP Secret（feishu setup 拿到）"
       allow_from = "启动 cc-connect 服务后，发 /whoami 获取 User ID"
   - type: code
     lang: bash
@@ -214,6 +223,10 @@ blocks:
       lark-cli config init --new --brand feishu --lang zh
       lark-cli auth login --recommend
       lark-cli auth status --verify
+  - type: paragraph
+    text: >-
+      <code>auth login</code> 会生成一个授权链接，打开并同意后回到终端，再用
+      <code>auth status --verify</code> 验证登录态和 scope 是否齐。
   - type: divider
     label: "7. Docker（可选）"
     kind: section
