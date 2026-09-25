@@ -214,6 +214,12 @@ blocks:
       # 装 daemon 服务并启动
       cc-connect daemon install
       cc-connect daemon restart  # 更新配置后跑一下
+  - type: paragraph
+    text: >-
+      daemon 起来后，在飞书里找到刚创建的 Bot 发一句就能聊——配置完成后的聊天界面长这样。
+  - type: image
+    src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-09-25/cc-connect-feishu-bot.jpg"
+    alt: "配置完成后，飞书 Bot 的聊天界面"
   - type: divider
     label: "6. 安装 lark-cli（飞书 skill）"
     kind: section
