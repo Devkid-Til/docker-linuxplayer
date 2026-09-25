@@ -9,7 +9,7 @@ blocks:
     text: >-
       我把 Claude Code 深度集成进日常内核开发之后，陆续有人问「这套怎么装」。这篇手记把从零到能用的全过程
       记下来——<b>nvm → npm → ccswitch → Claude Code → cc-connect → lark-cli → Docker</b>，MacOS 和 Ubuntu
-      两套命令都在这，还有几个不踩就卡死你的坑。
+      两套命令都在这，还有个不踩就卡死的坑。
   - type: divider
     label: "🛠️ 总览：装什么、按什么顺序"
     kind: primary
@@ -94,7 +94,7 @@ blocks:
   - type: code
     lang: bash
     text: |-
-      ccswitch init   # ~/.config/cc-switch/ 下创建必要的文件夹结构
+      ccswitch init   # ~/.ccswitch 下创建必要的文件夹结构
       ccswitch add <配置文件名称>   # 例如：ccswitch add deepseek-claude
       ccswitch use <你的配置名>     # 切换到该配置
   - type: code
@@ -117,7 +117,7 @@ blocks:
     kind: section
   - type: paragraph
     text: >-
-      官方文档见 code.claude.com/docs/zh-CN/setup。三种装法，前两种国内都有坑，推荐第三种 npm。
+      官方文档见 <a href="https://code.claude.com/docs/zh-CN/setup">code.claude.com/docs/zh-CN/setup</a>。三种装法，前两种国内都有坑，推荐第三种 npm。
   - type: code
     lang: bash
     text: |-
