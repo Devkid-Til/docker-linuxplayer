@@ -14,6 +14,8 @@ blocks:
     text: >-
       开源项目地址：<a href="https://github.com/tbphp/gpt-load">github.com/tbphp/gpt-load</a>
       （6.9k stars，自托管 AI 网关：多渠道多凭据统一接入，含密钥与订阅账号、调度容错、日志与用量）。
+      配套部署脚本在 <a href="https://github.com/Devkid-Til/gpt-load-deploy">github.com/Devkid-Til/gpt-load-deploy</a>，
+      照着脚本就能跑。
   - type: divider
     label: "🛠️ 总览：七步"
     kind: primary
@@ -22,9 +24,14 @@ blocks:
       完整链路是七步：<b>① 起 docker 服务 → ② 登录管理 UI → ③ 建分组（group）→ ④ 挂模型（models）→
       ⑤ 发 AccessKey → ⑥ 客户端接入 → ⑦ 验证</b>。gpt-load 的核心概念就三个：
       <b>分组</b>（channel，对应一个上游）、<b>模型</b>（挂在分组下，可设别名）、<b>AccessKey</b>（发给客户端的令牌）。
+      每一步都有对应脚本，见下方各节。
   - type: divider
     label: "1. 起 docker 服务"
     kind: section
+  - type: paragraph
+    text: >-
+      脚本：<code>bash setup.sh [DATA_DIR] [PORT]</code>（<a href="https://github.com/Devkid-Til/gpt-load-deploy/blob/main/setup.sh">源码</a>）——
+      含 data 目录属主修正、compose 生成、健康检查。
   - type: code
     lang: bash
     text: |-
@@ -62,8 +69,10 @@ blocks:
     kind: section
   - type: paragraph
     text: >-
-      分组就是「一个上游渠道」。管理 API 认证头是 <code>Authorization: Bearer &lt;AUTH_KEY&gt;</code>（不是 X-Auth-Key）。
-      建分组走 POST /api/groups，下面是我建的三个分组的真实参数：
+      脚本：<code>bash create-group.sh &lt;NAME&gt; &lt;CHANNEL_ID&gt; &lt;BASE_URL&gt;</code>（<a href="https://github.com/Devkid-Til/gpt-load-deploy/blob/main/create-group.sh">源码</a>）——
+      含 Idempotency-Key 头（坑二）和 price_multiplier 必填（坑三）。分组就是「一个上游渠道」，管理 API 认证头是
+      <code>Authorization: Bearer &lt;AUTH_KEY&gt;</code>（不是 X-Auth-Key）。
+      下面是我建的三个分组的真实参数：
   - type: code
     lang: json
     text: |-
@@ -85,7 +94,8 @@ blocks:
     kind: section
   - type: paragraph
     text: >-
-      分组建好后往里挂模型。模型支持别名——<code>id</code> 是上游真名，<code>alias</code> 是客户端看到的名字，
+      脚本：<code>bash add-models.sh &lt;GROUP_ID&gt; '&lt;JSON&gt;'</code>（<a href="https://github.com/Devkid-Til/gpt-load-deploy/blob/main/add-models.sh">源码</a>）——
+      先读现有清单、确认后再全量替换（坑五）。模型支持别名：<code>id</code> 是上游真名，<code>alias</code> 是客户端看到的名字，
       <code>alias_enabled: true</code> 才生效。比如 Kimi 分组里 <code>k3</code> 的别名是 <code>k3[1m]</code>，
       客户端用 <code>k3[1m]</code> 调，实际走的是上游的 <code>k3</code>。
   - type: code
