@@ -14,7 +14,7 @@ blocks:
     text: >-
       开源项目地址：<a href="https://github.com/tbphp/gpt-load">github.com/tbphp/gpt-load</a>
       （6.9k stars，自托管 AI 网关：多渠道多凭据统一接入，含密钥与订阅账号、调度容错、日志与用量）。
-      配套部署脚本在 <a href="https://github.com/Devkid-Til/gpt-load-deploy">github.com/Devkid-Til/gpt-load-deploy</a>，
+      配套部署脚本在 <a href="https://github.com/Devkid-Til/gpt-load-deploy-skill">github.com/Devkid-Til/gpt-load-deploy-skill</a>，
       照着脚本就能跑。也可以参考前面那篇<a href="https://kernelplayer.cn/posts/2026-09-25-claude-code-setup-tutorial/">《从零配置 Claude Code 全家桶》</a>，
       让 Claude Code 加载这个仓库里的 skill（gpt-load-setup），回答几个问题就自动完成安装和分组配置。
   - type: divider
@@ -31,7 +31,7 @@ blocks:
     kind: section
   - type: paragraph
     text: >-
-      脚本：<code>bash setup.sh [DATA_DIR] [PORT]</code>（<a href="https://github.com/Devkid-Til/gpt-load-deploy/blob/main/setup.sh">源码</a>）——
+      脚本：<code>bash setup.sh [DATA_DIR] [PORT]</code>（<a href="https://github.com/Devkid-Til/gpt-load-deploy-skill/blob/main/scripts/setup.sh">源码</a>）——
       含 data 目录属主修正、compose 生成、健康检查。
   - type: code
     lang: bash
@@ -70,7 +70,7 @@ blocks:
     kind: section
   - type: paragraph
     text: >-
-      脚本：<code>bash create-group.sh &lt;NAME&gt; &lt;CHANNEL_ID&gt; &lt;BASE_URL&gt;</code>（<a href="https://github.com/Devkid-Til/gpt-load-deploy/blob/main/create-group.sh">源码</a>）——
+      脚本：<code>bash create-group.sh &lt;NAME&gt; &lt;CHANNEL_ID&gt; &lt;BASE_URL&gt;</code>（<a href="https://github.com/Devkid-Til/gpt-load-deploy-skill/blob/main/scripts/create-group.sh">源码</a>）——
       含 Idempotency-Key 头（坑二）和 price_multiplier 必填（坑三）。分组就是「一个上游渠道」，管理 API 认证头是
       <code>Authorization: Bearer &lt;AUTH_KEY&gt;</code>（不是 X-Auth-Key）。
       下面是我建的三个分组的真实参数：
@@ -95,7 +95,7 @@ blocks:
     kind: section
   - type: paragraph
     text: >-
-      脚本：<code>bash add-models.sh &lt;GROUP_ID&gt; '&lt;JSON&gt;'</code>（<a href="https://github.com/Devkid-Til/gpt-load-deploy/blob/main/add-models.sh">源码</a>）——
+      脚本：<code>bash add-models.sh &lt;GROUP_ID&gt; '&lt;JSON&gt;'</code>（<a href="https://github.com/Devkid-Til/gpt-load-deploy-skill/blob/main/scripts/add-models.sh">源码</a>）——
       先读现有清单、确认后再全量替换（坑五）。模型支持别名：<code>id</code> 是上游真名，<code>alias</code> 是客户端看到的名字，
       <code>alias_enabled: true</code> 才生效。比如 Kimi 分组里 <code>k3</code> 的别名是 <code>k3[1m]</code>，
       客户端用 <code>k3[1m]</code> 调，实际走的是上游的 <code>k3</code>。
