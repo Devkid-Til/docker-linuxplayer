@@ -25,7 +25,7 @@ blocks:
       - label: "坑"
         text: "装最新 @latest 版 Claude 后，若不先配置 ccswitch，会卡在强制登录（login）。ccswitch 切一次大模型就能跳过。"
       - label: "切模型时"
-        text: "每次 <code>ccswitch use 配置名</code> 切换大模型后，先清理掉 <code>~/.claude.json</code> 里被 reject 的 key，重新进 Claude，遇到「是否继续使用已有 API Key」时选 <b>yes</b>。"
+        text: "切换模型通常不用动 <code>~/.claude.json</code>。万一切完被要求登录，多半是某把 key 在「是否信任」弹窗里被记过 reject——这时清理掉对应 reject 记录，重进 Claude 选 <b>yes</b> 即可。"
   - type: divider
     label: "1. MacOS 安装（Ubuntu 大同小异）"
     kind: section
