@@ -19,13 +19,17 @@ blocks:
       再装 <code>ccswitch</code>（切大模型），然后才是 <code>Claude Code</code> 本体、
       <code>cc-connect</code>（接飞书机器人）、<code>lark-cli</code>（飞书文档/IM 操作）。最后 Docker 可选。
   - type: highlight
-    title: "⚠️ 一个必须先知道的坑"
-    meta: "不先装 ccswitch，会被强制 login 卡住"
+    title: "⚠️ 一个必须先知道的坑：为什么会被要求 login"
+    meta: "不是新版强制登录，是 key 被记成了 reject"
     points:
-      - label: "坑"
-        text: "装最新 @latest 版 Claude 后，若不先配置 ccswitch，会卡在强制登录（login）。ccswitch 切一次大模型就能跳过。"
+      - label: "现象"
+        text: "装 <code>@latest</code> 版 Claude Code 后，第一次跑可能被要求登录（login）。"
+      - label: "原因"
+        text: "不是版本强制。是 <code>~/.claude.json</code> 里缓存了你在「是否信任此 API key」弹窗里的选择（按 key 末 20 位记 approve/reject）——某把 key 一旦被记成 reject，Claude 就拒绝用它、转而要求登录。"
+      - label: "对策"
+        text: "用 ccswitch 切到一把没被 reject 的 key，或清理掉对应 reject 记录，重进 Claude 选 <b>yes</b>。"
       - label: "切模型时"
-        text: "切换模型通常不用动 <code>~/.claude.json</code>。万一切完被要求登录，多半是某把 key 在「是否信任」弹窗里被记过 reject——这时清理掉对应 reject 记录，重进 Claude 选 <b>yes</b> 即可。"
+        text: "切换模型通常不用动 <code>~/.claude.json</code>。万一切完被要求登录，多半是某把 key 被记过 reject——这时清理掉对应 reject 记录，重进 Claude 选 <b>yes</b> 即可。"
   - type: divider
     label: "1. MacOS 安装（Ubuntu 大同小异）"
     kind: section
