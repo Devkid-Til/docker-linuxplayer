@@ -133,11 +133,12 @@ blocks:
       npm install -g @anthropic-ai/claude-code@latest
   - type: paragraph
     text: >-
-      配大模型之前，先删掉默认的 <code>.claude.json</code> 清掉残留——这一步相当于重置 Claude 配置，不删的话
-      ccswitch 切不过去。
+      配大模型之前，先删掉默认的 <code>.claude.json</code>——它里面缓存了你在「是否信任此 API key」弹窗里的
+      选择（按 key 末 20 位记 approve/reject）。某把 key 一旦被记成 reject，Claude 就拒绝用它、转而要求登录；
+      删掉后重进 Claude 再选一次 yes，才重新接受这把 key。
   - type: image
     src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-09-25/claude-json-reset.png"
-    alt: "删除 .claude.json 清除配置残留"
+    alt: "删除 .claude.json 清掉被拒绝的 key 缓存"
   - type: paragraph
     text: >-
       重新进 Claude 后，遇到询问就选 <b>YES</b>。
