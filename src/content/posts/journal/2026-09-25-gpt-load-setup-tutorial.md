@@ -63,8 +63,17 @@ blocks:
       docker logs gpt-load --tail 5   # 确认起来了
   - type: paragraph
     text: >-
-      起来后管理 UI 在 <code>http://localhost:3001</code>，首次用 AUTH_KEY 登录（这个 key 写进
-      <code>credentials.txt</code>，权限设 600，不进任何版本库）。
+      <strong>管理密钥是首次启动自动生成的</strong>——gpt-load 会把它写到 <code>${DATA_DIR}/auth.key</code>
+      （容器内 <code>/app/data/auth.key</code>），同时生成一把 <code>encryption.key</code> 用于加密存储上游凭据。
+      取出来就能登录 <code>http://localhost:3001</code>：
+  - type: code
+    lang: bash
+    text: |-
+      docker exec gpt-load cat /app/data/auth.key
+  - type: paragraph
+    text: >-
+      这把密钥是唯一副本，丢了要重置，务必存到一个 600 权限的文件里、别进任何版本库。
+      想自己指定密钥的话，在启动前设 <code>AUTH_KEY</code> 环境变量覆盖即可（那样就不生成 <code>auth.key</code>）。
   - type: divider
     label: "2. 建分组（group）"
     kind: section
