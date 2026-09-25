@@ -25,7 +25,7 @@ blocks:
       - label: "坑"
         text: "装最新 @latest 版 Claude 后，若不先配置 ccswitch，会卡在强制登录（login）。ccswitch 切一次大模型就能跳过。"
       - label: "切模型时"
-        text: "每次 <code>ccswitch use 配置名</code> 切换大模型后，要先删掉 <code>~/.claude.json</code>，重新进 Claude，遇到「是否继续使用已有 API Key」时选 <b>yes</b>。"
+        text: "每次 <code>ccswitch use 配置名</code> 切换大模型后，先清理掉 <code>~/.claude.json</code> 里被 reject 的 key，重新进 Claude，遇到「是否继续使用已有 API Key」时选 <b>yes</b>。"
   - type: divider
     label: "1. MacOS 安装（Ubuntu 大同小异）"
     kind: section
@@ -137,12 +137,12 @@ blocks:
       npm install -g @anthropic-ai/claude-code@latest
   - type: paragraph
     text: >-
-      配大模型之前，先删掉默认的 <code>.claude.json</code>——它里面缓存了你在「是否信任此 API key」弹窗里的
-      选择（按 key 末 20 位记 approve/reject）。某把 key 一旦被记成 reject，Claude 就拒绝用它、转而要求登录；
-      删掉后重进 Claude 再选一次 yes，才重新接受这把 key。
+      配大模型之前，先清理掉 <code>.claude.json</code> 里被记成 reject 的 key——它在「是否信任此 API key」弹窗里
+      按 key 末 20 位缓存 approve/reject。某把 key 一旦被记成 reject，Claude 就拒绝用它、转而要求登录；
+      清掉后重进 Claude 再选一次 yes，才重新接受这把 key。
   - type: image
     src: "http://kernelplayer.oss-cn-beijing.aliyuncs.com/kernel-blog/2026-09-25/claude-json-reset.png"
-    alt: "删除 .claude.json 清掉被拒绝的 key 缓存"
+    alt: "清理 .claude.json 里被拒绝的 key 缓存"
   - type: paragraph
     text: >-
       重新进 Claude 后，遇到询问就选 <b>YES</b>。
