@@ -20,16 +20,16 @@ blocks:
       <code>cc-connect</code>（接飞书机器人）、<code>lark-cli</code>（飞书文档/IM 操作）。最后 Docker 可选。
   - type: highlight
     title: "⚠️ 一个必须先知道的坑：为什么会被要求 login"
-    meta: "不是新版强制登录，是 key 被记成了 reject"
+    meta: "KEY 相关环境变量还没配，先装 ccswitch 就是为了配它"
     points:
       - label: "现象"
         text: "装 <code>@latest</code> 版 Claude Code 后，第一次跑可能被要求登录（login）。"
       - label: "原因"
-        text: "不是版本强制。是 <code>~/.claude.json</code> 里缓存了你在「是否信任此 API key」弹窗里的选择（按 key 末 20 位记 approve/reject）——某把 key 一旦被记成 reject，Claude 就拒绝用它、转而要求登录。"
+        text: "login 是因为 KEY 相关的环境变量（<code>ANTHROPIC_API_KEY</code>、<code>ANTHROPIC_BASE_URL</code> 等）还没配置——这些变量写在 <code>settings.json</code> 的 env 块里，没配就没有 key 可用，Claude 就要求登录。"
       - label: "对策"
-        text: "用 ccswitch 切到一把没被 reject 的 key，或清理掉对应 reject 记录，重进 Claude 选 <b>yes</b>。"
+        text: "先装 ccswitch 就是为了方便设置这些环境变量：<code>ccswitch use 配置名</code> 会把对应 profile 的 key / base URL / model 写进 <code>settings.json</code> 的 env 块，配好之后就不会再触发 login。"
       - label: "切模型时"
-        text: "切换模型通常不用动 <code>~/.claude.json</code>。万一切完被要求登录，多半是某把 key 被记过 reject——这时清理掉对应 reject 记录，重进 Claude 选 <b>yes</b> 即可。"
+        text: "每次 <code>ccswitch use</code> 切换模型，就是重新写一遍 <code>settings.json</code> 的 env 块。切完若还被要求登录，先确认环境变量配好没有，或检查该 key 是否被记过 reject。"
   - type: divider
     label: "1. MacOS 安装（Ubuntu 大同小异）"
     kind: section
