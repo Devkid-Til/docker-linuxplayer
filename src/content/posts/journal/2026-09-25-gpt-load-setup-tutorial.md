@@ -15,7 +15,8 @@ blocks:
       开源项目地址：<a href="https://github.com/tbphp/gpt-load">github.com/tbphp/gpt-load</a>
       （6.9k stars，自托管 AI 网关：多渠道多凭据统一接入，含密钥与订阅账号、调度容错、日志与用量）。
       配套部署脚本在 <a href="https://github.com/Devkid-Til/gpt-load-deploy">github.com/Devkid-Til/gpt-load-deploy</a>，
-      照着脚本就能跑。
+      照着脚本就能跑。也可以参考前面那篇<a href="https://kernelplayer.cn/posts/2026-09-25-claude-code-setup-tutorial/">《从零配置 Claude Code 全家桶》</a>，
+      让 Claude Code 加载这个仓库里的 skill（gpt-load-setup），回答几个问题就自动完成安装和分组配置。
   - type: divider
     label: "🛠️ 总览：七步"
     kind: primary
