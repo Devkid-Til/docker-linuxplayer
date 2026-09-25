@@ -16,7 +16,7 @@ blocks:
   - type: paragraph
     text: >-
       一共七样，顺序很重要：先装 <code>nvm</code>（管 Node 版本）和 <code>npm</code>（包管理器），
-      再装 <code>ccswitch</code>（切大模型，能跳过 Claude 的强制登录），然后才是 <code>Claude Code</code> 本体、
+      再装 <code>ccswitch</code>（切大模型），然后才是 <code>Claude Code</code> 本体、
       <code>cc-connect</code>（接飞书机器人）、<code>lark-cli</code>（飞书文档/IM 操作）。最后 Docker 可选。
   - type: highlight
     title: "⚠️ 一个必须先知道的坑"
