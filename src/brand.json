@@ -296,6 +296,7 @@
         "light": {
           "effects": {
             "heroImage": "/nebula-carina.jpg",
+            "heroImageMobile": "/nebula-carina-m.jpg",
             "heroGlow": {
               "enabled": true,
               "color": "#8B5CF6",
@@ -371,6 +372,7 @@
         "dark": {
           "effects": {
             "heroImage": "/milkyway-hero.jpg",
+            "heroImageMobile": "/milkyway-hero-m.jpg",
             "heroGlow": {
               "enabled": true,
               "color": "#A78BFA",
