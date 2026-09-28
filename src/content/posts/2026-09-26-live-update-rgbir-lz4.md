@@ -529,6 +529,6 @@ blocks:
       - label: "vendoring"
         text: 把上游源码原样引入仓库、构建期适配，而不是维护一个会持续走偏的 fork。
   - type: closing
-    tagline: "如果对你有用，点个赞，或留言聊聊你最关心的板块。"
+    tagline: "如果对你有用，点个赞，或转给需要的朋友。"
     source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
 ---

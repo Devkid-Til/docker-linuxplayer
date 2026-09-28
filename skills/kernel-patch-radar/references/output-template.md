@@ -68,7 +68,7 @@
 - `items[]`: `{text, time: "MM-DD HH:MM", link}`（不值得展开的才进这里）
 
 ### `closing` 结尾（简洁，勿啰嗦）
-- `tagline`：一句收尾 CTA，**≤20 字**（例：`如果对你有用，点个赞，或留言聊聊你最关心的。`）
+- `tagline`：一句收尾 CTA，**≤20 字**（例：`如果对你有用，点个赞，或转给需要的朋友。`）
 - `source`：数据来源一行（例：`数据来源：lore.kernel.org（全内核 13 列表）· 北京时间`）
 
 ## blocks 文章骨架示例
@@ -151,7 +151,7 @@ blocks:
       - label: 术语
         text: 一句话解释（只收本期出现过的）
   - type: closing
-    tagline: 如果对你有用，点个赞，或留言聊聊你最关心的。
+    tagline: 如果对你有用，点个赞，或转给需要的朋友。
     source: 数据来源：lore.kernel.org（全内核 12 列表）· 北京时间
 ---
 ```
@@ -232,7 +232,7 @@ blocks:
       - label: 术语
         text: 一句话解释（只收本期出现过的）
   - type: closing
-    tagline: 如果对你有用，点个赞，或留言聊聊你最关心的板块。
+    tagline: 如果对你有用，点个赞，或转给需要的朋友。
     source: ""
 ---
 ```
@@ -296,7 +296,7 @@ blocks:
       - label: 交叉点
         text: 无则明确说没有
   - type: closing
-    tagline: 如果对你有用，点个赞，或留言聊聊你最关心的。
+    tagline: 如果对你有用，点个赞，或转给需要的朋友。
     source: ""
 ---
 ```

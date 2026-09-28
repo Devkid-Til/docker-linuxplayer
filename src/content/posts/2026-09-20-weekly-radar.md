@@ -266,6 +266,6 @@ blocks:
       - label: "unsoundness"
         text: "Rust 语境下指安全 API 实际可导致未定义行为——等于 Rust 对调用者的安全承诺失效。级别高于普通 bug，维护者必须处理而非可选修复。"
   - type: closing
-    tagline: "如果对你有用，点个赞，或留言聊聊你最关心的板块。"
+    tagline: "如果对你有用，点个赞，或转给需要的朋友。"
     source: ""
 ---

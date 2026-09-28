@@ -87,7 +87,7 @@ bash <wechat-article>/scripts/generate-cover.sh --date "MM-DD" --topic "<今日�
 
 ## 四、结尾 CTA 文案（简洁，勿啰嗦）
 一句收尾 CTA（≤20 字）+ 一行数据来源。示例：
-> 如果对你有用，点个赞，或留言聊聊你最关心的。
+> 如果对你有用，点个赞，或转给需要的朋友。
 > 数据来源：lore.kernel.org（全内核 13 列表）· 北京时间
 
 ## 五、样稿（内容示例；blocks 成品见仓库已迁移文章 `<kernel-blog>/src/content/posts/2026-08-06-*.md`、`2026-08-07-*.md`）

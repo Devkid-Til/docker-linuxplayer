@@ -444,6 +444,6 @@ blocks:
         text: >-
           BPF 里调整 skb 头部空间的辅助函数，常用于封装/解封装。本期 RFC 想给它补上 PPPoE。
   - type: closing
-    tagline: "如果对你有用，点个赞，或留言聊聊你最关心的板块。"
+    tagline: "如果对你有用，点个赞，或转给需要的朋友。"
     source: "数据来源：lore.kernel.org（全内核 13 列表）· 北京时间"
 ---
