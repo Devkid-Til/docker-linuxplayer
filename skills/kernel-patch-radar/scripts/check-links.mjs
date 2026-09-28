@@ -26,10 +26,20 @@ if (!postPath || sourcePaths.length === 0) {
 const post = readFileSync(postPath, 'utf8');
 const sources = sourcePaths.map(p => readFileSync(p, 'utf8'));
 
-// 抓文章里的 lore URL，去掉结尾的引号/尖括号
+// 抓文章里的 lore URL。
+// lore 的 message-id 带尖括号，写进 HTML 的 href 时必须转义成 &lt; &gt;（否则标签会被浏览器吞掉），
+// 所以比对前要先做实体解码——否则「正文用转义、正文用尖括号」两种写法只有后者能过校验（实测误报）。
+// 结尾再剥掉可能粘上的引号/尖括号。
+const decodeEntities = s => s
+  .replace(/&lt;/g, '<')
+  .replace(/&gt;/g, '>')
+  .replace(/&amp;/g, '&')
+  .replace(/&quot;/g, '"')
+  .replace(/&#39;/g, "'");
+
 const urls = new Set(
   [...post.matchAll(/https:\/\/lore\.kernel\.org\/[^\s"']+/g)]
-    .map(m => m[0].replace(/[">]+$/, ''))
+    .map(m => decodeEntities(m[0]).replace(/[">]+$/, ''))
 );
 
 const missing = [...urls].filter(u => !sources.some(s => s.includes(u)));
