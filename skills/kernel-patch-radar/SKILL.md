@@ -125,6 +125,20 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 
 ## Gotchas
 
+### Gotcha: 成文时「拼」lore 链接 → 编造假 message-id（已踩 4 次）
+
+**为什么会踩**：`more` 区是最后写的，而此时上下文里只剩扫读视图——逐条 message-id 不在手边，于是照着命名惯例拼出形如 `<20260925195846.2e29624d@kernel.org>` 的**假链接**。09-14 / 09-15 / 09-24 / 09-26 各一次。这类字段（ID / 哈希 / URL）无法从标题反推，**只能复制**。YAML 通得过、build 通过、排版正常——都不能证明链接是真的。
+
+**正确做法（两道，缺一不可）**：
+1. **扫读阶段就把链接字段带上上下文**——用 `awk -F'|' '{print $1" | "$2" | "$3}'` 而不是只打 `$1 $2`，写稿时直接复制真值。校验是安全网，不是工作流。
+2. **成文后、commit 前跑机械校验**（`--out` 渲染公众号之前也要过）：
+   ```bash
+   node scripts/check-links.mjs <kernel-blog>/src/content/posts/YYYY-MM-DD-*.md /tmp/radar-YYYY-MM-DD.txt
+   ```
+   退出码非 0 = 有链接没在当天 radar 输出里逐字出现，**必须替换为真实 message-id 才能继续**。
+
+雷达第 3 字段为 `<none-…>` 的条目视为「无链接」，不得成文。
+
 ### Gotcha: 直接用 patchwork/lore 的网页抓补丁 → 被 Anubis 反爬挡住
 **为什么会踩**：patchwork.kernel.org / lore.kernel.org 的 HTTP 页面要求 JS 工作量证明，curl 只拿到挑战页，以为 200 就以为成功了。
 **正确做法**：走 lore 的 **git 智能协议**（`https://lore.kernel.org/<list>/<shard>/`，绕开 Anubis；linux-media 与 dri-devel 均已由 lore 镜像，无需 freedesktop 通道）。全部封装在 `scripts/radar.sh` 里，别在简报时现拼。
@@ -142,6 +156,7 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 - `references/wechat-template.md` — **公众号规格**：品牌/标题/摘要/封面/CTA 内容层规格（排版走 render-wechat.mjs，见工作流步骤 5）
 - `references/platform-templates.md` — **多平台发布包**：微信/小红书/抖音/GitHub 四平台改写规则
 - 仓库 blocks schema 与渲染：`<kernel-blog>/src/components/article/blocks/types.ts`（板块类型定义）+ `<kernel-blog>/scripts/render-wechat.mjs`（公众号内联 HTML）
+- `scripts/check-links.mjs` — **反编造护栏（成文后必跑）**：`node check-links.mjs <文章.md> <radar 输出文件>` 逐字比对文章内全部 lore URL 与当天 radar 输出，未命中即退出码 1 并列出可疑链接。覆盖头条/亮点/**`more` 区**（假链接历来出在 more 区）
 - `scripts/radar.sh` — **抓取唯一入口**：`daily`（13 列表：12 按最近 24h〔lkml 限 400〕、virtio-dev 按 20 条，跨列表按 Message-Id 去重）· `fetch <list> [N|T<hours>[:<max>]]`（`T24:400` = 24h 窗口限 400 条）· `lwn [N]` · `shard <list>`；`daily`/`fetch` 每行输出 5 字段 `时间|标题|原文链接|Message-Id|In-Reply-To`，`lwn` 输出 `标题 — URL`
 - `scripts/mirror-lookup.sh` — **本地三镜像补丁状态反查**（mainline 命运追踪 / next 队列状态 / stable 修复盘点）：`index` 建三仓库 mid→sha 全历史索引（~4 分钟，含 `[ Upstream commit <sha> ]` 回移植映射，索引存 `~/.cache/kernel-radar/mirror-*.tsv`），`query <mid> [...]` 反查毫秒级，版本定位用 `git name-rev`（快于 tag --contains 两个量级）。stable 判定：只有落到 `tags/vX.Y.Z`（stable 版本标签）才算回移植（master=mainline 快照，存在≠回移植）。**局限**：mid 引用级匹配，补丁重发改 mid 时用旧 mid 查 mainline 会未命中（如实标注）；当日 patch 合入滞后必未命中
 - `scripts/mainline-lookup.sh` — **主内核合入状态反查（API 兜底版）**（Message-Id → mainline，patchwork API 被 Anubis 挡的替代通道）：`index [--pages N]` 用 GitHub REST API 拉 mainline 提交建 mid 索引缓存（提交体保留 `Link: lore.kernel.org/r/<mid>` trailer，实测 ~45% 可提取），`query <mid> [...]` 反查「这条合进去了没」；命中=已进 torvalds/linux（带 commit sha+主题+作者日期），未命中=未合入/被后续版本取代/超窗口（如实标注）。**用于周/月报命运追踪与头条深挖，不在日报强用**（当日 patch 合入滞后必未命中）。有本地镜像时优先 mirror-lookup.sh（全历史、无 API 限流），本脚本作无镜像/镜像过期时的兜底

@@ -37,20 +37,34 @@ _do_fetch() {
     cd "$TMP" || exit 1
     git init -q .
     # 分片探测：连续 2 次未命中即停（避免硬编码上限、减少 ls-remote 次数）
+    # ⚠️ 单次 ls-remote 失败**不等于**「该分片不存在」：lore 抖动/限流会让探测超时，
+    # 若直接计 miss 就会提前 break、把 MAX 停在更老的分片，随后 --since 过滤出 0 条，
+    # 整节数据静默消失（2026-09-27 实测：13 列表里 6 个中招，netdev 0→235、fsdevel 71→91）。
+    # 所以失败要**重试确认**后才计 miss。
+    _probe_miss() {
+      for _t in 1 2 3; do
+        GIT_TERMINAL_PROMPT=0 timeout 20 git ls-remote "https://lore.kernel.org/$LIST/$1/" 2>/dev/null \
+          | grep 'refs/heads/master' >/dev/null && return 1   # 命中
+        sleep 2
+      done
+      return 0                                                # 3 次都失败 → 才算 miss
+    }
     for i in $(seq 0 60); do
-      if GIT_TERMINAL_PROMPT=0 timeout 15 git ls-remote "https://lore.kernel.org/$LIST/$i/" 2>/dev/null | grep 'refs/heads/master' >/dev/null; then
-        MAX=$i; miss=0
-      else
+      if _probe_miss "$i"; then
         miss=$((miss+1)); (( miss >= 2 )) && break
+      else
+        MAX=$i; miss=0
       fi
     done
     # fetch 加重试：连续 13 源探测量大，lore 偶发限流/抖动，失败退避重试 3 次
     # 不设 timeout（董事长指示：真实 24h 数量，慢也要跑完，跑完为止）——大 depth 在慢带宽下可能数分钟，
-    # 截断会导致计数失真。安全性靠全局 http.lowSpeedLimit/lowSpeedTime（低速 10s 快速失败）+ TLS 失败快速返回兜底，
-    # 不会无限挂起。若个别源确实彻底不可达，重试 3 次后走下方失败分支计 0。
+    # 截断会导致计数失真。
+    # ⚠️ 低速保护**必须显式传 -c**：全局 http.lowSpeedLimit 实测为空（未配置），
+    # 光在注释里声称「靠全局配置兜底」是无效的——曾导致 git fetch 卡死 20 分钟（连接 ESTAB、零增长）。
     fetch_ok=0
     for try in 1 2 3; do
-      if GIT_TERMINAL_PROMPT=0 git fetch -q --depth="$depth" "https://lore.kernel.org/$LIST/$MAX/" master 2>/dev/null; then
+      if GIT_TERMINAL_PROMPT=0 git -c http.lowSpeedLimit=1000 -c http.lowSpeedTime=60 \
+           fetch -q --depth="$depth" "https://lore.kernel.org/$LIST/$MAX/" master 2>/dev/null; then
         fetch_ok=1; break
       fi
       sleep 3
@@ -151,8 +165,16 @@ _do_daily() {
 
 _do_shard() {
   local LIST="$1" MAX=0 i miss=0
+  # 与 daily 同样的探测语义：单次失败要重试确认后才计 miss（否则 lore 抖动会被误判为分片不存在）
   for i in $(seq 0 60); do
-    if GIT_TERMINAL_PROMPT=0 timeout 15 git ls-remote "https://lore.kernel.org/$LIST/$i/" 2>/dev/null | grep 'refs/heads/master' >/dev/null; then
+    local hit=0
+    for _t in 1 2 3; do
+      if GIT_TERMINAL_PROMPT=0 timeout 20 git ls-remote "https://lore.kernel.org/$LIST/$i/" 2>/dev/null | grep 'refs/heads/master' >/dev/null; then
+        hit=1; break
+      fi
+      sleep 2
+    done
+    if [ "$hit" -eq 1 ]; then
       MAX=$i; miss=0
     else
       miss=$((miss+1)); (( miss >= 2 )) && break
