@@ -37,9 +37,11 @@ const decodeEntities = s => s
   .replace(/&quot;/g, '"')
   .replace(/&#39;/g, "'");
 
+// 结尾还要剥掉转义反斜杠：正文若用 YAML 双引号标量写，href 的内层引号必须转义成 \"，
+// 于是 URL 后面紧跟的是 \ 而不是 "，正则会把 \ 一起吞进来（实测误报）。>- 折叠块不转义，所以只有前者踩得到。
 const urls = new Set(
   [...post.matchAll(/https:\/\/lore\.kernel\.org\/[^\s"']+/g)]
-    .map(m => decodeEntities(m[0]).replace(/[">]+$/, ''))
+    .map(m => decodeEntities(m[0]).replace(/[\\">]+$/, ''))
 );
 
 const missing = [...urls].filter(u => !sources.some(s => s.includes(u)));
