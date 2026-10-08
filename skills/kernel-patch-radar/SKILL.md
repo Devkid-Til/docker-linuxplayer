@@ -38,7 +38,7 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
    - **成文引用**：`type: image` block——封面放 hook 后、活跃度图放「板块活跃度」章节；`alt` 写说明
 6. **板块热度数据**：`bash scripts/radar.sh stats <kernel-blog>/src/data/radar-stats.json` → 更新首页「雷达仪表盘 · 板块活跃度」热度条（全 12 列表统一 T24 计数、社区短名 key；**数据写进仓库随文章一起提交**）。**已自动化**：`scripts/refresh-heat.sh` 每日 06:23 由 cc-connect cron（id 2254d74c）自动执行全链路——网络探测→stats→防全 0→git commit 触发部署；网络不可达/数据无变化/全 0 都安全跳过。手动刷新直接跑 `bash scripts/refresh-heat.sh`
 7. **网站直接发布（自主）**：`git add -A && git commit -m "..." && git push`（post-commit hook 自动 build+rsync 上线）——**网站是自有技术阵地、内容可随时改，commit 即上线，不额外审**。若属重大/敏感内容想先给董事长看效果：本地 `python3 -m http.server <port> --directory site` + `cloudflared tunnel --url http://localhost:<port>` 发临时预览链接，看完再决定上线
-8. **公众号标题 + HTML 请示（发布权在董事长）**：`cd <kernel-blog> && npm run build && node scripts/render-wechat.mjs YYYY-MM-DD --out` 生成内联 HTML → **cc-connect 发「标题 + HTML 文件」给董事长**，确认后才发布公众号——公众号是品牌对外窗口、发布权在董事长，必须过目：
+8. **公众号标题 + HTML 请示（发布权在董事长）**：**先过两道事实校验**——`node scripts/check-links.mjs <文章.md> /tmp/radar-YYYY-MM-DD.txt` 与 `node scripts/check-times.mjs <文章.md> /tmp/radar-YYYY-MM-DD.txt`，**两道都 exit 0 才允许往下走**（2026-10-09 教训：错稿先发给董事长、后自查，等于把校验成本转嫁给审阅人）。再 `cd <kernel-blog> && npm run build && node scripts/render-wechat.mjs YYYY-MM-DD --out` 生成内联 HTML → **cc-connect 发「标题 + HTML 文件」给董事长**，确认后才发布公众号——公众号是品牌对外窗口、发布权在董事长，必须过目：
    ```bash
    cc-connect send --file <公众号HTML> --message "📢 公众号审核 · Linux内核玩家 · MM月DD日｜<头条钩子>"
    ```
@@ -139,6 +139,16 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 
 雷达第 3 字段为 `<none-…>` 的条目视为「无链接」，不得成文。
 
+### Gotcha: 时间戳换算靠手算 → 抄了 UTC 小时数 / 差一小时（同一道校验也能拦）
+
+**为什么会踩**：雷达第 1 字段是 **UTC**（`2026-10-08T18:28:34Z`），成文要写北京时间（UTC+8）。手算有两种高频错法：直接把 UTC 的小时数抄下来（`18:28Z` 写成「10-08 18:28 北京」，实为 **10-09 02:28**），或取分钟时四舍五入差一分钟。两种都 YAML 通得过、build 通过、排版正常——和假链接一样，**排版类校验从不检查事实**。2026-10-09 当日两条时间戳同时踩中这两种错法，且错稿已发出给董事长审阅才发现。
+
+**正确做法**：与 `check-links.mjs` **配对跑第二道机械校验**（成文后、commit 前、`--out` 渲染公众号之前各一次）：
+```bash
+node scripts/check-times.mjs <kernel-blog>/src/content/posts/YYYY-MM-DD-*.md /tmp/radar-YYYY-MM-DD.txt
+```
+它把当天 radar 的全部 UTC 时间戳换算成 UTC+8 建集合，再逐条比对文章里所有 `〔MM-DD HH:MM 北京〕` 与 `more` 条目的 `time:`，未命中即退出码 1。**两条护栏一起跑，链接与时间都不再靠人眼。**
+
 ### Gotcha: 直接用 patchwork/lore 的网页抓补丁 → 被 Anubis 反爬挡住
 **为什么会踩**：patchwork.kernel.org / lore.kernel.org 的 HTTP 页面要求 JS 工作量证明，curl 只拿到挑战页，以为 200 就以为成功了。
 **正确做法**：走 lore 的 **git 智能协议**（`https://lore.kernel.org/<list>/<shard>/`，绕开 Anubis；linux-media 与 dri-devel 均已由 lore 镜像，无需 freedesktop 通道）。全部封装在 `scripts/radar.sh` 里，别在简报时现拼。
@@ -157,6 +167,7 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 - `references/platform-templates.md` — **多平台发布包**：微信/小红书/抖音/GitHub 四平台改写规则
 - 仓库 blocks schema 与渲染：`<kernel-blog>/src/components/article/blocks/types.ts`（板块类型定义）+ `<kernel-blog>/scripts/render-wechat.mjs`（公众号内联 HTML）
 - `scripts/check-links.mjs` — **反编造护栏（成文后必跑）**：`node check-links.mjs <文章.md> <radar 输出文件>` 逐字比对文章内全部 lore URL 与当天 radar 输出，未命中即退出码 1 并列出可疑链接。覆盖头条/亮点/**`more` 区**（假链接历来出在 more 区）
+- `scripts/check-times.mjs` — **时间戳换算护栏（与 check-links.mjs 配对，成文后必跑）**：`node check-times.mjs <文章.md> <radar 输出文件>` 把当天 radar 全部 UTC 时间戳换算为 UTC+8 建集合，逐条比对文章内所有 `〔MM-DD HH:MM 北京〕` 与 `time:`，未命中即退出码 1。拦「抄了 UTC 小时数」「漏加 8 小时」「差一分钟」三类手算错误
 - `scripts/radar.sh` — **抓取唯一入口**：`daily`（13 列表：12 按最近 24h〔lkml 限 400〕、virtio-dev 按 20 条，跨列表按 Message-Id 去重）· `fetch <list> [N|T<hours>[:<max>]]`（`T24:400` = 24h 窗口限 400 条）· `lwn [N]` · `shard <list>`；`daily`/`fetch` 每行输出 5 字段 `时间|标题|原文链接|Message-Id|In-Reply-To`，`lwn` 输出 `标题 — URL`
 - `scripts/mirror-lookup.sh` — **本地三镜像补丁状态反查**（mainline 命运追踪 / next 队列状态 / stable 修复盘点）：`index` 建三仓库 mid→sha 全历史索引（~4 分钟，含 `[ Upstream commit <sha> ]` 回移植映射，索引存 `~/.cache/kernel-radar/mirror-*.tsv`），`query <mid> [...]` 反查毫秒级，版本定位用 `git name-rev`（快于 tag --contains 两个量级）。stable 判定：只有落到 `tags/vX.Y.Z`（stable 版本标签）才算回移植（master=mainline 快照，存在≠回移植）。**局限**：mid 引用级匹配，补丁重发改 mid 时用旧 mid 查 mainline 会未命中（如实标注）；当日 patch 合入滞后必未命中
 - `scripts/mainline-lookup.sh` — **主内核合入状态反查（API 兜底版）**（Message-Id → mainline，patchwork API 被 Anubis 挡的替代通道）：`index [--pages N]` 用 GitHub REST API 拉 mainline 提交建 mid 索引缓存（提交体保留 `Link: lore.kernel.org/r/<mid>` trailer，实测 ~45% 可提取），`query <mid> [...]` 反查「这条合进去了没」；命中=已进 torvalds/linux（带 commit sha+主题+作者日期），未命中=未合入/被后续版本取代/超窗口（如实标注）。**用于周/月报命运追踪与头条深挖，不在日报强用**（当日 patch 合入滞后必未命中）。有本地镜像时优先 mirror-lookup.sh（全历史、无 API 限流），本脚本作无镜像/镜像过期时的兜底
