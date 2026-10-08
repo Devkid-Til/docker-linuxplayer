@@ -95,7 +95,7 @@ blocks:
     link: "https://lore.kernel.org/linux-fsdevel/<20261008084956.2911790-1-sashal@kernel.org>/"
   - type: headline
     title: "drm_panel 终于有了 atomic 状态：面板从「旁听」变成能拒绝配置的一方"
-    meta: "〔10-08 21:15 北京〕· [PATCH RFC 0/9] drm/panel: add atomic state（Dmitry Baryshkov / Qualcomm）"
+    meta: "〔10-08 21:14 北京〕· [PATCH RFC 0/9] drm/panel: add atomic state（Dmitry Baryshkov / Qualcomm）"
     points:
       - label: 现状
         text: >-
@@ -140,7 +140,7 @@ blocks:
     kind: section
   - type: highlight
     title: "zswap 改批量压缩：从「一次一页」到「一批 8 页」"
-    meta: "〔10-08 18:28 北京〕· [PATCH v1 0/8] Batched zswap_store() with compression batching"
+    meta: "〔10-09 02:28 北京〕· [PATCH v1 0/8] Batched zswap_store() with compression batching"
     points:
       - label: 定位
         text: >-
