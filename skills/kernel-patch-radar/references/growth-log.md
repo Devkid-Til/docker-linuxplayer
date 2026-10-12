@@ -170,3 +170,16 @@ PY
 **根因（与假链接同源）**：`check-links.mjs` 只校验 URL，**时间戳没有任何机械护栏**——而「UTC → 北京」本质是一次算术，算术恰恰是最不该靠眼睛的地方。此外扫读阶段我用的 view 里带的是 UTC 原值，写稿时脑子里做转换，一次转换、两处出错，说明错误率并不低。
 **修复/护栏**：新增 `scripts/check-times.mjs`（与 check-links.mjs 完全同构）——把当天 radar 全部 UTC 时间戳换算成 UTC+8 建集合，逐条比对文章里所有 `〔MM-DD HH:MM 北京〕` 与 `more` 条目的 `time:`，未命中退出码 1 并列出。已双向自测：正确稿 23/23 命中 exit 0；把 zswap 那条改回错误值后精确报出那一条 exit 1。写进 SKILL.md 的 Gotcha 与参考节，与 check-links 并列为「成文后必跑」。
 **元教训**：**凡是「ID / 哈希 / URL / 时间戳」这类可以从数据机械推导、但眼睛容易出错的事实字段，都该有一道脚本护栏，而不是靠「这次我记得换算」。** 判断标准仍然是 09-26 那条：换一个会话、换一个 agent 来跑，这条护栏还在不在？——现在在了。
+
+---
+
+## 2026-10-12 — 日报 frontmatter 的 `tags` 写了词表外的 `rt`，build 直接失败
+**上下文**：2026-10-12 日报成文，正文里开了 rt 相关的条目（`[PATCH v6] softirq: Preserve interrupt context during IRQ exit`、netfilter 例行拉取等），顺手把话题域写进了 `tags`。
+**表现**：`npm run build` 抛 `InvalidContentEntryDataError`：
+`tags: 标签「rt」不在 daily 栏目受控词表内。可用：media、DRM、mm、PCI、net、fs、virtio、Rust、LSM、block、arch、sched、driver-core`。
+**根因**：`src/column.ts` 的 daily 词表是**13 个内核社区板块名**，里面**没有 `rt`**——实时调度在词表里归入 `sched`（面板 key 叫 `rt` 容易让人误以为标签也叫 `rt`；`radar-stats.json` 的 lists key 里确实有 `rt`，两者不是一个命名空间）。**「section 可以叫 rt」不等于「tag 可以写 rt」**：`divider.label` 是自由文本，`tags` 受 schema 强校验。
+**修复/护栏**：
+1. **写 tags 前先查 `src/column.ts` 的 `COLUMNS[].tags`，不要照搬 `radar-stats.json` 的 lists key**（后者含 `rt`、且不含 `lkml`/`sched`/`driver-core`）。
+2. 映射口径：面板 `rt` → 标签 `sched`；面板无 `sched`/`driver-core` → 靠 lkml 跨帖捕获，标签照写 `sched` / `driver-core`。
+3. tags 只是**话题索引**，不必覆盖每个开过的 section——漏标比错标好（错标直接 build 失败）。
+**元教训**：**同一份数据在不同层有不同命名空间时，别让「读起来一样」替你做映射。** 面板 key 面向图表、tags 面向 schema 校验，两者的合法值集合不同；这类「名字像但不通用」的字段，属于和 URL/时间戳同类的**机械可推导字段**——查表就能定，不该靠记忆。
