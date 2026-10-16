@@ -1,18 +1,18 @@
 {
-  "date": "2026-10-16",
+  "date": "2026-10-17",
   "window": "24h",
   "lists": {
-    "media": 136,
-    "DRM": 444,
-    "mm": 265,
-    "PCI": 132,
-    "net": 494,
-    "fs": 97,
-    "virtio": 5,
-    "Rust": 68,
-    "LSM": 45,
-    "block": 81,
-    "arch": 7,
-    "rt": 45
+    "media": 156,
+    "DRM": 221,
+    "mm": 251,
+    "PCI": 117,
+    "net": 596,
+    "fs": 140,
+    "virtio": 2,
+    "Rust": 66,
+    "LSM": 25,
+    "block": 77,
+    "arch": 36,
+    "rt": 48
   }
 }
