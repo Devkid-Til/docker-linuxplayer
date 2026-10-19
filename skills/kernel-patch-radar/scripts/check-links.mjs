@@ -3,7 +3,11 @@
 //
 // 用法:
 //   node check-links.mjs <文章.md> <radar 输出文件> [更多允许来源...]
-//   退出码 0 = 全部命中；1 = 有未命中（并逐条打印）
+//
+// 退出码（三态契约，见 ag-org/AGENTS.md 第七节）:
+//   0 = 全部命中
+//   1 = 已校验，有未命中（疑似编造，逐条打印）
+//   2 = 无法校验（用法错误 / 文章或 radar 源缺失、为空、疑似截断）
 //
 // 为什么需要它（不是提示词能解决的）:
 //   09-14 / 09-15 / 09-24 / 09-26 四次都踩同一个坑——成文写 `more` 区时手头没有逐条
@@ -14,43 +18,52 @@
 // 为什么按「逐字比对 radar 输出」而不是「按格式校验」:
 //   格式校验只能拦住形状不对的假链接；拼得足够像的假链接照样过。radar 输出是当天唯一
 //   可信来源（lore git 抓下来的第 3/5 字段），逐字比对才是真校验。
+//
+// 2026-10-19 改造：接入 lib/verify-input.mjs 的三态契约。源缺失不再被当成「全部未命中」，
+// 而是明确的 exit 2（无法校验）——这是 10-17 空源误报事故的直接修复。
 
-import { readFileSync } from 'node:fs';
+import { EXIT_OK, EXIT_FAIL, readSources, usageError, runTriState } from './lib/verify-input.mjs';
+
+const TAG = 'check-links';
 
 const [postPath, ...sourcePaths] = process.argv.slice(2);
 if (!postPath || sourcePaths.length === 0) {
-  console.error('用法: node check-links.mjs <文章.md> <radar 输出文件> [更多允许来源...]');
-  process.exit(2);
+  usageError(TAG, '用法: node check-links.mjs <文章.md> <radar 输出文件> [更多允许来源...]');
 }
 
-const post = readFileSync(postPath, 'utf8');
-const sources = sourcePaths.map(p => readFileSync(p, 'utf8'));
+runTriState(TAG, () => {
+  const [post, ...sources] = readSources([postPath, ...sourcePaths], {
+    label: '文章/radar 源',
+    // radar 输出正常是几十行；只留 1 行说明抓取被截断，宁可判「无法校验」也不要误报。
+    minLines: 2,
+  });
 
-// 抓文章里的 lore URL。
-// lore 的 message-id 带尖括号，写进 HTML 的 href 时必须转义成 &lt; &gt;（否则标签会被浏览器吞掉），
-// 所以比对前要先做实体解码——否则「正文用转义、正文用尖括号」两种写法只有后者能过校验（实测误报）。
-// 结尾再剥掉可能粘上的引号/尖括号。
-const decodeEntities = s => s
-  .replace(/&lt;/g, '<')
-  .replace(/&gt;/g, '>')
-  .replace(/&amp;/g, '&')
-  .replace(/&quot;/g, '"')
-  .replace(/&#39;/g, "'");
+  // 抓文章里的 lore URL。
+  // lore 的 message-id 带尖括号，写进 HTML 的 href 时必须转义成 &lt; &gt;（否则标签会被浏览器吞掉），
+  // 所以比对前要先做实体解码——否则「正文用转义、正文用尖括号」两种写法只有后者能过校验（实测误报）。
+  // 结尾再剥掉可能粘上的引号/尖括号。
+  const decodeEntities = s => s
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&amp;/g, '&')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
 
-// 结尾还要剥掉转义反斜杠：正文若用 YAML 双引号标量写，href 的内层引号必须转义成 \"，
-// 于是 URL 后面紧跟的是 \ 而不是 "，正则会把 \ 一起吞进来（实测误报）。>- 折叠块不转义，所以只有前者踩得到。
-const urls = new Set(
-  [...post.matchAll(/https:\/\/lore\.kernel\.org\/[^\s"']+/g)]
-    .map(m => decodeEntities(m[0]).replace(/[\\">]+$/, ''))
-);
+  // 结尾还要剥掉转义反斜杠：正文若用 YAML 双引号标量写，href 的内层引号必须转义成 \"，
+  // 于是 URL 后面紧跟的是 \ 而不是 "，正则会把 \ 一起吞进来（实测误报）。>- 折叠块不转义，所以只有前者踩得到。
+  const urls = new Set(
+    [...post.matchAll(/https:\/\/lore\.kernel\.org\/[^\s"']+/g)]
+      .map(m => decodeEntities(m[0]).replace(/[\\">]+$/, ''))
+  );
 
-const missing = [...urls].filter(u => !sources.some(s => s.includes(u)));
+  const missing = [...urls].filter(u => !sources.some(s => s.includes(u)));
 
-if (missing.length === 0) {
-  console.log(`[check-links] ✓ ${urls.size} 条 lore 链接全部命中 radar 输出`);
-  process.exit(0);
-}
+  if (missing.length === 0) {
+    console.log(`[check-links] ✓ ${urls.size} 条 lore 链接全部命中 radar 输出`);
+    return EXIT_OK;
+  }
 
-console.error(`[check-links] ✗ ${missing.length}/${urls.size} 条 lore 链接未在 radar 输出中找到——疑似编造，必须替换为真实 message-id：`);
-missing.forEach(u => console.error('  ' + u));
-process.exit(1);
+  console.error(`[check-links] ✗ 校验失败：${missing.length}/${urls.size} 条 lore 链接未在 radar 输出中找到——疑似编造，必须替换为真实 message-id：`);
+  missing.forEach(u => console.error('  ' + u));
+  return EXIT_FAIL;
+});

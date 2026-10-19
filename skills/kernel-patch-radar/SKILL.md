@@ -31,14 +31,18 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 2. 标注前**先翻 `references/architecture-map.md`** 给每条亮点补丁做架构定位
 3. 按「分析规则」标注、按 `references/output-template.md` 的 blocks 映射组织内容结构
 4. **成文为 blocks 文章文件**：产出**完整的博客文章文件** `<kernel-blog>/src/content/posts/YYYY-MM-DD-slug.md`（frontmatter 含 `title`/`date`/`desc`/`tags`/`blocks`）。**YAML 硬规则**（所有字符串值加双引号、`---` 收尾、缩进 2 空格）与自查命令见 skill `wechat-article` 的 SKILL.md——写完后必须跑自查确认 js-yaml 可解析。**YAML 引号铁律**：所有字符串值加双引号包裹，但**字符串内部的中文引号必须用「」或“”，绝不能用半角 "**（半角会截断字符串导致 YAML 解析错误——08-11/08-13 各犯一次）。核心简报 = 该文件的 blocks 内容
-5. **封面 + 活跃度图 + OSS 上传**（**固定步骤，不可省**）：
+   - **成文后立即跑发布前硬门**（在封面/OSS 上传**之前**）：`bash scripts/prepublish-check.sh <文章.md> /tmp/radar-YYYY-MM-DD.txt`
+     - 串联三项：**时钟预检**（签名上传依赖，见 `ag-org/bin/check-clock.sh`）→ **链接反编造** → **时间戳换算**
+     - **三态**：`0` 放行；`1` 已校验有错 → 改稿重跑；`2` 无法校验（源缺失/网络不可达）→ **同样不得放行**，先补源
+     - 不涉及签名上传的稿件（如部分英语文章）可加 `--skip-clock`
+5. **封面 + 活跃度图 + OSS 上传**（**固定步骤，不可省**；时钟预检已由步骤 4 的硬门覆盖）：
    - **封面**：`bash <wechat-article skill>/scripts/generate-cover.sh --date "MM-DD" --topic "<头条钩子>" --out cover.png`（紫色报刊风，规格按 `references/wechat-template.md`）
    - **活跃度图**：`python3 <本 skill>/scripts/draw-heat.py <kernel-blog>/src/data/radar-stats.json board-heat.png --title "板块活跃度 · 近 24h"` 生成 12 板块热度条形图（周报必用；日报可选）
    - **上传 OSS**：`cd <kernel-blog> && node scripts/upload-oss.mjs cover.png kernel-blog/YYYY-MM-DD/cover.png` + `node scripts/upload-oss.mjs board-heat.png kernel-blog/YYYY-MM-DD/board-heat.png`（.env 已配 PUBLIC_OSS_*，上传得公网 URL）
    - **成文引用**：`type: image` block——封面放 hook 后、活跃度图放「板块活跃度」章节；`alt` 写说明
 6. **板块热度数据**：`bash scripts/radar.sh stats <kernel-blog>/src/data/radar-stats.json` → 更新首页「雷达仪表盘 · 板块活跃度」热度条（全 12 列表统一 T24 计数、社区短名 key；**数据写进仓库随文章一起提交**）。**已自动化**：`scripts/refresh-heat.sh` 每日 06:23 由 cc-connect cron（id 2254d74c）自动执行全链路——网络探测→stats→防全 0→git commit 触发部署；网络不可达/数据无变化/全 0 都安全跳过。手动刷新直接跑 `bash scripts/refresh-heat.sh`
 7. **网站直接发布（自主）**：`git add -A && git commit -m "..." && git push`（post-commit hook 自动 build+rsync 上线）——**网站是自有技术阵地、内容可随时改，commit 即上线，不额外审**。若属重大/敏感内容想先给董事长看效果：本地 `python3 -m http.server <port> --directory site` + `cloudflared tunnel --url http://localhost:<port>` 发临时预览链接，看完再决定上线
-8. **公众号标题 + HTML 请示（发布权在董事长）**：**先过两道事实校验**——`node scripts/check-links.mjs <文章.md> /tmp/radar-YYYY-MM-DD.txt` 与 `node scripts/check-times.mjs <文章.md> /tmp/radar-YYYY-MM-DD.txt`，**两道都 exit 0 才允许往下走**（2026-10-09 教训：错稿先发给董事长、后自查，等于把校验成本转嫁给审阅人）。再 `cd <kernel-blog> && npm run build && node scripts/render-wechat.mjs YYYY-MM-DD --out` 生成内联 HTML → **cc-connect 发「标题 + HTML 文件」给董事长**，确认后才发布公众号——公众号是品牌对外窗口、发布权在董事长，必须过目：
+8. **公众号标题 + HTML 请示（发布权在董事长）**：步骤 4 的 `prepublish-check.sh` **必须已 exit 0**（2026-10-09 教训：错稿先发给董事长、后自查，等于把校验成本转嫁给审阅人）；若中途改过稿，**改完必须重跑硬门**再继续。再 `cd <kernel-blog> && npm run build && node scripts/render-wechat.mjs YYYY-MM-DD --out` 生成内联 HTML → **cc-connect 发「标题 + HTML 文件」给董事长**，确认后才发布公众号——公众号是品牌对外窗口、发布权在董事长，必须过目：
    ```bash
    cc-connect send --file <公众号HTML> --message "📢 公众号审核 · Linux内核玩家 · MM月DD日｜<头条钩子>"
    ```
@@ -51,7 +55,7 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 4. **三镜像合入状态反查**：对周报报道的重点补丁批量 `bash scripts/mirror-lookup.sh query <mid> [...]`（本地三镜像：mainline 是否合入 / next 是否排队 / stable 是否回移植）——结果补进各补丁条目与「合入状态」节
 5. **活跃度图 + 封面 + OSS 上传**（同每日步骤 5）：`draw-heat.py /tmp/week-heat.json board-heat-week.png --title "板块热度 · 本周（周一~今日）"` 生成**本周累计**活跃度图（用步骤 1 的周和 JSON）+ `generate-cover.sh` 生成封面 + `upload-oss.mjs` 上传 OSS——成文时活跃度图放「📊 板块热度」节、封面放 hook 后，均以 `type: image` block 引用 OSS URL
 6. **成文为 blocks 文章**（与每日同格式，可上博客/公众号）：`<kernel-blog>/src/content/posts/YYYY-MM-DD-weekly-radar.md`（frontmatter 含 title/date/desc/tags/blocks，结构见 `output-template.md` 每周模板；YAML 硬规则同每日）。周报除模板原有章节外，补两节：**📊 板块热度**（板块活跃度图 + 12 板块活跃度分布）与 **🧭 合入状态**（重点补丁的三镜像反查结果）
-7. **发布（双轨，同每日步骤 7/8）**：网站直接发布（`git commit/push` → commit hook 自动部署；重大内容可选隧道预览）；公众号 `render-wechat.mjs` 出 HTML 后 **cc-connect 发「标题 + HTML 文件」给董事长**，确认后才发布
+7. **发布（双轨，同每日步骤 7/8）**：**先跑发布前硬门** `bash scripts/prepublish-check.sh <文章.md> /tmp/radar-YYYY-MM-DD.txt`（三态；`1`/`2` 都不得放行）→ 网站直接发布（`git commit/push` → commit hook 自动部署；重大内容可选隧道预览）；公众号 `render-wechat.mjs` 出 HTML 后 **cc-connect 发「标题 + HTML 文件」给董事长**，确认后才发布
 
 ### 月/季/年报（盘点式回顾）
 **无每日抓取**——基于当期已产出的日/周报积累内容做盘点，重**趋势与指标**，轻逐条新闻：
@@ -131,11 +135,15 @@ description: "Use when the user wants a daily, weekly, monthly/quarterly/yearly 
 
 **正确做法（两道，缺一不可）**：
 1. **扫读阶段就把链接字段带上上下文**——用 `awk -F'|' '{print $1" | "$2" | "$3}'` 而不是只打 `$1 $2`，写稿时直接复制真值。校验是安全网，不是工作流。
-2. **成文后、commit 前跑机械校验**（`--out` 渲染公众号之前也要过）：
+2. **成文后、上传/commit 前跑发布前硬门**（`--out` 渲染公众号之前也要过）：
    ```bash
-   node scripts/check-links.mjs <kernel-blog>/src/content/posts/YYYY-MM-DD-*.md /tmp/radar-YYYY-MM-DD.txt
+   bash scripts/prepublish-check.sh <kernel-blog>/src/content/posts/YYYY-MM-DD-*.md /tmp/radar-YYYY-MM-DD.txt
    ```
-   退出码非 0 = 有链接没在当天 radar 输出里逐字出现，**必须替换为真实 message-id 才能继续**。
+   **三态退出**（见 `ag-org/AGENTS.md` 第七节）：
+   - `0` = 链接 / 时间戳 / 时钟全部通过，放行；
+   - `1` = 已校验且有错（假链接、时间戳算错、时钟不可用）→ 改稿后重跑；
+   - `2` = **无法校验**（radar 源缺失/为空、HTTP Date 源不可达）→ **也不得放行**，先补源。**不要把 2 当成「全都没命中」反复重试**——2026-10-17 就是这么误报全错的。
+   > 只跑单项时：`node scripts/check-links.mjs ...` / `node scripts/check-times.mjs ...`，退出码语义相同。
 
 雷达第 3 字段为 `<none-…>` 的条目视为「无链接」，不得成文。
 
