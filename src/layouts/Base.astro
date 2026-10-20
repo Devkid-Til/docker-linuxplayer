@@ -101,6 +101,12 @@ const brandCss = `:root{${lightTokens}}${termRule}${darkTokens ? ` html.dark{${d
     (function(){var t=localStorage.getItem('kernel-blog-theme');if(t==='dark'||(t===null&&matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark');})()
   </script>
   <style is:inline set:html={brandCss}></style>
+  <!-- 访问统计：GoatCounter 自托管（无反代第三方、无 cookie、IP 哈希）。
+       base-path 为 /_stats，由 nginx 反代到宿主机 172.18.0.1:8091。 -->
+  <script is:inline
+    data-goatcounter="https://kernelplayer.cn/_stats/count"
+    async
+    src="https://kernelplayer.cn/_stats/count.js"></script>
 </head>
 <body>
   <div class="progress-bar"></div>
